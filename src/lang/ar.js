@@ -14,5 +14,18 @@ export default {
         phonneNumstart: "رقم الهاتف يجب أن يبدأ بـ 0",
         phoneNumlength: "رقم الهاتف يجب أن يكون 10 خانات على الأقل",
         passwordLength: "كلمة المرور يجب أن تكون 8 خانات على الأقل",
+        welcome: "مرحبًا بك",
+        onlyNumbers: "رقم الهاتف يجب ان يكون ارقم فقط",
+        notValidEmail: "يرجى ادخال بريد الكتروني صالح",
+        registeredSuccessfully: "تم التسجيل بنجاح",
+        registeringDuplicate: "لديك حساب مسبق ",
+        serverError: "حدث خطأ يرجى المحاولة لاحقًا",
+        name: "الإسم",
+        haveAccount: "لديك حساب ؟ ",
+        loggedinSuccessfully: "مرحبًا بك ...",
+        wrongPassword: "كلمة مرور خاطئة!",
+        notFoundedUser: "ليس لديك حساب مسجل!",
+        projects: "المشاريع",
+        addProject: "إضافة مشروع"
     }
 }

@@ -1,58 +1,42 @@
-import React, { useRef, useEffect } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+    View,
+    StyleSheet,
+    KeyboardAvoidingView,
+    Platform
+} from 'react-native';
 import { Formik } from 'formik';  
-import { LoginForm } from './components';
+import { RegisterForm } from './components';
 import MyText from '../../../components/UI/MyText';
 import { ScrollView } from 'react-native-gesture-handler';
-import { CommonActions } from '@react-navigation/native';
-import { login, resetAuth } from '../../../redux/reducers/Auth/auth-actions';
+import { resetAuth, register } from '../../../redux/reducers/Auth/auth-actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from 'react-native-flash-message';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { t } from '../../../i18n';
 
-export const LoginScreen = ({ navigation }) => {
+export const RegisterScreen = () => {
     const dispatch = useDispatch();
 
     const authStatus = useSelector((state) => state?.authReducer?.authStatus)
     const user = useSelector((state) => state?.authReducer?.user)
 
     useEffect(() => {
-        dispatch(resetAuth())
-    }, [])
-    
-    useEffect(() => {
         switch(authStatus) {
-            case 200:
+            case 201:
                 showMessage({
-                    message: t('app.loggedinSuccessfully'),
+                    message: t('app.registeredSuccessfully'),
                     titleStyle: { textAlign: 'left' },
                     type: 'success',
-                    duration: 800
+                    duration: 3000
                 })
-            AsyncStorage.setItem('token', user?.token).then(() => {
-                navigation.dispatch(
-                    CommonActions.reset({
-                        index: 1,
-                        routes: [ { name: 'Home' } ]
-                    })
-                )
-            })
+                // TODO: Store token and navigate to home
             break;
-            case 403:
+            case 409:
                 showMessage({
-                    message: t('app.wrongPassword'),
+                    message: t('app.registeringDuplicate'),
                     titleStyle: { textAlign: 'left' },
                     type: 'danger',
-                    duration: 800
-                })
-            break;
-            case 404:
-                showMessage({
-                    message: t('app.notFoundedUser'),
-                    titleStyle: { textAlign: 'left' },
-                    type: 'danger',
-                    duration: 800
+                    duration: 3000
                 })
             break;
             case 500:
@@ -60,33 +44,40 @@ export const LoginScreen = ({ navigation }) => {
                     message: t('app.serverError'),
                     titleStyle: { textAlign: 'left' },
                     type: 'danger',
-                    duration: 500
+                    duration: 3000
                 })
-                break;
-            }
+            break;
+        }
         dispatch(resetAuth());
     }, [authStatus, user])
 
     const initialValues = {
+        name: '',
         username: '',
         password: '',
     }
 
-    const onSubmit = (values) => {
-        dispatch(login(values.username, values.password ))
-    }
+    const onSubmit = (values) => dispatch(register(values))
 
     const validate = (values) => {
-        const errors = {}
+        const errors = {};
+        if(!values.name) {
+            errors.name = 'required'
+        }
         if (!values.username) {
           errors.username = 'required';
         } else if(isNaN(values.username)) {
-            errors.username = 'phoneNumbersOnlyNums'
+            errors.username = 'onlyNumbers'
         } else if(values.username.charAt(0) !== '0') {
             errors.username = 'phonneNumstart'
         } else if(values.username.length < 10) {
             errors.username = 'phoneNumlength'
         }
+        // if(!values.email) {
+        //     errors.email = 'required'
+        // } else if(!values.email.match(/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/)) {
+        //     errors.email = 'notValidEmail'
+        // }
         // Checking password
         if (!values.password) {
             errors.password = 'required';
@@ -99,23 +90,21 @@ export const LoginScreen = ({ navigation }) => {
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
             <View style={styles.welcomeContainer}>
-                <MyText style={{ fontSize: 33 }}>welcomeBack</MyText>
+                <MyText style={{ fontSize: 33 }}>welcome</MyText>
             </View>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ alignItems: 'center' }}>
                 <View style={styles.formContainer}>
                     <View style={{ alignItems: 'center' }}>
-                        <MyText style={{ marginBottom: 20, fontSize: 18 }}>login</MyText>
+                        <MyText style={{ marginBottom: 20, fontSize: 18 }}>signup</MyText>
                     </View>
                     <Formik
-                        /*
-                        // 'validate' better the 'validationSchema'
-                        // cuz validation in schema can't sort which 
-                        // validate fun will start first.
-                        */
                         validate={validate}
                         onSubmit={onSubmit}
+                        // onSubmit={() => console.log('fuck')}
                         initialValues={initialValues}>
-                        {(props) => <LoginForm loginProps={props} /> }
+                        {props => {
+                            return <RegisterForm RegisterProps={props} /> 
+                        }}
                     </Formik>
                 </View>
             </ScrollView>
@@ -126,6 +115,7 @@ export const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingTop: 20
     },
     welcomeContainer: {
         height: '20%',

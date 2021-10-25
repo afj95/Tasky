@@ -10,7 +10,8 @@ import Loader from '../components/Loaders/Loader';
 import { ErrorScreen } from '../screens/ErrorScreen';
 // Navigators
 import {
-    AuthStackScreens
+    AuthStackScreens,
+    HomeStackScreens
 } from './Navigators';
 import { StatusBar } from 'expo-status-bar';
 import FlashMessage from 'react-native-flash-message';
@@ -24,15 +25,19 @@ const MainNavigator = () => {
 
     useEffect(() => {
         // Checking the token
-        AsyncStorage.getItem('token', (error, result) => {
+        AsyncStorage.getItem('token', (error, token) => {
             if(error) {
                 console.log(`error while getting the token`, error)
                 setInitialRouteName('Auth')
-            } else if(result) { 
+            } else if(token) { 
+                // console.log(`token`, token)
+                
                 // In case of there is a token
                 if(user && Object.keys(user).length > 0) {
+                    // Checking if the user saved in redux
                     setInitialRouteName('Home')
                 } else {
+                    console.log('no user')
                     setInitialRouteName('Auth')
                 }
             } else {
@@ -41,7 +46,7 @@ const MainNavigator = () => {
                 setInitialRouteName('Auth')
             }
         })
-    }, [])
+    }, [initialRouteName])
 
     if(!initialRouteName) {
         setTimeout(() => {
@@ -52,10 +57,10 @@ const MainNavigator = () => {
         return (
             <NavigationContainer ref={navigationRef}>
                 <MainStack.Navigator
-                    initialRouteName={screenToShow}
+                    initialRouteName={initialRouteName}
                     screenOptions={{ headerShown: false }} >
                     <MainStack.Screen name={'Auth'} component={AuthStackScreens} />
-                    {/* <MainStack.Screen name={'Home'} component={HomeStackScreens} /> */}
+                    <MainStack.Screen name={'Home'} component={HomeStackScreens} />
                 </MainStack.Navigator>
                 <StatusBar style={'auto'} />
                 <FlashMessage position={'top'} />

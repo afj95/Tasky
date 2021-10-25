@@ -34,14 +34,14 @@ const authReducer = (state = authState, action) => {
                 ...state,
                 authLoading: false,
                 user: action?.user,
-                authStatus: action?.status,
+                authStatus: action?.authStatus,
             };
         }
         case AUTH_FAILED: {
             return {
                 ...state,
                 authLoading: false,
-                authStatus: action?.status
+                authStatus: action?.authStatus
             }
         }
         case LOGOUT: {

@@ -14,5 +14,18 @@ export default {
         phonneNumstart: "Phone number must starts with 0",
         phoneNumlength: "Phone number must be 10 characters at least",
         passwordLength: "Password should be at least 8 characters",
+        welcome: "Welcome",
+        onlyNumbers: "Phone number must be numbers only",
+        notValidEmail: "Please enter a valid email",
+        registeredSuccessfully: "Registered Successfully",
+        registeringDuplicate: "You have an account with same phone number",
+        serverError: "Some error happened, Please try again later.",
+        name: "Name",
+        haveAccount: "Have an account ? ",
+        loggedinSuccessfully: "Welcome Back..",
+        wrongPassword: "Wrong password!",
+        notFoundedUser: "You don't have an account!",
+        projects: "Projects",
+        addProject: "Add Project"
     }
 }

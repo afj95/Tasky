@@ -1,1 +1,2 @@
-export * from './Auth/index.js';
+export * from './Auth';
+export * from './Home';

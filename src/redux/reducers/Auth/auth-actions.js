@@ -29,7 +29,7 @@ const login = (username, password) => {
             dispatch({
                 type: AUTH_SUCCESS, 
                 user: loginResponse?.data?.data?.user,
-                status: loginResponse?.status,
+                authStatus: loginResponse?.status,
             });
             
         } catch (error) {
@@ -50,13 +50,12 @@ const register = (user) => {
             dispatch({
                 type: AUTH_SUCCESS, 
                 user: registerResponse?.data?.data?.user,
-                status: registerResponse?.status,
+                authStatus: registerResponse?.status,
             });
             
         } catch (error) {
             // The error is the status code of the error>
             // ex: 409: have an acc. etc.
-
             dispatch({ type: AUTH_FAILED, authStatus: error });
         }
     }

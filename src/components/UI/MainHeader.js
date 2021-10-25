@@ -6,14 +6,13 @@ import {
 } from 'react-native';
 // components
 import MyText from "./MyText";
-import { HeaderBottom } from "./HeaderBottomSeperator";
 import Colors from '../../utils/Colors';
 import { goBack } from '../../navigation/RootNavigation';
 import { Appbar as RNAppbar } from 'react-native-paper';
 
 const { width, height } = Dimensions.get("screen");
 
-export const MainHeader = ({ navigation, text, showGoBackButton }) => {
+export const MainHeader = ({ text, showGoBackButton }) => {
     return (
         <>
             <View style={{...styles.headerContainer,  justifyContent: showGoBackButton? 'space-between' : 'center',}}>
@@ -23,7 +22,6 @@ export const MainHeader = ({ navigation, text, showGoBackButton }) => {
                 <MyText style={{ fontSize: 25, fontWeight: 'bold' }} text={text}/>
                 <View/>
             </View>
-            <HeaderBottom />
         </>
     )   
 }
