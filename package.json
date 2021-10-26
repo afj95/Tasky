@@ -26,6 +26,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
     "react-native-flash-message": "^0.2.0",
     "react-native-gesture-handler": "~1.10.2",
+    "react-native-modalize": "^2.0.10",
     "react-native-paper": "^4.9.2",
     "react-native-portalize": "^1.0.7",
     "react-native-web": "^0.17.5",

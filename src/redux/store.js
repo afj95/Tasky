@@ -7,11 +7,13 @@ import hardSet from 'redux-persist/es/stateReconciler/hardSet';
 import promiseMiddleware from "redux-promise";
 // Reducers
 import {
-    authReducer
+    authReducer,
+    projectsReducer
 } from './reducers'
 
 const rootReducer = combineReducers({
-    authReducer
+    authReducer,
+    projectsReducer
 });
 
 const persistConfig = {

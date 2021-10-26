@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { Host } from 'react-native-portalize';
 import { navigationRef } from './RootNavigation';
 import { store } from '../redux';
 import { Provider, useSelector } from 'react-redux';

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { t } from 'i18n-js';
 import { API_URL } from "../constants";
 import { store } from '../redux';
 
@@ -9,8 +10,9 @@ export const request = async ({ url, method, params, headers }) => {
     const user = store.getState().authReducer.user;
     return new Promise((resolve, reject) => {
       const timeoutId = setTimeout(() => {
-        reject(new Error("Timeout, Server is not responding"));
-      }, 5000); // After 5 seconds will stop the request
+        reject(new Error(t('app.serverError')));
+      }, 2000); // After 2 seconds will stop the request
+      // }, 10000); // After 5 seconds will stop the request
 
       let modfiedHeaders = {
         ...headers,
