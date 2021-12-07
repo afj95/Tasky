@@ -26,6 +26,19 @@ export default {
         wrongPassword: "كلمة مرور خاطئة!",
         notFoundedUser: "ليس لديك حساب مسجل!",
         projects: "المشاريع",
-        addProject: "إضافة مشروع"
+        addProject: "إضافة مشروع",
+        projectName1: "اسم المشروع الاول",
+        close: "اغلاق",
+        projectName2: "اسم المشروع الثاني",
+        projectDescription: "شرح عن المشروع",
+        projectSupervisors: "المشرفين",
+        add: "إضافة",
+        task: "المهمة",
+        tasks: "المهام\nقم بإضافة المهام بالضغط على زر إضافة أسفل الشاشة",
+        changeLangAlertTitle: "تغيير لغة التطبيق",
+        changeLangMessage: "سيتم إعادة تشغيل التطبيق لتغيير اللغة ؟",
+        changeLangCancel: "إلغاء",
+        changeLangConfirm: "تغيير",
+        fieldRequired: "هذا الحقل اجباري"
     }
 }

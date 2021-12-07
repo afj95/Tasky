@@ -1,7 +1,7 @@
 import React from 'react';
 // Navigation
 import { createStackNavigator } from '@react-navigation/stack';
-import { LoginScreen, RegisterScreen, HomeScreen } from '../screens';
+import { LoginScreen, RegisterScreen, HomeScreen, AddProjectScreen } from '../screens';
 
 const AuthStack = createStackNavigator();
 const AuthStackScreens = () => (
@@ -16,6 +16,7 @@ const HomeStack = createStackNavigator();
 const HomeStackScreens = () => (
   <HomeStack.Navigator screenOptions={{headerShown: false }}>
     <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
+    <HomeStack.Screen name="AddProject" component={AddProjectScreen} />
   </HomeStack.Navigator>
 )
 

@@ -100,11 +100,8 @@ export const RegisterScreen = () => {
                     <Formik
                         validate={validate}
                         onSubmit={onSubmit}
-                        // onSubmit={() => console.log('fuck')}
                         initialValues={initialValues}>
-                        {props => {
-                            return <RegisterForm RegisterProps={props} /> 
-                        }}
+                        {props => <RegisterForm RegisterProps={props} /> }
                     </Formik>
                 </View>
             </ScrollView>

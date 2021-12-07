@@ -11,7 +11,7 @@ const MyText = (props) => {
         style={{ ...styles.text, ...props.style }}
       >
         {props.hide ? '******' :
-        props.text === undefined ? t(`app.${props.children}`) : t(`app.${props.text}`)}
+        props.text === undefined ? t(`app.${props.children}`) : props.text}
       </Text>
     </View>
   );
@@ -21,6 +21,8 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     color: Colors.text,
+    marginVertical: 3,
+    textAlign: 'left'
   },
 });
 

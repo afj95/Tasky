@@ -26,6 +26,19 @@ export default {
         wrongPassword: "Wrong password!",
         notFoundedUser: "You don't have an account!",
         projects: "Projects",
-        addProject: "Add Project"
+        addProject: "Add Project",
+        projectName1: "First Project Name",
+        close: "Close",
+        projectName2: "Second Project Name",
+        projectDescription: "Description",
+        projectSupervisors: "Supervisors",
+        add: "Add",
+        task: "Task",
+        tasks: "Tasks\nAdd tasks by clicking on add button below",
+        changeLangAlertTitle: "Changing language",
+        changeLangMessage: "The application will be restarted to change the language",
+        changeLangCancel: "Cancel",
+        changeLangConfirm: "Yes",
+        fieldRequired: "This field required"
     }
 }

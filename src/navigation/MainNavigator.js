@@ -7,6 +7,7 @@ import { Provider, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../components/Loaders/Loader';
 import { ErrorScreen } from '../screens/ErrorScreen';
+import i18n from 'i18n-js';
 // Navigators
 import {
     AuthStackScreens,
@@ -14,6 +15,7 @@ import {
 } from './Navigators';
 import { StatusBar } from 'expo-status-bar';
 import FlashMessage from 'react-native-flash-message';
+import { I18nManager } from 'react-native';
 
 const MainStack = createStackNavigator();
 const MainNavigator = () => {
@@ -43,6 +45,17 @@ const MainNavigator = () => {
                 // In case of no token founded
                 console.log('no token')
                 setInitialRouteName('Auth')
+            }
+        })
+        AsyncStorage.getItem('lang', (error, lang) => {
+            if(error) {
+                i18n.locale = "ar";
+                I18nManager.forceRTL(true);
+                I18nManager.allowRTL(true);
+            } else if(lang) {
+                i18n.locale = lang;
+                I18nManager.forceRTL(lang === 'ar');
+                I18nManager.allowRTL(lang === 'ar');
             }
         })
     }, [initialRouteName])

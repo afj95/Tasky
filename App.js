@@ -5,19 +5,13 @@ import { Provider as ReduxProvider } from "react-redux";
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from "./src/redux";
 import Loader from "./src/components/Loaders/Loader";
-import { Host } from 'react-native-portalize';
-import { Provider } from "react-native-paper";
 
 export default function App() {
   return (
     <SafeAreaProvider>
       <ReduxProvider store={store}>
         <PersistGate loading={<Loader />} persistor={persistor}>
-          <Provider>
-            <Host>
-              <MainNavigator />
-            </Host>
-          </Provider>
+          <MainNavigator />
         </PersistGate>
       </ReduxProvider>
     </SafeAreaProvider>

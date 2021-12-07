@@ -19,6 +19,14 @@ export const request = async ({ url, method, params, headers }) => {
         'Authorization': `Bearer ${user?.token}`,
         'Content-Type': 'application/json',
       }
+
+      if(__DEV__) {
+        console.log('\n\n' + 'fullURL ==> ', fullURL)
+        console.log('====================')
+        console.log('method  ==> ', method)
+        console.log('====================')
+      }
+
       const data = method !== 'get' ? params : {headers: modfiedHeaders};
       axios[method](fullURL, data, {headers: modfiedHeaders})
         .then(res => {
