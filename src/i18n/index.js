@@ -13,7 +13,7 @@ const t = (name) => {
 }
 
 const SE = () => {
-    return I18nManager.isRTL ? ar : {};
+    return (I18nManager.isRTL ? ar : en) || {};
 }
 
 // export default t;

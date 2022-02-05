@@ -16,44 +16,30 @@ import { t } from '../../../i18n';
 import { SupervisorsModal } from './SupervisorsModal';
 import Colors from '../../../utils/Colors';
 
-/**
- * {
-        "name": "project 3",
-        "city_en": "Riyadh",
-        "city_ar": "الرياض",
-        "supervisors": [ "Supervisor 1" ],
-        "workers": [ "Worker 9", "Worker 10", "Worker 11" ]
-    }
-*/
-
-export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors, handleBlur, handleSubmit, setFieldValue }}) => {
+export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors, handleBlur, setFieldValue }}) => {
 
     const _scroll = useRef(null);
     // TODO: Add loading in redux.
     const [isLoading, setIsLoading] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
-    const [tasks, setTasks] = useState([]);
+    // const [tasks, setTasks] = useState([]);
 
-    useEffect(() => {
-        console.log(`tasks`, tasks.length);
-    }, [tasks.length])
-
-    const addTask = (key) => {
-        let input = 
-            <View key={key} style={styles.taskView}>
-                <TextInput
-                    mode={'flat'}
-                    style={styles.input(isLoading)}
-                    theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
-                    placeholder={t('app.task') + ' ' + (++key)}
-                    value={values?.tasks[key]}
-                    onChangeText={handleChange(`tasks[${key}]`)}
-                />
-            </View>
-        ;
-        setTasks(prev => [...prev, input]);
-        _scroll.current.scrollToEnd({ animated: true });
-    }
+    // const addTask = (key) => {
+    //     let input =
+    //         <View key={key} style={styles.taskView}>
+    //             <TextInput
+    //                 mode={'flat'}
+    //                 style={styles.input(isLoading)}
+    //                 theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
+    //                 onChangeText={handleChange(`tasks[${key}].task`)}
+    //                 placeholder={t('app.task') + ' ' + (++key)}
+    //                 value={values?.tasks[key]}
+    //             />
+    //         </View>
+    //     ;
+    //     setTasks(prev => [...prev, input]);
+    //     _scroll.current.scrollToEnd({ animated: true });
+    // }
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.mainContainer}>
@@ -89,9 +75,10 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                 {errors?.projectName2 ? <ErrorText error={errors?.projectName2}/> : null}
 
                 <View style={styles.textContainer}>
+                    {/* TODO: change Supervisors to Supervisor */}
                     <MyText>projectSupervisors</MyText>
                 </View>
-                <Pressable onPress={() => setModalVisible(!modalVisible) }>
+                <Pressable onPress={() => setModalVisible(!modalVisible) } >
                     <TextInput
                         style={styles.input(isLoading)}
                         placeholder={t('app.projectSupervisors')}
@@ -99,7 +86,7 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                         disabled
                         pointerEvents={'none'}
                         onChangeText={handleChange('projectSupervisors')}
-                        value={values?.projectSupervisors}
+                        value={values?.projectSupervisor}
                         error={errors?.projectSupervisors}
                         onBlur={handleBlur('projectSupervisors')}
                         theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
@@ -109,7 +96,8 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                 <SupervisorsModal
                     modalVisible={modalVisible}
                     onSelect={async (item) => {
-                        setFieldValue('projectSupervisors', item?.name)
+                        setFieldValue('projectSupervisors', item?._id)
+                        setFieldValue('projectSupervisor', item?.name)
                     }}
                     closeModal={() => setModalVisible(false)}
                 />
@@ -131,27 +119,28 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                 />
                 {errors?.projectDescription ? <ErrorText error={errors?.projectDescription}/> : null}
 
-                <View style={styles.seperator} />
+                {/* <View style={styles.seperator} />
                 {tasks && tasks?.length === 0 ?
                     <View style={{ alignItems: 'center'}}>
                         <MyText style={styles.tasksText}>tasks</MyText>
+                        <MyText style={styles.tasksText}>tasksHelp</MyText>
                     </View>
-                : null}
+                : null} */}
 
-                {tasks.map((item, index) => {
+                {/* {tasks.map((item, index) => {
                     return item;
-                })}
+                })} */}
             </ScrollView>
             
             {/* Adding task button */}
-            <View style={styles.addTaskContainer}>
+            {/* <View style={styles.addTaskContainer}>
                 <TouchableOpacity
                     onPress={() => addTask(tasks?.length)}>
                     <View style={styles.addTaskView}>
                         <MyText text={'+'} style={styles.addTaskText} />
                     </View>
                 </TouchableOpacity>
-            </View>
+            </View> */}
         </KeyboardAvoidingView>
     )
 }
@@ -178,7 +167,7 @@ const styles = StyleSheet.create({
         shadowColor: '#888888',
         shadowOffset: { width: 0, height: 5 },
         shadowOpacity: 0.8,
-        shadowRadius: 2,  
+        shadowRadius: 2,
         elevation: 5
     },
     input: (isLoading) => ({

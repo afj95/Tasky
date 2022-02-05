@@ -1,32 +1,61 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
     View,
     StyleSheet,
     Modal,
     TouchableOpacity,
     Text,
-    FlatList
+    FlatList,
+    ActivityIndicator,
+
+    Animated,
+    TouchableWithoutFeedback
 } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
 import { Searchbar } from 'react-native-paper';
 import MyText from '../../../components/UI/MyText';
 import _ from 'underscore';
-
-const supervisors = [
-    {
-        name: "Ahmad"
-    },
-    {
-        name: "Mohammed"
-    },
-]
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchSuperVisors, resetUsersErrors } from '../../../redux/reducers/Users/users-actions';
+import Colors from '../../../utils/Colors';
+import FlashMessage from 'react-native-flash-message';
+import { t } from '../../../i18n';
 
 export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
+    const dispatch = useDispatch()
+
+    const _flashRef = useRef()
+
+    const [reload, showReload] = useState(false)
+    const [addNewSupervisor, setAddNewSupervisor] = useState(false)
+
+    const fetchSupervisorsLoading = useSelector(state => state.usersReducer.fetchSupervisorsLoading);
+    const supervisors = useSelector(state => state.usersReducer.supervisors);
+    const fetchSupervisorsError = useSelector(state => state.usersReducer.fetchSupervisorsError);
+
+    useEffect(() => {
+        dispatch(fetchSuperVisors());
+    }, [])
+
+    useEffect(() => {
+        if(fetchSupervisorsError) {
+            _flashRef?.current?.showMessage({
+                message: t('app.errorHappened'),
+                type: 'danger',
+                duration: 2000,
+                autoHide: false
+            })
+            showReload(true)
+        } else {
+            showReload(false)
+        }
+        dispatch(resetUsersErrors());
+    }, [fetchSupervisorsLoading])
 
     // const closeModal = () => setModalVisible(!modalVisible)
 
-    // const onChangeText = useCallback((value) => {
+    // const onChangeText = (value) => {
     //     const debounce = _.debounce(() => {
     //         // dispatch(searchMember(value));
     //         return;
@@ -36,14 +65,14 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
     //     } else {
     //         debounce();
     //     }
-    // }, [])
+    // }
 
     const onItemPressed = async (item) => {
         await onSelect(item);
         closeModal();
     }
 
-    const renderItem = useCallback(({ item, index }) => {
+    const renderItem = ({ item, index }) => {
         return (
             <TouchableOpacity
                 key={index.toString()}
@@ -53,28 +82,78 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
                 <MyText text={item?.name} />
             </TouchableOpacity>
         )
-    }, [])
+    }
+
+    const refresh = () => {
+        dispatch(fetchSuperVisors())
+    }
+
+    const addSupervisor = () => setAddNewSupervisor(!addNewSupervisor)
+
+    
+    const AddNewSupervisor = () => {
+        return (
+            <View style={{
+                marginVertical: 10
+            }}>
+                <View style={{
+                    height: 50,
+                    width: '100%',
+                    backgroundColor: 'blue'
+                }}>
+                </View>
+                <View style={{
+                    width: '100%',
+                    height: 50,
+                    backgroundColor: '#000',
+
+                }}>
+                </View>
+            </View>
+        )
+    }
 
     return (
       <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}>
-        <View style={styles.centeredView}>
-          <Animatable.View duration={800} animation='fadeInUp' style={styles.modalView}>
-            <TouchableOpacity activeOpacity={0.7} style={styles.closeButton} onPress={closeModal}>
-                <AntDesign name={'closecircle'} size={20} color={'black'} />
-                <MyText>close</MyText>
-            </TouchableOpacity>
-                <FlatList
-                    data={supervisors || []}
-                    keyExtractor={(item, index) => '#' + index.toString()}
-                    renderItem={renderItem}
-                    showsVerticalScrollIndicator={false}
-                />
-          </Animatable.View>
-        </View>
-      </Modal>
+            animationType="fade"
+            transparent={true}
+            visible={modalVisible}>
+            <View style={styles.centeredView}>
+                <Animatable.View duration={800} animation='fadeInUp' style={styles.modalView}>
+                    <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                        <TouchableOpacity activeOpacity={0.7} style={styles.closeButton} onPress={closeModal}>
+                            <AntDesign name={'closecircle'} size={20} color={'black'} />
+                            <MyText>close</MyText>
+                        </TouchableOpacity>
+                        {reload ?
+                            <TouchableOpacity activeOpacity={0.7} style={styles.closeButton} onPress={refresh}>
+                                <Ionicons name={'refresh-circle'} size={20} color={'black'} />
+                                <MyText>refresh</MyText>
+                            </TouchableOpacity>
+                        :
+                            <TouchableOpacity activeOpacity={0.7} style={styles.addSupervisor} onPress={addSupervisor}>
+                                <Entypo name={'add-user'} size={20} color={'black'} />
+                                <MyText style={{ textAlign: 'center'}}>addSupervisor</MyText>
+                            </TouchableOpacity>
+                        }
+                    </View>
+                    {fetchSupervisorsLoading ?
+                        <View style={styles.loader}>
+                            <ActivityIndicator size={'small'} color={Colors.black} />
+                        </View>
+                    :
+                        addNewSupervisor ? <AddNewSupervisor /> :
+                        <FlatList
+                            data={supervisors || []}
+                            keyExtractor={(item, index) => '#' + index.toString()}
+                            renderItem={renderItem}
+                            showsVerticalScrollIndicator={false}
+                        />
+                    }
+                </Animatable.View>
+                <FlashMessage ref={_flashRef} position={'bottom'} />
+            </View>
+        </Modal>
     );
 }
 
@@ -98,6 +177,17 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    addSupervisor: {
+        width: 50,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    loader: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     searchbar: {
         height: 50,

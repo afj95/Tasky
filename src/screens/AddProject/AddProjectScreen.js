@@ -1,18 +1,16 @@
-import React, { useState } from 'react'
-import {
-    View,
-    StyleSheet,
-} from 'react-native';
-import Colors from '../../utils/Colors';
-import { MainHeader } from '../../components/UI/MainHeader';
+import React, { useEffect } from 'react'
 import { Formik } from 'formik';
 import { AddProjectForm, Header } from './components';
-import { TextInput } from 'react-native-paper';
+import { addNewProject, resetProjectsErrors } from '../../redux/reducers/Projects/projects-actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { showMessage } from 'react-native-flash-message';
 import { t } from '../../i18n';
 
 export const AddProjectScreen = () => {
+    const dispatch = useDispatch();
 
-    const [submit, handleSubmit] = useState(null);
+    const addProjectResponse = useSelector(state => state.projectsReducer.addProjectResponse)
+    const fetchingProjectsLoading = useSelector(state => state?.projectsReducer?.fetchingProjectsLoading)
 
     const validate = (values) => {
         const errors = {};
@@ -25,20 +23,41 @@ export const AddProjectScreen = () => {
         if(!values?.projectSupervisors) {
             errors.projectSupervisors = 'fieldRequired'
         }
+        if(!values?.projectDescription) {
+            errors.projectDescription = 'fieldRequired'
+        }
         return errors;
     };
 
+    useEffect(() => {
+        if(addProjectResponse === true) {
+            showMessage({
+                message: t('app.projectAddedSuccess'),
+                type: 'success',
+                duration: 1500,
+                style: { paddingTop: 40 }
+            })
+        } else if(addProjectResponse === false) {
+            showMessage({
+                message: t('app.projectNotAdded'),
+                type: 'danger',
+                duration: 1500,
+                style: { paddingTop: 40, textAlign: 'left', alignItems: 'center' }
+            })
+        }
+        dispatch(resetProjectsErrors());
+    }, [addProjectResponse])
+
     const onSubmit = (values) => {
-        // dispatch
+        dispatch(addNewProject(values))
         console.log(`values`, values)
     }
 
     const initialValues = {
         projectName1: '',
         projectName2: '',
-        supervisor: '',
-        projectDescription: '',
-        tasks: [],
+        projectSupervisors: '',
+        projectDescription: ''
     }
 
     return (
@@ -48,17 +67,10 @@ export const AddProjectScreen = () => {
             initialValues={initialValues}>
             {props => 
                 <>
-                    <Header title={'addProject'} onPress={props?.handleSubmit} />
+                    <Header title={'addProject'} onPress={props?.handleSubmit} isLoading={fetchingProjectsLoading} />
                     <AddProjectForm addProjectProps={props} />
                 </>
             }
         </Formik>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        // flex: 1,
-        backgroundColor: Colors.bg
-    }
-})

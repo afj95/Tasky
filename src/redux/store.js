@@ -8,12 +8,16 @@ import promiseMiddleware from "redux-promise";
 // Reducers
 import {
     authReducer,
-    projectsReducer
+    projectsReducer,
+    usersReducer,
+    tasksReducer
 } from './reducers'
 
 const rootReducer = combineReducers({
     authReducer,
-    projectsReducer
+    projectsReducer,
+    usersReducer,
+    tasksReducer
 });
 
 const persistConfig = {

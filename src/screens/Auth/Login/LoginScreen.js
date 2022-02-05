@@ -28,7 +28,8 @@ export const LoginScreen = ({ navigation }) => {
                     message: t('app.loggedinSuccessfully'),
                     titleStyle: { textAlign: 'left' },
                     type: 'success',
-                    duration: 800
+                    duration: 3000,
+                    style: { paddingTop: 33, borderBottomStartRadius: 8, borderBottomEndRadius: 8 }
                 })
             AsyncStorage.setItem('token', user?.token).then(() => {
                 navigation.dispatch(
@@ -44,7 +45,8 @@ export const LoginScreen = ({ navigation }) => {
                     message: t('app.wrongPassword'),
                     titleStyle: { textAlign: 'left' },
                     type: 'danger',
-                    duration: 800
+                    duration: 3000,
+                    style: { paddingTop: 33, borderBottomStartRadius: 8, borderBottomEndRadius: 8 }
                 })
             break;
             case 404:
@@ -52,7 +54,8 @@ export const LoginScreen = ({ navigation }) => {
                     message: t('app.notFoundedUser'),
                     titleStyle: { textAlign: 'left' },
                     type: 'danger',
-                    duration: 800
+                    duration: 3000,
+                    style: { paddingTop: 33, borderBottomStartRadius: 8, borderBottomEndRadius: 8 }
                 })
             break;
             case 500:
@@ -60,7 +63,8 @@ export const LoginScreen = ({ navigation }) => {
                     message: t('app.serverError'),
                     titleStyle: { textAlign: 'left' },
                     type: 'danger',
-                    duration: 500
+                    duration: 3000,
+                    style: { paddingTop: 33, borderBottomStartRadius: 8, borderBottomEndRadius: 8 }
                 })
                 break;
             }

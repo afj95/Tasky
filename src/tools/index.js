@@ -1,18 +1,16 @@
 import axios from 'axios';
-import { t } from 'i18n-js';
 import { API_URL } from "../constants";
 import { store } from '../redux';
 
 export const request = async ({ url, method, params, headers }) => {
-  /* params is body in axios */
   try {
     const fullURL = `${API_URL}${url}`;
     const user = store.getState().authReducer.user;
     return new Promise((resolve, reject) => {
-      const timeoutId = setTimeout(() => {
-        reject(new Error(t('app.serverError')));
-      }, 2000); // After 2 seconds will stop the request
-      // }, 10000); // After 5 seconds will stop the request
+      let timeout = false;
+      setTimeout(() => {
+        timeout = true;
+      }, 15000)
 
       let modfiedHeaders = {
         ...headers,
@@ -22,26 +20,35 @@ export const request = async ({ url, method, params, headers }) => {
 
       if(__DEV__) {
         console.log('\n\n' + 'fullURL ==> ', fullURL)
-        console.log('====================')
+        console.log('========================================')
         console.log('method  ==> ', method)
-        console.log('====================')
+        console.log('========================================')
+        console.log('params  ==> ', params ? params : '{}')
+        console.log('========================================')
+        console.log('headers ==> ', headers ? headers : '{}')
+        console.log('========================================\n')
       }
 
-      const data = method !== 'get' ? params : {headers: modfiedHeaders};
-      axios[method](fullURL, data, {headers: modfiedHeaders})
-        .then(res => {
-          clearTimeout(timeoutId);
-          resolve(res);
-        })
-        .catch(error => {
-          clearTimeout(timeoutId);
-          /*
+      axios({
+        method: method,
+        url: fullURL,
+        headers: modfiedHeaders,
+        data: params
+      })
+      .then(res => {
+        if(timeout) {
+          throw ({response: { status: 500}})
+        }
+
+        resolve(res);
+      })
+      .catch(error => {
+        /*
           * returning the error status code
           * and show an error message depending on code.
-          */
-          reject(error?.response?.status)
-        }
-      )
+        */
+        reject(error?.response?.status)
+      })
     })
   } catch (error) {
     console.warn(error);

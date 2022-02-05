@@ -12,13 +12,13 @@ import MyText from '../../../components/UI/MyText';
 import { goBack } from '../../../navigation/RootNavigation';
 import Colors from '../../../utils/Colors';
 
-export const Header = ({ onPress, title, loading }) => {
+export const Header = ({ onPress, title, isLoading }) => {
     return (
         <>
             <View style={styles.header}>
                 <RNAppbar.BackAction size={25} style={{ padding: 2 }} color={"#000"} onPress={() => goBack()} />
                 <MyText style={{ fontSize: 22, fontWeight: 'bold' }}>{title}</MyText>
-                {loading ? 
+                {isLoading ? 
                     <ActivityIndicator size={'large'} color={Colors.buttons} />
                 :
                     <TouchableOpacity onPress={onPress} activeOpacity={0.5} style={styles.addProjectButton}>
@@ -31,25 +31,25 @@ export const Header = ({ onPress, title, loading }) => {
     )
 }
 
-const { height, width } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     header: {
-        paddingTop: height > 600 ? 20 : 10,
-        borderBottomEndRadius: 10,
-        borderBottomStartRadius: 10,
+        width: '100%',
         paddingHorizontal: 10,
-        top: 0,
-        right: 0,
-        left: 0,
-        width,
-        height: 80,
-        marginBottom: 3,
+        paddingTop: height > 600 ? 55 : 10,
+        backgroundColor: '#fff',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        backgroundColor: Colors.white,
-        elevation: 4,
         alignItems: 'center',
+        borderBottomEndRadius: 10,
+        borderBottomStartRadius: 10,
+        // shadow
+        shadowColor: '#999999',
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,  
+        elevation: 4
     },
     addProjectButton: {
         alignItems: 'center',
