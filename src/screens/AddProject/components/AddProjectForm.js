@@ -1,16 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import {
     View,
     StyleSheet,
-    ActivityIndicator,
     KeyboardAvoidingView,
     Platform,
     ScrollView,
     Pressable
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TextInput } from 'react-native-paper';
-import { AntDesign, Entypo, Feather } from '@expo/vector-icons';
 import MyText from '../../../components/UI/MyText';
 import { t } from '../../../i18n';
 import { SupervisorsModal } from './SupervisorsModal';
@@ -22,25 +19,7 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
     // TODO: Add loading in redux.
     const [isLoading, setIsLoading] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
-    // const [tasks, setTasks] = useState([]);
-
-    // const addTask = (key) => {
-    //     let input =
-    //         <View key={key} style={styles.taskView}>
-    //             <TextInput
-    //                 mode={'flat'}
-    //                 style={styles.input(isLoading)}
-    //                 theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
-    //                 onChangeText={handleChange(`tasks[${key}].task`)}
-    //                 placeholder={t('app.task') + ' ' + (++key)}
-    //                 value={values?.tasks[key]}
-    //             />
-    //         </View>
-    //     ;
-    //     setTasks(prev => [...prev, input]);
-    //     _scroll.current.scrollToEnd({ animated: true });
-    // }
-
+    
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.mainContainer}>
             <ScrollView showsVerticalScrollIndicator={false} ref={_scroll} contentContainerStyle={{ paddingBottom: 120 }}>
@@ -118,29 +97,7 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                     theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
                 />
                 {errors?.projectDescription ? <ErrorText error={errors?.projectDescription}/> : null}
-
-                {/* <View style={styles.seperator} />
-                {tasks && tasks?.length === 0 ?
-                    <View style={{ alignItems: 'center'}}>
-                        <MyText style={styles.tasksText}>tasks</MyText>
-                        <MyText style={styles.tasksText}>tasksHelp</MyText>
-                    </View>
-                : null} */}
-
-                {/* {tasks.map((item, index) => {
-                    return item;
-                })} */}
             </ScrollView>
-            
-            {/* Adding task button */}
-            {/* <View style={styles.addTaskContainer}>
-                <TouchableOpacity
-                    onPress={() => addTask(tasks?.length)}>
-                    <View style={styles.addTaskView}>
-                        <MyText text={'+'} style={styles.addTaskText} />
-                    </View>
-                </TouchableOpacity>
-            </View> */}
         </KeyboardAvoidingView>
     )
 }

@@ -50,7 +50,6 @@ export const AddProjectScreen = () => {
 
     const onSubmit = (values) => {
         dispatch(addNewProject(values))
-        console.log(`values`, values)
     }
 
     const initialValues = {

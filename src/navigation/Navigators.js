@@ -10,6 +10,7 @@ import {
   AddProjectScreen,
   ProjectDetails
 } from '../screens';
+import { t } from '../i18n';
 
 const AuthStack = createStackNavigator();
 const AuthStackScreens = () => (
@@ -43,7 +44,7 @@ const DrawerScreens = () => {
     <Drawer.Navigator
       drawerContent={props => <DrawerComponent props={props} />}
       screenOptions={{headerShown: false }}>
-      <Drawer.Screen name={'HomeDrawer'} component={HomeStackScreens} />
+      <Drawer.Screen name={t('app.projects')} component={HomeStackScreens} />
     </Drawer.Navigator>
   )
 }

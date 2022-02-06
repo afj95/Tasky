@@ -10,7 +10,6 @@ import MyText from '../../../components/UI/MyText';
 import Colors from '../../../utils/Colors';
 
 export const TaskDetailsModal = ({ task, visible, closeModal }) => {
-    console.log(task)
     return (
         <View style={styles.centeredView}>
             <Modal

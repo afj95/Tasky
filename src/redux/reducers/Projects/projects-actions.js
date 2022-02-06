@@ -105,7 +105,6 @@ const finishProject = (projectId) => {
 
             dispatch({ type: FINISH_PROJECT_SUCCESS, finishProjectSuccess: finishProjectResponse });
         } catch (error) {
-            console.log('error', error);
             dispatch({ type: FINISH_PROJECT_FAILED, finishProjectFailed: error });
         }
     }
