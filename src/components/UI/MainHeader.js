@@ -16,11 +16,9 @@ export const MainHeader = ({ title, text, showGoBackButton }) => {
     return (
         <>
             <View style={{...styles.headerContainer,  justifyContent: showGoBackButton? 'space-between' : 'center',}}>
-                {showGoBackButton &&
-                    <RNAppbar.BackAction size={25} style={{ padding: 2 }} color={"#000"} onPress={() => goBack()} />
-                }
                 {text ? <MyText style={{ fontSize: 25, fontWeight: 'bold' }} text={text}/> : null }
                 {title ? <MyText style={{ fontSize: 25, fontWeight: 'bold' }} >{title}</MyText> : null }
+                {showGoBackButton ? <RNAppbar.BackAction size={25} style={{ padding: 2 }} color={"#000"} onPress={() => goBack()} /> : null}
                 <View/>
             </View>
         </>
@@ -29,15 +27,11 @@ export const MainHeader = ({ title, text, showGoBackButton }) => {
 
 const styles = StyleSheet.create({
     headerContainer: {
-        paddingTop: height > 600 ? 20 : 10,
+        paddingTop: height > 600 ? 55 : 10,
         borderBottomEndRadius: 10,
         borderBottomStartRadius: 10,
         paddingHorizontal: 10,
-        top: 0,
-        right: 0,
-        left: 0,
         width,
-        height: 80,
         marginBottom: 3,
         flexDirection: 'row',
         justifyContent: 'space-between',

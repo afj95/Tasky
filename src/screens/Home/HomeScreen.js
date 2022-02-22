@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 // Components
-import { Header, OptionsModal, FilterModal } from "./components";
+import { Header, OptionsModal } from "./components";
 // redux & actions
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchingProjects, resetProjectsErrors } from '../../redux/reducers/Projects/projects-actions';
@@ -14,7 +14,7 @@ import { fetchingProjects, resetProjectsErrors } from '../../redux/reducers/Proj
 import MyText from '../../components/UI/MyText';
 import { navigate } from '../../navigation/RootNavigation';
 import Colors from '../../utils/Colors';
-import { FontAwesome5, Ionicons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { showMessage } from 'react-native-flash-message';
 import { t } from '../../i18n';
 

@@ -2,9 +2,17 @@ import { usersState } from "./users-state";
 import {
     RESET_ERRORS,
 
+    FETCHING_ALL_EMP,
+    FETCHING_ALL_EMP_SUCCESS,
+    FETCHING_ALL_EMP_FAILED,
+
     FETCHING_SUPERVISORS,
     FETCHING_SUPERVISORS_SUCCESS,
-    FETCHING_SUPERVISORS_FAILED
+    FETCHING_SUPERVISORS_FAILED,
+
+    EDIT_EMPLOYEE,
+    EDIT_EMPLOYEE_SUCCEE,
+    EDIT_EMPLOYEE_FAILED,
 } from "./users-types";
 
 const usersReducer = (state = usersState, action) => {
@@ -12,9 +20,34 @@ const usersReducer = (state = usersState, action) => {
         case RESET_ERRORS: {
             return {
                 ...state,
+                fetchSupervisorsError: '',
+                editEmpSuccess: '',
+                fetchAllEmployeesError: '',
                 fetchSupervisorsError: ''
             }
         }
+
+        case FETCHING_ALL_EMP: {
+            return {
+                ...state,
+                fetchAllEmployeesLoading: true
+            }
+        }
+        case FETCHING_ALL_EMP_SUCCESS: {
+            return {
+                ...state,
+                fetchAllEmployeesLoading: false,
+                all_employees: action?.all_employees
+            }
+        }
+        case FETCHING_ALL_EMP_FAILED: {
+            return {
+                ...state,
+                fetchAllEmployeesLoading: false,
+                fetchAllEmployeesError: action.fetchAllEmployeesError
+            }
+        }
+
         case FETCHING_SUPERVISORS: {
             return {
                 ...state,
@@ -34,6 +67,27 @@ const usersReducer = (state = usersState, action) => {
                 fetchSupervisorsLoading: false,
                 supervisors: [],
                 fetchSupervisorsError: action.fetchSupervisorsError
+            }
+        }
+
+        case EDIT_EMPLOYEE: {
+            return {
+                ...state,
+                editEmpLoading: true
+            }
+        }
+        case EDIT_EMPLOYEE_SUCCEE: {
+            return {
+                ...state,
+                editEmpLoading: false,
+                editEmpSuccess: action?.status
+            }
+        }
+        case EDIT_EMPLOYEE_FAILED: {
+            return {
+                ...state,
+                editEmpLoading: false,
+                editEmpError: action?.editEmpError
             }
         }
 

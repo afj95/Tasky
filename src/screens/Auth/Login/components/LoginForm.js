@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import {
     View,
     StyleSheet,
-    ActivityIndicator
+    ActivityIndicator,
+    I18nManager
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TextInput } from 'react-native-paper';
@@ -83,9 +84,7 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
             </TouchableOpacity>
             <View style={styles.newHere}>
                 <TouchableOpacity onPress={onRegisterTextPressed}>
-                    <MyText style={styles.signupText}>
-                        signup
-                    </MyText>
+                    <MyText style={styles.signupText}>signup</MyText>
                 </TouchableOpacity>
                 <MyText>newHere</MyText>
             </View>
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
         marginVertical: 5
     },
     newHere: {
-        flexDirection: 'row',
+        flexDirection: 'row-reverse',
         alignItems: 'center',
         justifyContent:  'center',
         marginTop: 15

@@ -1,45 +1,24 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import {
     View,
     StyleSheet,
-    ActivityIndicator,
     KeyboardAvoidingView,
     Platform,
     ScrollView,
     Pressable
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TextInput } from 'react-native-paper';
-import { AntDesign, Entypo, Feather } from '@expo/vector-icons';
 import MyText from '../../../components/UI/MyText';
 import { t } from '../../../i18n';
 import { SupervisorsModal } from './SupervisorsModal';
 import Colors from '../../../utils/Colors';
 
-export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors, handleBlur, setFieldValue }}) => {
+export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors, handleBlur, setFieldValue } }) => {
 
     const _scroll = useRef(null);
     // TODO: Add loading in redux.
     const [isLoading, setIsLoading] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
-    // const [tasks, setTasks] = useState([]);
-
-    // const addTask = (key) => {
-    //     let input =
-    //         <View key={key} style={styles.taskView}>
-    //             <TextInput
-    //                 mode={'flat'}
-    //                 style={styles.input(isLoading)}
-    //                 theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
-    //                 onChangeText={handleChange(`tasks[${key}].task`)}
-    //                 placeholder={t('app.task') + ' ' + (++key)}
-    //                 value={values?.tasks[key]}
-    //             />
-    //         </View>
-    //     ;
-    //     setTasks(prev => [...prev, input]);
-    //     _scroll.current.scrollToEnd({ animated: true });
-    // }
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.mainContainer}>
@@ -57,7 +36,7 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                     onChangeText={handleChange('projectName1')}
                     theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
                 />
-                {errors?.projectName1 ? <ErrorText error={errors?.projectName1}/> : null}
+                {errors?.projectName1 ? <ErrorText error={errors?.projectName1} /> : null}
 
                 <View style={styles.textContainer}>
                     <MyText>projectName2</MyText>
@@ -72,13 +51,13 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                     onBlur={handleBlur('projectName2')}
                     theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
                 />
-                {errors?.projectName2 ? <ErrorText error={errors?.projectName2}/> : null}
+                {errors?.projectName2 ? <ErrorText error={errors?.projectName2} /> : null}
 
                 <View style={styles.textContainer}>
                     {/* TODO: change Supervisors to Supervisor */}
                     <MyText>projectSupervisors</MyText>
                 </View>
-                <Pressable onPress={() => setModalVisible(!modalVisible) } >
+                <Pressable onPress={() => setModalVisible(!modalVisible)} >
                     <TextInput
                         style={styles.input(isLoading)}
                         placeholder={t('app.projectSupervisors')}
@@ -92,7 +71,7 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                         theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
                     />
                 </Pressable>
-                {errors?.projectSupervisors ? <ErrorText error={errors?.projectSupervisors}/> : null}
+                {errors?.projectSupervisors ? <ErrorText error={errors?.projectSupervisors} /> : null}
                 <SupervisorsModal
                     modalVisible={modalVisible}
                     onSelect={async (item) => {
@@ -107,40 +86,18 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                 </View>
                 <TextInput
                     roundness={0}
-                    style={styles.input(isLoading)}
+                    style={{ ...styles.input(isLoading), height: null }}
                     placeholder={t('app.projectDescription')}
                     mode={'flat'}
                     onChangeText={handleChange('projectDescription')}
                     value={values?.projectDescription}
                     error={errors?.projectDescription}
-                    multiline={values?.projectDescription ? true : false}
+                    multiline
                     onBlur={handleBlur('projectDescription')}
                     theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
                 />
-                {errors?.projectDescription ? <ErrorText error={errors?.projectDescription}/> : null}
-
-                {/* <View style={styles.seperator} />
-                {tasks && tasks?.length === 0 ?
-                    <View style={{ alignItems: 'center'}}>
-                        <MyText style={styles.tasksText}>tasks</MyText>
-                        <MyText style={styles.tasksText}>tasksHelp</MyText>
-                    </View>
-                : null} */}
-
-                {/* {tasks.map((item, index) => {
-                    return item;
-                })} */}
+                {errors?.projectDescription ? <ErrorText error={errors?.projectDescription} /> : null}
             </ScrollView>
-            
-            {/* Adding task button */}
-            {/* <View style={styles.addTaskContainer}>
-                <TouchableOpacity
-                    onPress={() => addTask(tasks?.length)}>
-                    <View style={styles.addTaskView}>
-                        <MyText text={'+'} style={styles.addTaskText} />
-                    </View>
-                </TouchableOpacity>
-            </View> */}
         </KeyboardAvoidingView>
     )
 }
@@ -149,7 +106,7 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         paddingHorizontal: 10,
-    }, 
+    },
     textContainer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -180,7 +137,7 @@ const styles = StyleSheet.create({
     haveAccount: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent:  'center',
+        justifyContent: 'center',
         marginTop: 15
     },
     signupText: {
@@ -219,7 +176,7 @@ const styles = StyleSheet.create({
         color: Colors.white
     },
     taskView: {
-        backgroundColor:'#fff',
+        backgroundColor: '#fff',
         marginTop: 10
     },
 })

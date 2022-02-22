@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { navigationRef } from './RootNavigation';
-import { store } from '../redux';
-import { Provider, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../components/Loaders/Loader';
 import { ErrorScreen } from '../screens/ErrorScreen';
@@ -11,7 +10,6 @@ import i18n from 'i18n-js';
 // Navigators
 import {
     AuthStackScreens,
-    HomeStackScreens,
     DrawerScreens
 } from './Navigators';
 import { StatusBar } from 'expo-status-bar';
@@ -29,22 +27,17 @@ const MainNavigator = () => {
         // Checking the token
         AsyncStorage.getItem('token', (error, token) => {
             if(error) {
-                console.log(`error while getting the token`, error)
                 setInitialRouteName('Auth')
-            } else if(token) { 
-                // console.log(`token`, token)
-                
+            } else if(token) {
                 // In case of there is a token
                 if(user && Object.keys(user).length > 0) {
                     // Checking if the user saved in redux
                     setInitialRouteName('Home')
                 } else {
-                    console.log('no user')
                     setInitialRouteName('Auth')
                 }
             } else {
                 // In case of no token founded
-                console.log('no token')
                 setInitialRouteName('Auth')
             }
         })

@@ -62,6 +62,9 @@ export default {
         addSupervisor: "Add new supervisor",
         wrongData: "Wrong data has been sent",
         projectAddedSuccess: "Project added susscessfully",
-        projectNotAdded: "Project not added for some problems\nTry again later"
+        projectNotAdded: "Project not added for some problems\nTry again later",
+        employees: "Employees",
+        editEmployee: "Edit employee",
+        deleteEmployee: "Delete employee"
     }
 }

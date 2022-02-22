@@ -62,6 +62,9 @@ export default {
         addSupervisor: "إضافة مشرف",
         wrongData: "تم إرسال بيانات خاطئة",
         projectAddedSuccess: "تم إضافة المشروع بنجاح",
-        projectNotAdded: "حصل خطأ أثناء إنشاء المشروع\nيرجى المحاولة لاحقًا"
+        projectNotAdded: "حصل خطأ أثناء إنشاء المشروع\nيرجى المحاولة لاحقًا",
+        employees: "الموظفين",
+        editEmployee: "تعديل بيانات الموظف",
+        deleteEmployee: "حذف الموظف"
     }
 }
