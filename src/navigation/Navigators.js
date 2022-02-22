@@ -8,7 +8,8 @@ import {
   RegisterScreen,
   HomeScreen,
   AddProjectScreen,
-  ProjectDetails
+  ProjectDetails,
+  EmployeesScreen
 } from '../screens';
 import { t } from '../i18n';
 
@@ -38,6 +39,14 @@ const ProjectStuckScreens = () => (
   </ProjectStuck.Navigator>
 )
 
+const EmployeesStuck = createStackNavigator();
+const EmployeesStuckScreens = () => (
+  <EmployeesStuck.Navigator screenOptions={{headerShown: false }}>
+    <EmployeesStuck.Screen name={'employeesScreen'} component={EmployeesScreen} />
+    {/* <EmployeesStuck.Screen name={'ProjectDetailsScreen'} component={ProjectDetails} /> */}
+  </EmployeesStuck.Navigator>
+)
+
 const Drawer = createDrawerNavigator();
 const DrawerScreens = () => {
   return (
@@ -45,6 +54,7 @@ const DrawerScreens = () => {
       drawerContent={props => <DrawerComponent props={props} />}
       screenOptions={{headerShown: false }}>
       <Drawer.Screen name={t('app.projects')} component={HomeStackScreens} />
+      <Drawer.Screen name={t('app.employees')} component={EmployeesStuckScreens} />
     </Drawer.Navigator>
   )
 }

@@ -13,13 +13,13 @@ import { t } from '../../../i18n';
 import { SupervisorsModal } from './SupervisorsModal';
 import Colors from '../../../utils/Colors';
 
-export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors, handleBlur, setFieldValue }}) => {
+export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors, handleBlur, setFieldValue } }) => {
 
     const _scroll = useRef(null);
     // TODO: Add loading in redux.
     const [isLoading, setIsLoading] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
-    
+
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.mainContainer}>
             <ScrollView showsVerticalScrollIndicator={false} ref={_scroll} contentContainerStyle={{ paddingBottom: 120 }}>
@@ -36,7 +36,7 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                     onChangeText={handleChange('projectName1')}
                     theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
                 />
-                {errors?.projectName1 ? <ErrorText error={errors?.projectName1}/> : null}
+                {errors?.projectName1 ? <ErrorText error={errors?.projectName1} /> : null}
 
                 <View style={styles.textContainer}>
                     <MyText>projectName2</MyText>
@@ -51,13 +51,13 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                     onBlur={handleBlur('projectName2')}
                     theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
                 />
-                {errors?.projectName2 ? <ErrorText error={errors?.projectName2}/> : null}
+                {errors?.projectName2 ? <ErrorText error={errors?.projectName2} /> : null}
 
                 <View style={styles.textContainer}>
                     {/* TODO: change Supervisors to Supervisor */}
                     <MyText>projectSupervisors</MyText>
                 </View>
-                <Pressable onPress={() => setModalVisible(!modalVisible) } >
+                <Pressable onPress={() => setModalVisible(!modalVisible)} >
                     <TextInput
                         style={styles.input(isLoading)}
                         placeholder={t('app.projectSupervisors')}
@@ -71,7 +71,7 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                         theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
                     />
                 </Pressable>
-                {errors?.projectSupervisors ? <ErrorText error={errors?.projectSupervisors}/> : null}
+                {errors?.projectSupervisors ? <ErrorText error={errors?.projectSupervisors} /> : null}
                 <SupervisorsModal
                     modalVisible={modalVisible}
                     onSelect={async (item) => {
@@ -86,17 +86,17 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                 </View>
                 <TextInput
                     roundness={0}
-                    style={styles.input(isLoading)}
+                    style={{ ...styles.input(isLoading), height: null }}
                     placeholder={t('app.projectDescription')}
                     mode={'flat'}
                     onChangeText={handleChange('projectDescription')}
                     value={values?.projectDescription}
                     error={errors?.projectDescription}
-                    multiline={values?.projectDescription ? true : false}
+                    multiline
                     onBlur={handleBlur('projectDescription')}
                     theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
                 />
-                {errors?.projectDescription ? <ErrorText error={errors?.projectDescription}/> : null}
+                {errors?.projectDescription ? <ErrorText error={errors?.projectDescription} /> : null}
             </ScrollView>
         </KeyboardAvoidingView>
     )
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         paddingHorizontal: 10,
-    }, 
+    },
     textContainer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     haveAccount: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent:  'center',
+        justifyContent: 'center',
         marginTop: 15
     },
     signupText: {
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
         color: Colors.white
     },
     taskView: {
-        backgroundColor:'#fff',
+        backgroundColor: '#fff',
         marginTop: 10
     },
 })

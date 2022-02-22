@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import {
     View,
     StyleSheet,
-    ActivityIndicator
+    ActivityIndicator,
+    I18nManager
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TextInput } from 'react-native-paper';
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
         backgroundColor: isLoading ? '#f2f2f2' : 'white',
     }),
     haveAccount: {
-        flexDirection: 'row',
+        flexDirection: 'row-reverse',
         alignItems: 'center',
         justifyContent:  'center',
         marginTop: 15
