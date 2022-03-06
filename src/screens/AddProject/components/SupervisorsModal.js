@@ -21,9 +21,11 @@ import { fetchSuperVisors, resetUsersErrors } from '../../../redux/reducers/User
 import Colors from '../../../utils/Colors';
 import FlashMessage from 'react-native-flash-message';
 import { t } from '../../../i18n';
+import { useNavigation } from '@react-navigation/native';
 
 export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
     const dispatch = useDispatch()
+    const navigation = useNavigation();
 
     const _flashRef = useRef()
 
@@ -53,20 +55,6 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
         dispatch(resetUsersErrors());
     }, [fetchSupervisorsLoading])
 
-    // const closeModal = () => setModalVisible(!modalVisible)
-
-    // const onChangeText = (value) => {
-    //     const debounce = _.debounce(() => {
-    //         // dispatch(searchMember(value));
-    //         return;
-    //     }, 200)
-    //     if(value == '') {
-    //         // dispatch(resetSearchList());
-    //     } else {
-    //         debounce();
-    //     }
-    // }
-
     const onItemPressed = async (item) => {
         await onSelect(item);
         closeModal();
@@ -88,29 +76,11 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
         dispatch(fetchSuperVisors())
     }
 
-    const addSupervisor = () => setAddNewSupervisor(!addNewSupervisor)
-
-    
-    const AddNewSupervisor = () => {
-        return (
-            <View style={{
-                marginVertical: 10
-            }}>
-                <View style={{
-                    height: 50,
-                    width: '100%',
-                    backgroundColor: 'blue'
-                }}>
-                </View>
-                <View style={{
-                    width: '100%',
-                    height: 50,
-                    backgroundColor: '#000',
-
-                }}>
-                </View>
-            </View>
-        )
+    const addSupervisor = () => {
+        closeModal();
+        navigation.navigate('Employees', {
+            screen: 'AddEmployeeScreen'
+        })
     }
 
     return (
@@ -142,7 +112,6 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
                             <ActivityIndicator size={'small'} color={Colors.black} />
                         </View>
                     :
-                        addNewSupervisor ? <AddNewSupervisor /> :
                         <FlatList
                             data={supervisors || []}
                             keyExtractor={(item, index) => '#' + index.toString()}

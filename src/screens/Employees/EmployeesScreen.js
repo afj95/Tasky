@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import {
     View,
     StyleSheet,
-    FlatList
+    FlatList,
+    ActivityIndicator
 } from 'react-native';
 import { Header, EmployeeItem as EI } from './components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +12,8 @@ import MyText from '../../components/UI/MyText';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { t } from 'i18n-js';
 import { showMessage } from 'react-native-flash-message';
+import { navigate } from '../../navigation/RootNavigation';
+import Colors from '../../utils/Colors';
 
 export const EmployeesScreen = () => {
     const dispatch = useDispatch();
@@ -51,9 +54,13 @@ export const EmployeesScreen = () => {
         onRefresh()
     }
 
+    const onEmployeePressed = () => {
+        navigate('AddEmployeeScreen', {})
+    }
+
     return (
         <View style={styles.container}>
-            <Header text={'employees'} />
+            <Header text={'employees'} onEmployeePressed={onEmployeePressed} />
             <View style={styles.filterContainer}>
                 {all && <TouchableOpacity onPress={getAll} style={styles.cancelAllEmp}>
                     <MyText text={'X'} />
@@ -61,6 +68,13 @@ export const EmployeesScreen = () => {
                 <TouchableOpacity activeOpacity={0.7} disabled={all} onPress={getAll} style={styles.allEmp(all)}>
                     <MyText text={'All'} />
                 </TouchableOpacity>
+            </View>
+            <View style={styles.employeesStateView}>
+                <MyText style={styles.empState}>{all ? 'all' : 'supervisors'}</MyText>
+                <MyText style={styles.empState} text={all ? all_employees.length : supervisors.length} />
+                {fetchAllEmployeesLoading || fetchSupervisorsLoading ?
+                    <ActivityIndicator size={'small'} color={Colors.black} />
+                :null}
             </View>
             <FlatList
                 keyExtractor={(item, index) => '#' + index.toString()}
@@ -91,6 +105,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     cancelAllEmp: {
+        marginStart: 10,
         width: 25,
         height: 25,
         backgroundColor: '#b9b9b9',
@@ -102,6 +117,7 @@ const styles = StyleSheet.create({
         margin: 10
     },
     allEmp: all => ({
+        marginStart: 5,
         width: 70,
         height: 40,
         backgroundColor: all ? '#fff' : '#b9b9b9',
@@ -112,4 +128,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginVertical: 10
     }),
+    empState: {
+        marginStart: 10,
+        marginTop: 10,
+        marginBottom: 5
+    },
+    employeesStateView: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    }
 })

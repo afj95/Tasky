@@ -12,6 +12,10 @@ const EDIT_EMPLOYEE = "emp - edit";
 const EDIT_EMPLOYEE_SUCCEE = "emp - edit success";
 const EDIT_EMPLOYEE_FAILED = "emp - edit failed";
 
+const ADD_EMPLOYEE = "emp - add";
+const ADD_EMPLOYEE_SUCCESS = "emp - add success";
+const ADD_EMPLOYEE_FAILED = "emp - add failed";
+
 export {
     RESET_ERRORS,
 
@@ -26,4 +30,8 @@ export {
     EDIT_EMPLOYEE,
     EDIT_EMPLOYEE_SUCCEE,
     EDIT_EMPLOYEE_FAILED,
+
+    ADD_EMPLOYEE,
+    ADD_EMPLOYEE_SUCCESS,
+    ADD_EMPLOYEE_FAILED,
 }

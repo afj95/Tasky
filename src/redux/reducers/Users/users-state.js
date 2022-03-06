@@ -9,5 +9,9 @@ export const usersState = {
 
     editEmpLoading: false,
     editEmpSuccess: '',
-    editEmpError: ''
+    editEmpError: '',
+
+    addEmployeeLoading: false,
+    addEmployeeSuccess: '',
+    addEmployeeError: ''
 };

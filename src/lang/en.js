@@ -65,6 +65,11 @@ export default {
         projectNotAdded: "Project not added for some problems\nTry again later",
         employees: "Employees",
         editEmployee: "Edit employee",
-        deleteEmployee: "Delete employee"
+        deleteEmployee: "Delete employee",
+        supervisors: "Supervisor",
+        all: "All employees",
+        addEmployee: "Add new Employee",
+        addEmployeeInstractions: "قم بتعبة بيانات الموظف الجديد أدناه",
+        addEmployeeNote: "ملاحظة: كلمة المرور ستكون مطابقة لرقم الهاتف للموظف لتسجيل الدخول"
     }
 }

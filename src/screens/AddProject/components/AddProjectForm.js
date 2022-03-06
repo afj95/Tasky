@@ -86,7 +86,7 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                 </View>
                 <TextInput
                     roundness={0}
-                    style={{ ...styles.input(isLoading), height: null }}
+                    style={{ ...styles.input(isLoading), height: 180 }}
                     placeholder={t('app.projectDescription')}
                     mode={'flat'}
                     onChangeText={handleChange('projectDescription')}

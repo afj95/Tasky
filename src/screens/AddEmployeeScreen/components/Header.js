@@ -4,27 +4,21 @@ import {
     Dimensions,
     View,
 } from 'react-native';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
 // components
 import MyText from "../../../components/UI/MyText";
-import Colors from '../../../utils/Colors';
-import { useNavigation } from '@react-navigation/native';
+import { Appbar as RNAppbar } from 'react-native-paper';
+import { goBack } from '../../../navigation/RootNavigation';
 
 const { height } = Dimensions.get("screen");
 
-export const Header = ({ text, onEmployeePressed }) => {
-    const navigation = useNavigation();
-
+export const Header = ({ text, showGoBackButton }) => {
     return (
         <View style={styles.subHeader}>
-            <Ionicons
-                name={'reorder-three'}
-                size={35}
-                color={Colors.buttons}
-                onPress={navigation.toggleDrawer}
-            />
+            {showGoBackButton ?
+                <RNAppbar.BackAction size={25} style={{ padding: 2 }} color={"#000"} onPress={() => goBack()} />
+            : <View />}
             <MyText style={{ fontSize: 20, fontWeight: 'bold' }}>{text}</MyText>
-            <AntDesign name={'adduser'} size={30} color={Colors.black} onPress={onEmployeePressed} />
+            <View />
         </View>
     )   
 }

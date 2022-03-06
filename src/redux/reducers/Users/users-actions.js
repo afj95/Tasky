@@ -1,7 +1,8 @@
 import {
     fetchAllEmployeesReq,
     fetchSuperVisorsReq,
-    editEmployeeReq
+    editEmployeeReq,
+    addEmployeeReq
 } from '../../../services';
 import {
     RESET_ERRORS,
@@ -17,6 +18,10 @@ import {
     EDIT_EMPLOYEE,
     EDIT_EMPLOYEE_SUCCEE,
     EDIT_EMPLOYEE_FAILED,
+
+    ADD_EMPLOYEE,
+    ADD_EMPLOYEE_SUCCESS,
+    ADD_EMPLOYEE_FAILED,
 } from './users-types'
 
 const resetUsersErrors = () => {
@@ -63,7 +68,7 @@ const fetchSuperVisors = () => {
     }
 }
 
-const editEmployee = emp_id => {
+const editEmployee = async emp_id => {
     return async dispatch => {
         try {
             dispatch({ type: EDIT_EMPLOYEE })
@@ -77,10 +82,28 @@ const editEmployee = emp_id => {
     }
 }
 
+const addEmpoloyee = async (values) => {
+    return async dispatch => {
+        try {
+            dispatch({ type: ADD_EMPLOYEE })
+
+            const editEmployeeRes = await addEmployeeReq(values)
+
+            dispatch({ type: ADD_EMPLOYEE_SUCCESS, addEmployeeSuccess: editEmployeeRes.data?.message })
+            dispatch(fetchAllEmployees())
+            dispatch(resetUsersErrors())
+        } catch (error) {
+            dispatch({ type: ADD_EMPLOYEE_FAILED, addEmployeeError: error.message })
+            dispatch(resetUsersErrors())
+        }
+    }
+}
+
 export {
     resetUsersErrors,
 
     fetchAllEmployees,
     fetchSuperVisors,
-    editEmployee
+    editEmployee,
+    addEmpoloyee
 }
