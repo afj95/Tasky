@@ -6,7 +6,7 @@ import {
 import MyText from '../../../components/UI/MyText';
 import { Entypo } from '@expo/vector-icons';
 import Colors from '../../../utils/Colors';
-import { EmpOptionsModal } from '.';
+import { EmpOptionsModal } from './EmpOptionsModal';
 
 export const EmployeeItem = ({ employee }) => {
 

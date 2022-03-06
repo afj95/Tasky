@@ -39,24 +39,25 @@ export const HomeScreen = ({ navigation }) => {
   }, [status, deleted])
   
   useEffect(() => {
-    if(fetchingProjectsError === 404) {
-      showMessage({
-        message: t('app.noProjectsError'),
-        type: 'danger',
-        icon: 'auto',
-        duration: 3000,
-        style: { paddingTop: 35 },
-      })
-    } else if(fetchingProjectsError === 500) {
-      showMessage({
-        message: t('app.serverError'),
-        type: 'danger',
-        icon: 'auto',
-        duration: 3000,
-        style: { paddingTop: 35 },
-      })
-    }
-    dispatch(resetProjectsErrors())
+    // handle_API_errors(fetchingProjectsError, null, resetProjectsErrors)
+    // if(fetchingProjectsError === 404) {
+    //   showMessage({
+    //     message: t('app.noProjectsError'),
+    //     type: 'danger',
+    //     icon: 'auto',
+    //     duration: 3000,
+    //     style: { paddingTop: 35 },
+    //   })
+    // } else if(fetchingProjectsError === 500) {
+    //   showMessage({
+    //     message: t('app.serverError'),
+    //     type: 'danger',
+    //     icon: 'auto',
+    //     duration: 3000,
+    //     style: { paddingTop: 35 },
+    //   })
+    // }
+    // dispatch(resetProjectsErrors())
   }, [fetchingProjectsError])
   
   const _onRefresh = () => {

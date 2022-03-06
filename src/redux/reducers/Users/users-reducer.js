@@ -13,6 +13,10 @@ import {
     EDIT_EMPLOYEE,
     EDIT_EMPLOYEE_SUCCEE,
     EDIT_EMPLOYEE_FAILED,
+
+    ADD_EMPLOYEE,
+    ADD_EMPLOYEE_SUCCESS,
+    ADD_EMPLOYEE_FAILED,
 } from "./users-types";
 
 const usersReducer = (state = usersState, action) => {
@@ -23,7 +27,9 @@ const usersReducer = (state = usersState, action) => {
                 fetchSupervisorsError: '',
                 editEmpSuccess: '',
                 fetchAllEmployeesError: '',
-                fetchSupervisorsError: ''
+                fetchSupervisorsError: '',
+                addEmployeeError: '',
+                addEmployeeSuccess: ''
             }
         }
 
@@ -88,6 +94,27 @@ const usersReducer = (state = usersState, action) => {
                 ...state,
                 editEmpLoading: false,
                 editEmpError: action?.editEmpError
+            }
+        }
+
+        case ADD_EMPLOYEE: {
+            return {
+                ...state,
+                addEmployeeLoading: true
+            }
+        }
+        case ADD_EMPLOYEE_SUCCESS: {
+            return {
+                ...state,
+                addEmployeeLoading: false,
+                addEmployeeSuccess: action.addEmployeeSuccess
+            }
+        }
+        case ADD_EMPLOYEE_FAILED: {
+            return {
+                ...state,
+                addEmployeeLoading: false,
+                addEmployeeError: action?.addEmployeeError
             }
         }
 

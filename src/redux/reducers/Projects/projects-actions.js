@@ -4,7 +4,7 @@ import {
     fetchingProjectsReq,
     fetchingOneProjectReq,
     finishProjectRequest
-} from "../../../services/projects-service";
+} from "../../../services";
 import {
     RESET_PROJECTS_ERRORS,
 
@@ -18,9 +18,12 @@ import {
 
     ADD_PROJECT_SUCCESS,
     ADD_PROJECT_FAILED,
+
     PROJECT_ACTIONS,
+
     FINISH_PROJECT_SUCCESS,
     FINISH_PROJECT_FAILED,
+    
     DELETE_PROJECT_SUCCESS,
     DELETE_PROJECT_FAILED
 } from "./projects-types"

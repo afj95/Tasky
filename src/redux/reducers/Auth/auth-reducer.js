@@ -5,12 +5,6 @@ import {
     AUTH_SUCCESS,
     AUTH_FAILED,
     LOGOUT,
-
-    RESET_EMAIL_SENT,
-    RESET_EMAIL_SENDING_FAILED,
-
-    PASSWORD_CHANGED_SUCCESSFULLY,
-    PASSWORD_CHANGING_FAILED,
 } from './auth-types';
 
 const authReducer = (state = authState, action) => {
@@ -50,36 +44,6 @@ const authReducer = (state = authState, action) => {
                 user: '',
                 authLoading: '',
                 authStatus: '',
-            }
-        }
-
-        case RESET_EMAIL_SENT: {
-            return {
-                ...state,
-                authLoading: false,
-                resetPasswordStatus: action.resetPasswordStatus
-            }
-        }
-        case RESET_EMAIL_SENDING_FAILED: {
-            return {
-                ...state,
-                authLoading: false,
-                resetPasswordStatus: 'mail not found'
-            }
-        }
-
-        case PASSWORD_CHANGED_SUCCESSFULLY: {
-            return {
-                ...state,
-                authLoading: false,
-                resetPasswordStatus: action?.resetPasswordStatus
-            }
-        }
-        case PASSWORD_CHANGING_FAILED: {
-            return {
-                ...state,
-                authLoading: false,
-                resetPasswordStatus: action?.resetPasswordStatus
             }
         }
 

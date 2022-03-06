@@ -22,8 +22,17 @@ const editEmployeeReq = async emp_id => {
     })
 }
 
+const addEmployeeReq = async (values) => {
+    return await request({
+        url: 'users',
+        method: 'post',
+        params: values
+    })
+}
+
 export {
     fetchAllEmployeesReq,
     fetchSuperVisorsReq,
     editEmployeeReq,
+    addEmployeeReq
 }

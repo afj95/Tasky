@@ -69,7 +69,13 @@ const MainNavigator = () => {
                     <MainStack.Screen name={'Home'} component={DrawerScreens} />
                 </MainStack.Navigator>
                 <StatusBar style={'auto'} />
-                <FlashMessage ref={ref => (global["flash"] = ref)} position="top" />
+                <FlashMessage
+                    ref={ref => (global["flash"] = ref)}
+                    position="top"
+                    duration={3000}
+                    style={{ paddingTop: 30 }}
+                    titleStyle={{ fontSize: 18 }}
+                />
             </NavigationContainer>
         )
     }
