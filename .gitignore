@@ -12,6 +12,5 @@ web-build/
 # macOS
 .DS_Store
 src/fakeData
-package-lock.json
 src/tools/handleErrors.ts
 tsconfig.json
