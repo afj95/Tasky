@@ -9,17 +9,26 @@ import Colors from '../../../utils/Colors';
 import { AntDesign } from '@expo/vector-icons';
 import MyText from '../../../components/UI/MyText';
 import { useDispatch } from 'react-redux';
+import { navigate } from '../../../navigation/RootNavigation';
+import { deleteEmployee, restoreEmployee } from '../../../redux/reducers/Users/users-actions';
 
 export const EmpOptionsModal = ({ visible, closeModal, employee }) => {
 
     const dispatch = useDispatch();
 
     const onEditEmployeePressed = () => {
-        
+        closeModal();
+        navigate('EditEmployeeScreen', {employee: employee})
     }
 
     const onDeleteEmployeePressed = () => {
+        dispatch(deleteEmployee(employee._id))
+        closeModal();
+    }
 
+    const onRestoreEmployeePressed = () => {
+        dispatch(restoreEmployee(employee._id))
+        closeModal();
     }
 
     return (
@@ -35,15 +44,31 @@ export const EmpOptionsModal = ({ visible, closeModal, employee }) => {
                                 name={'closecircle'}
                                 size={24}
                                 color={Colors.black}
-                                onPress={() => closeModal()}
+                                onPress={closeModal}
                             />
                         </View>
-                        <TouchableOpacity activeOpacity={0.5} onPress={onEditEmployeePressed} style={styles.editEmployeeContainer}>
-                            <MyText>editEmployee</MyText>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.5} onPress={onDeleteEmployeePressed} style={styles.deleteEmployeeContainer}>
-                            <MyText>deleteEmployee</MyText>
-                        </TouchableOpacity>
+                        {employee.deleted ? null :
+                            <TouchableOpacity
+                                activeOpacity={0.5}
+                                onPress={onEditEmployeePressed}
+                                style={styles.editEmployeeContainer}>
+                                <MyText>editEmployee</MyText>
+                            </TouchableOpacity>}
+                        {!employee.deleted ?
+                            <TouchableOpacity
+                                activeOpacity={0.5}
+                                onPress={onDeleteEmployeePressed}
+                                style={styles.deleteEmployeeContainer}>
+                                <MyText>deleteEmployee</MyText>
+                            </TouchableOpacity>
+                        :
+                            <TouchableOpacity
+                                activeOpacity={0.5}
+                                onPress={onRestoreEmployeePressed}
+                                style={styles.deleteEmployeeContainer}>
+                                <MyText>restoreEmployee</MyText>
+                            </TouchableOpacity>
+                        }
                     </View>
                 </View>
             </Modal>

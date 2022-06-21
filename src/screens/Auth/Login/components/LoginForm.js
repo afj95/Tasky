@@ -83,10 +83,10 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
                 }
             </TouchableOpacity>
             <View style={styles.newHere}>
+                <MyText>newHere</MyText>
                 <TouchableOpacity onPress={onRegisterTextPressed}>
                     <MyText style={styles.signupText}>signup</MyText>
                 </TouchableOpacity>
-                <MyText>newHere</MyText>
             </View>
         </View>
     )
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
         marginVertical: 5
     },
     newHere: {
-        flexDirection: 'row-reverse',
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent:  'center',
         marginTop: 15

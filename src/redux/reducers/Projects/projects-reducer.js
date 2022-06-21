@@ -54,6 +54,7 @@ const projectsReducer = (state = projectsState, action) => {
                 ...state,
                 projects: [],
                 fetchingProjectsLoading: false,
+                // TODO: Not handled
                 fetchingProjectsError: action?.error
             }
         }

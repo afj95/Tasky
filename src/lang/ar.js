@@ -70,6 +70,12 @@ export default {
         all: "كل الموظفين",
         addEmployee: "إضافة موظف جديد",
         addEmployeeInstractions: "قم بتعبة بيانات الموظف الجديد أدناه",
-        addEmployeeNote: "ملاحظة: كلمة المرور ستكون مطابقة لرقم الهاتف للموظف لتسجيل الدخول"
+        addEmployeeNote: "ملاحظة: كلمة المرور ستكون مطابقة لرقم الهاتف للموظف لتسجيل الدخول",
+        editEmployeeInstractions: "قم بتعديل بيانات الموظف أدناه",
+        deleted: "محذوف",
+        restoreEmployee: "استعادة الموظف",
+        deletedUsers: "الموظفين المحذوفين",
+        role: "الرتبة",
+        noDeleted: "الموظفين غير المحذوفين"
     }
 }

@@ -10,7 +10,8 @@ import {
   AddProjectScreen,
   ProjectDetails,
   EmployeesScreen,
-  AddEmployeeScreen
+  AddEmployeeScreen,
+  EditEmployeeScreen
 } from '../screens';
 import { t } from '../i18n';
 import { useSelector } from 'react-redux';
@@ -46,6 +47,7 @@ const EmployeesStuckScreens = () => (
   <EmployeesStuck.Navigator screenOptions={{headerShown: false }}>
     <EmployeesStuck.Screen name={'EmployeesScreen'} component={EmployeesScreen} />
     <EmployeesStuck.Screen name={'AddEmployeeScreen'} component={AddEmployeeScreen} />
+    <EmployeesStuck.Screen name={'EditEmployeeScreen'} component={EditEmployeeScreen} />
   </EmployeesStuck.Navigator>
 )
 

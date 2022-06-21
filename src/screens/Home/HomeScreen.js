@@ -4,9 +4,10 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 // Components
-import { Header, OptionsModal } from "./components";
+import { Header } from "./components";
 // redux & actions
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchingProjects, resetProjectsErrors } from '../../redux/reducers/Projects/projects-actions';
@@ -15,51 +16,24 @@ import MyText from '../../components/UI/MyText';
 import { navigate } from '../../navigation/RootNavigation';
 import Colors from '../../utils/Colors';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { showMessage } from 'react-native-flash-message';
-import { t } from '../../i18n';
 
-export const HomeScreen = ({ navigation }) => {
+export const HomeScreen = () => {
   const dispatch = useDispatch()
 
   // active - finished
-  const [status, setStatus]                 = useState('active');
+  const [status, setStatus] = useState('active');
   // deleted = true - deleted = false
-  const [deleted, setDeleted]               = useState(false);
-  const [optionsVisible, setOptionsVisible] = useState(false);
-  // const [filterVisible, setFilterVisible]   = useState(false);
+  const [deleted, setDeleted] = useState(false);
 
   const user = useSelector((state) => state?.authReducer?.user)
   const projects = useSelector(state => state?.projectsReducer?.projects)
   const fetchingProjectsLoading = useSelector(state => state?.projectsReducer?.fetchingProjectsLoading)
-  const fetchingProjectsError = useSelector(state => state?.projectsReducer?.fetchingProjectsError)
 
   useEffect(() => {
     dispatch(resetProjectsErrors())
     dispatch(fetchingProjects(status, deleted))
   }, [status, deleted])
-  
-  useEffect(() => {
-    // handle_API_errors(fetchingProjectsError, null, resetProjectsErrors)
-    // if(fetchingProjectsError === 404) {
-    //   showMessage({
-    //     message: t('app.noProjectsError'),
-    //     type: 'danger',
-    //     icon: 'auto',
-    //     duration: 3000,
-    //     style: { paddingTop: 35 },
-    //   })
-    // } else if(fetchingProjectsError === 500) {
-    //   showMessage({
-    //     message: t('app.serverError'),
-    //     type: 'danger',
-    //     icon: 'auto',
-    //     duration: 3000,
-    //     style: { paddingTop: 35 },
-    //   })
-    // }
-    // dispatch(resetProjectsErrors())
-  }, [fetchingProjectsError])
-  
+
   const _onRefresh = () => {
     dispatch(resetProjectsErrors())
     dispatch(fetchingProjects(status, deleted))
@@ -115,16 +89,16 @@ export const HomeScreen = ({ navigation }) => {
     )
   }
 
-  const showOptionsModal  = () => setOptionsVisible(true)
-  const closeOptionsModal = () => setOptionsVisible(false)
-  
-  // const openFilterModal   = () => setFilterVisible(true)
-  // const closeFilterModal  = () => setFilterVisible(false)
+  const uri1 = 'https://lh3.googleusercontent.com/6V1FwiAavhOXvs-IkKjvmUcJJ2FS6ku-ycrZejWb6Hp_7h1Qk1gqew5kMl9dNZWn00U';
+  const uri2 = 'https://png.pngtree.com/thumb_back/fh260/background/20200714/pngtree-modern-double-color-futuristic-neon-background-image_351866.jpg';
+  const uri3 = 'https://png.pngtree.com/thumb_back/fh260/background/20200714/pngtree-modern-double-color-futuristic-neon-background-image_351866.jpg';
+
+  const { width } = Dimensions.get('window');
 
   return (
     <>
       <View style={styles.header}>
-        <Header user={user} showModal={showOptionsModal} text={'projects'} />
+        <Header user={user} text={'projects'} />
       </View>
 
       <View style={styles.projectsContainer}>
@@ -138,21 +112,6 @@ export const HomeScreen = ({ navigation }) => {
           renderItem={_renderItem}
         />
       </View>
-
-      <OptionsModal
-        visible={optionsVisible}
-        closeModal={closeOptionsModal}
-        navigation={navigation}
-      />
-
-      {/* <FilterModal
-        visible={filterVisible}
-        closeModal={closeFilterModal}
-        status={status}
-        setStatus={setStatus}
-        deleted={deleted}
-        setDeleted={setDeleted}
-      /> */}
     </>
   )
 };
@@ -190,24 +149,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     backgroundColor: Colors.bg
-  },
-  classificationsContainer: {
-    paddingVertical: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center'
-  },
-  finishedItem: {
-    width: 90,
-    height: 30,
-    backgroundColor: '#fff',
-    borderRadius: 10
-  },
-  deletedItem: {
-    width: 90,
-    height: 30,
-    backgroundColor: '#fff',
-    borderRadius: 10
   },
   projectItem: {
     backgroundColor: '#fff',
