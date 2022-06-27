@@ -32,7 +32,8 @@ const projectsReducer = (state = projectsState, action) => {
                 finishProjectFailed: '',
                 deleteProjectSuccess: '',
                 deleteProjectFailed: '',
-                fetchingProjectError: ''
+                fetchingProjectError: '',
+                project: ''
             }
         }
 
@@ -54,6 +55,7 @@ const projectsReducer = (state = projectsState, action) => {
                 ...state,
                 projects: [],
                 fetchingProjectsLoading: false,
+                // TODO: Not handled
                 fetchingProjectsError: action?.error
             }
         }

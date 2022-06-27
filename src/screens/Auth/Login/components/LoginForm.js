@@ -20,8 +20,6 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
     
     const onRegisterTextPressed = () => navigate('Register', {})
 
-    const onForgetTextPressed = () => navigate('ForgetPassword', {})
-
     return (
         <View>
             <View style={styles.textContainer}>
@@ -67,11 +65,6 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
             />
             {errors?.password ? <ErrorText error={errors?.password}/> : null}
 
-            {/* <View style={styles.forgotPass}>
-                <TouchableOpacity style={{ marginVertical: 20 }} onPress={onForgetTextPressed}>
-                    <MyText>forgotPassword</MyText>
-                </TouchableOpacity>
-            </View> */}
             <TouchableOpacity
                 style={styles.loginButton}
                 disabled={authLoading}
@@ -83,10 +76,10 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
                 }
             </TouchableOpacity>
             <View style={styles.newHere}>
+                <MyText>newHere</MyText>
                 <TouchableOpacity onPress={onRegisterTextPressed}>
                     <MyText style={styles.signupText}>signup</MyText>
                 </TouchableOpacity>
-                <MyText>newHere</MyText>
             </View>
         </View>
     )
@@ -123,7 +116,7 @@ const styles = StyleSheet.create({
         marginVertical: 5
     },
     newHere: {
-        flexDirection: 'row-reverse',
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent:  'center',
         marginTop: 15

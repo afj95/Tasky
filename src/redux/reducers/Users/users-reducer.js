@@ -10,6 +10,9 @@ import {
     FETCHING_SUPERVISORS_SUCCESS,
     FETCHING_SUPERVISORS_FAILED,
 
+    FETCHING_DELETED_SUCCESS,
+    FETCHING_DELETED_FAILED,
+
     EDIT_EMPLOYEE,
     EDIT_EMPLOYEE_SUCCEE,
     EDIT_EMPLOYEE_FAILED,
@@ -17,6 +20,7 @@ import {
     ADD_EMPLOYEE,
     ADD_EMPLOYEE_SUCCESS,
     ADD_EMPLOYEE_FAILED,
+    FETCHING_UNDELETED_SUCCESS,
 } from "./users-types";
 
 const usersReducer = (state = usersState, action) => {
@@ -29,14 +33,16 @@ const usersReducer = (state = usersState, action) => {
                 fetchAllEmployeesError: '',
                 fetchSupervisorsError: '',
                 addEmployeeError: '',
-                addEmployeeSuccess: ''
+                addEmployeeSuccess: '',
+                editEmpSuccess: '',
+                editEmpError: ''
             }
         }
 
         case FETCHING_ALL_EMP: {
             return {
                 ...state,
-                fetchAllEmployeesLoading: true
+                fetchAllEmployeesLoading: true,
             }
         }
         case FETCHING_ALL_EMP_SUCCESS: {
@@ -57,43 +63,66 @@ const usersReducer = (state = usersState, action) => {
         case FETCHING_SUPERVISORS: {
             return {
                 ...state,
-                fetchSupervisorsLoading: true,
+                fetchAllEmployeesLoading: true,
             }
         }
         case FETCHING_SUPERVISORS_SUCCESS: {
             return {
                 ...state,
-                fetchSupervisorsLoading: false,
+                fetchAllEmployeesLoading: false,
                 supervisors: action.supervisors
             }
         }
         case FETCHING_SUPERVISORS_FAILED: {
             return {
                 ...state,
-                fetchSupervisorsLoading: false,
+                fetchAllEmployeesLoading: false,
                 supervisors: [],
                 fetchSupervisorsError: action.fetchSupervisorsError
+            }
+        }
+
+        case FETCHING_DELETED_SUCCESS: {
+            return {
+                ...state,
+                deletedEmployees: action.deletedEmployees
+            }
+        }
+        case FETCHING_DELETED_FAILED: {
+            return {
+                ...state,
+                deletedEmployees: []
+            }
+        }
+
+        case FETCHING_UNDELETED_SUCCESS: {
+            return {
+                ...state,
+                undeletedEmployees: action.undeletedEmployees,
+                fetchAllEmployeesLoading: false,
             }
         }
 
         case EDIT_EMPLOYEE: {
             return {
                 ...state,
-                editEmpLoading: true
+                editEmpLoading: true,
+                editEmpError: '',
+                editEmpSuccess: ''
             }
         }
         case EDIT_EMPLOYEE_SUCCEE: {
             return {
                 ...state,
                 editEmpLoading: false,
-                editEmpSuccess: action?.status
+                editEmpSuccess: action?.editEmpSuccess
             }
         }
         case EDIT_EMPLOYEE_FAILED: {
             return {
                 ...state,
                 editEmpLoading: false,
-                editEmpError: action?.editEmpError
+                editEmpError: action?.editEmpError.message
             }
         }
 

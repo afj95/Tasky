@@ -18,10 +18,25 @@ import { I18nManager } from 'react-native';
 
 const MainStack = createStackNavigator();
 const MainNavigator = () => {
-    const [initialRouteName, setInitialRouteName] = useState('')
+    const [initialRouteName, setInitialRouteName] = useState('');
     const [screenToShow, setScreenToShow] = useState(<Loader />);
 
-    const user = useSelector((state) => state?.authReducer?.user)
+    const user = useSelector((state) => state?.authReducer?.user);
+
+    useEffect(() => {
+        AsyncStorage.getItem('lang', (error, lang) => {
+            if(error) {
+                i18n.locale = "ar";
+                I18nManager.forceRTL(true);
+                I18nManager.allowRTL(true);
+            }
+            if(lang) {
+                i18n.locale = lang;
+                I18nManager.forceRTL(lang === 'ar');
+                I18nManager.allowRTL(lang === 'ar');
+            }
+        })
+    }, [])
 
     useEffect(() => {
         // Checking the token
@@ -39,17 +54,6 @@ const MainNavigator = () => {
             } else {
                 // In case of no token founded
                 setInitialRouteName('Auth')
-            }
-        })
-        AsyncStorage.getItem('lang', (error, lang) => {
-            if(error) {
-                i18n.locale = "ar";
-                I18nManager.forceRTL(true);
-                I18nManager.allowRTL(true);
-            } else if(lang) {
-                i18n.locale = lang;
-                I18nManager.forceRTL(lang === 'ar');
-                I18nManager.allowRTL(lang === 'ar');
             }
         })
     }, [initialRouteName])
