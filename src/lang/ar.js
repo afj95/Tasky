@@ -24,8 +24,6 @@ export default {
         name: "الإسم",
         haveAccount: "لديك حساب ؟ ",
         loggedinSuccessfully: "مرحبًا بك ...",
-        wrongPassword: "كلمة مرور خاطئة!",
-        notFoundedUser: "ليس لديك حساب مسجل!",
         projects: "المشاريع",
         addProject: "إضافة مشروع",
         projectName1: "الاسم الأول للمشروع",
@@ -76,6 +74,7 @@ export default {
         restoreEmployee: "استعادة الموظف",
         deletedUsers: "الموظفين المحذوفين",
         role: "الرتبة",
-        noDeleted: "الموظفين غير المحذوفين"
+        noDeleted: "الموظفين غير المحذوفين",
+        notDeletedSupervisors: "بدون المحذوف"
     }
 }

@@ -35,6 +35,7 @@ export const ProjectDetails = ({ route: { params: { project, status, deleted } }
         dispatch(fetchingOneProject(project?._id))
         return () => {
             dispatch(fetchingProjects(status, deleted))
+            dispatch(resetProjectsErrors());
         }
     }, [])
 
@@ -52,23 +53,13 @@ export const ProjectDetails = ({ route: { params: { project, status, deleted } }
                 duration: 1500,
             })
         }
-        dispatch(resetProjectsErrors());
     }, [fetchingProjectsLoading])
 
     const onRefresh = () => dispatch(fetchingOneProject(project?._id))
 
-    // const closeTaskInformationModal = () => {
-    //     setTaskDetailsModal(false)
-    // }
-
     const closeOptionsModal = () => {
         setOptionsModal(false)
     }
-
-    // const openTaskInformationModal = task => {
-    //     setTask(task);
-    //     setTaskDetailsModal(!taskDetailsModal);
-    // }
 
     const openOptionsModal = () => {
         setOptionsModal(!optionsModal);
@@ -91,6 +82,7 @@ export const ProjectDetails = ({ route: { params: { project, status, deleted } }
                     <View style={styles.container}>
                         {currentProject?.status === 'finished' && <View style={styles.deleted} /> }
                         {currentProject?.deleted && <View style={styles.status} /> }
+                        {fetchingProjectsLoading || !currentProject ? <ActivityIndicator size={'large'} color={'#000'} style={{ marginTop: 20 }} /> :
                         <ScrollView
                             ref={_scroll}
                             contentContainerStyle={styles.scrollContainer}
@@ -98,7 +90,7 @@ export const ProjectDetails = ({ route: { params: { project, status, deleted } }
                             keyboardDismissMode={'on-drag'}
                             refreshControl={
                                 <RefreshControl
-                                    refreshing={fetchingProjectsLoading}
+                                    refreshing={false}
                                     onRefresh={onRefresh}
                                 />
                             }>
@@ -106,6 +98,7 @@ export const ProjectDetails = ({ route: { params: { project, status, deleted } }
                                 <MyText text={`${currentProject?.projectName1}`} />
                                 <MyText text={`${currentProject?.projectName2}`} />
                             </View>
+                            {currentProject?.projectSupervisors ?
                             <View style={styles.supervisorContainer}>
                                 <MyText style={styles.label}>projectSupervisors</MyText>
                                 <MyText style={styles.supervisor} text={`${currentProject?.projectSupervisors?.name}`} />
@@ -117,7 +110,7 @@ export const ProjectDetails = ({ route: { params: { project, status, deleted } }
                                     <MyText style={styles.phoneNumber} text={`${currentProject?.projectSupervisors?.phoneNumber}`} />
                                     {user.phoneNumber !== currentProject?.projectSupervisors?.phoneNumber ? <Feather name={'external-link'} size={15} color={Colors.black} /> : null}
                                 </TouchableOpacity>
-                            </View>
+                            </View>: null}
                             <View style={styles.descriptionContainer}>
                                 <MyText style={styles.label}>projectDescription</MyText>
                                 <MyText style={styles.description} text={`${currentProject?.projectDescription}`} />
@@ -135,7 +128,7 @@ export const ProjectDetails = ({ route: { params: { project, status, deleted } }
                                     />
                                 )}
                             </View>
-                        </ScrollView>
+                        </ScrollView>}
                     </View>
                     {user?.role === 'admin' && currentProject?.status !== 'finished' && !currentProject?.deleted ?
                         <AddTask project={project} _scrollRef={_scroll} />

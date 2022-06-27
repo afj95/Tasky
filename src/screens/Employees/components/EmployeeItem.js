@@ -10,7 +10,7 @@ import { EmpOptionsModal } from './EmpOptionsModal';
 import { useSelector } from 'react-redux';
 import { t } from 'i18next';
 
-export const EmployeeItem = ({ employee, onRefresh }) => {
+export const EmployeeItem = ({ employee, onRefresh, undeletedSupervisor }) => {
     
     const [empModalVisible, setEmpModal] = useState(false)
 
@@ -23,9 +23,9 @@ export const EmployeeItem = ({ employee, onRefresh }) => {
 
     const openEmployeeModal = () => setEmpModal(true)
 
-    // if(undeletedSupervisor && employee.deleted) {
-    //     return null;
-    // }
+    if(undeletedSupervisor && employee.deleted) {
+        return null;
+    }
 
     return (
         <>

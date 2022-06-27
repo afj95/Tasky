@@ -24,8 +24,6 @@ export default {
         name: "Name",
         haveAccount: "Have an account ? ",
         loggedinSuccessfully: "Welcome Back..",
-        wrongPassword: "Wrong password!",
-        notFoundedUser: "You don't have an account!",
         projects: "Projects",
         addProject: "Add Project",
         projectName1: "First Project Name",
@@ -76,6 +74,7 @@ export default {
         restoreEmployee: "Restore employee",
         deletedUsers: "Deleted users",
         role: "Role",
-        noDeleted: "Undeleted only"
+        noDeleted: "Undeleted only",
+        notDeletedSupervisors: "Without deleted"
     }
 }

@@ -20,8 +20,6 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
     
     const onRegisterTextPressed = () => navigate('Register', {})
 
-    const onForgetTextPressed = () => navigate('ForgetPassword', {})
-
     return (
         <View>
             <View style={styles.textContainer}>
@@ -67,11 +65,6 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
             />
             {errors?.password ? <ErrorText error={errors?.password}/> : null}
 
-            {/* <View style={styles.forgotPass}>
-                <TouchableOpacity style={{ marginVertical: 20 }} onPress={onForgetTextPressed}>
-                    <MyText>forgotPassword</MyText>
-                </TouchableOpacity>
-            </View> */}
             <TouchableOpacity
                 style={styles.loginButton}
                 disabled={authLoading}

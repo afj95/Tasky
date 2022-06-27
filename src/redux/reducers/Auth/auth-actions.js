@@ -22,7 +22,7 @@ const login = (username, password) => {
                 type: AUTH_SUCCESS,
                 payload: {
                     user: loginResponse?.data?.data?.user,
-                    authStatus: loginResponse?.status,
+                    authStatus: loginResponse,
                 }
             });
             

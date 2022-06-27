@@ -5,9 +5,9 @@ import {
     KeyboardAvoidingView,
     Platform,
     ScrollView,
-    Pressable
+    Pressable,
+    TextInput
 } from 'react-native';
-import { TextInput } from 'react-native-paper';
 import MyText from '../../../components/UI/MyText';
 import { t } from '../../../i18n';
 import { SupervisorsModal } from './SupervisorsModal';
@@ -62,10 +62,10 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                         style={styles.input(isLoading)}
                         placeholder={t('app.projectSupervisors')}
                         mode={'flat'}
-                        disabled
+                        editable={false}
                         pointerEvents={'none'}
                         onChangeText={handleChange('projectSupervisors')}
-                        value={values?.projectSupervisor}
+                        value={values?.projectSupervisor} // here will show the label from the modal
                         error={errors?.projectSupervisors}
                         onBlur={handleBlur('projectSupervisors')}
                         theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
@@ -75,8 +75,8 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                 <SupervisorsModal
                     modalVisible={modalVisible}
                     onSelect={async (item) => {
-                        setFieldValue('projectSupervisors', item?._id)
-                        setFieldValue('projectSupervisor', item?.name)
+                        await setFieldValue('projectSupervisors', item?._id)
+                        await setFieldValue('projectSupervisor', item?.name)
                     }}
                     closeModal={() => setModalVisible(false)}
                 />
@@ -92,8 +92,10 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                     onChangeText={handleChange('projectDescription')}
                     value={values?.projectDescription}
                     error={errors?.projectDescription}
-                    multiline
-                    onBlur={handleBlur('projectDescription')}
+                    textAlignVertical={'top'}
+                    multiline={true}
+                    numberOfLines={10}
+                    // onBlur={handleBlur('projectDescription')}
                     theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
                 />
                 {errors?.projectDescription ? <ErrorText error={errors?.projectDescription} /> : null}
@@ -132,7 +134,8 @@ const styles = StyleSheet.create({
         height: 60,
         justifyContent: 'center',
         backgroundColor: isLoading ? '#f2f2f2' : 'white',
-        borderRadius: 8
+        borderRadius: 8,
+        padding: 10
     }),
     haveAccount: {
         flexDirection: 'row',

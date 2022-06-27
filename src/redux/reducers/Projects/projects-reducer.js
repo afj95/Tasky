@@ -32,7 +32,8 @@ const projectsReducer = (state = projectsState, action) => {
                 finishProjectFailed: '',
                 deleteProjectSuccess: '',
                 deleteProjectFailed: '',
-                fetchingProjectError: ''
+                fetchingProjectError: '',
+                project: ''
             }
         }
 

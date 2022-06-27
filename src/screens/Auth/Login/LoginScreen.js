@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Platform, TouchableOpacity, Alert, I18nManager } from 'react-native';
 import { Formik } from 'formik';  
 import { LoginForm } from './components';
 import MyText from '../../../components/UI/MyText';
@@ -10,6 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { t } from '../../../i18n';
+import { FontAwesome } from '@expo/vector-icons';
+import i18n from 'i18n-js';
+import { reloadAsync } from 'expo-updates';
 
 export const LoginScreen = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -22,7 +25,7 @@ export const LoginScreen = ({ navigation }) => {
     }, [])
     
     useEffect(() => {
-        switch(authStatus) {
+        switch(authStatus.status) {
             case 200:
                 showMessage({
                     message: t('app.loggedinSuccessfully'),
@@ -38,11 +41,19 @@ export const LoginScreen = ({ navigation }) => {
                         routes: [ { name: 'Home' } ]
                     })
                 )
+            }).catch(e => {
+                showMessage({
+                    message: t('app.serverError'),
+                    titleStyle: { textAlign: 'left' },
+                    type: 'danger',
+                    duration: 3000,
+                    style: { paddingTop: 33, borderBottomStartRadius: 8, borderBottomEndRadius: 8 }
+                })
             })
             break;
             case 403:
                 showMessage({
-                    message: t('app.wrongPassword'),
+                    message: authStatus.message,
                     titleStyle: { textAlign: 'left' },
                     type: 'danger',
                     duration: 3000,
@@ -51,7 +62,7 @@ export const LoginScreen = ({ navigation }) => {
             break;
             case 404:
                 showMessage({
-                    message: t('app.notFoundedUser'),
+                    message: authStatus.message,
                     titleStyle: { textAlign: 'left' },
                     type: 'danger',
                     duration: 3000,
@@ -100,6 +111,43 @@ export const LoginScreen = ({ navigation }) => {
         return errors;
     };
 
+    const onChangeLanguagePressed = () => {
+        Alert.alert(t('app.changeLangAlertTitle'), t('app.changeLangMessage'), [
+            {
+                style: 'cancel',
+                text: t('app.changeLangCancel')
+            },
+            {
+                text: t('app.changeLangConfirm'),
+                onPress: () => {
+                    AsyncStorage.getItem('lang', async (error, lang) => {
+                        if(error) {
+                            i18n.locale = "ar";
+                            I18nManager.forceRTL(true);
+                            I18nManager.allowRTL(true);
+                        }
+                        if(lang === 'ar') {
+                            i18n.locale = 'en';
+                            I18nManager.forceRTL(false);
+                            I18nManager.allowRTL(false);
+                            await AsyncStorage.setItem('lang', 'en')
+                        } else {
+                            i18n.locale = 'ar';
+                            I18nManager.forceRTL(true);
+                            I18nManager.allowRTL(true);
+                            await AsyncStorage.setItem('lang', 'ar')
+                        }
+                        reloadAsync();
+                    })
+                }
+            }
+        ],
+        {
+            /** @platform android */
+            cancelable: true,
+        })
+    }
+
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
             <View style={styles.welcomeContainer}>
@@ -107,14 +155,20 @@ export const LoginScreen = ({ navigation }) => {
             </View>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ alignItems: 'center' }}>
                 <View style={styles.formContainer}>
+                    <TouchableOpacity activeOpacity={0.8} onPress={onChangeLanguagePressed} style={{ alignItems: 'flex-end' }}>
+                        <FontAwesome
+                            name="language"
+                            size={18}
+                        />
+                    </TouchableOpacity>
                     <View style={{ alignItems: 'center' }}>
                         <MyText style={{ marginBottom: 20, fontSize: 18 }}>login</MyText>
                     </View>
                     <Formik
                         /*
-                        // 'validate' better the 'validationSchema'
-                        // cuz validation in schema can't sort which 
-                        // validate fun will start first.
+                            // 'validate' better the 'validationSchema'
+                            // cuz validation in schema can't sort which 
+                            // validate fun will start first.
                         */
                         validate={validate}
                         onSubmit={onSubmit}

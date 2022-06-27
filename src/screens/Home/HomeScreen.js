@@ -4,7 +4,6 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  Dimensions,
 } from "react-native";
 // Components
 import { Header } from "./components";
@@ -27,7 +26,6 @@ export const HomeScreen = () => {
 
   const user = useSelector((state) => state?.authReducer?.user)
   const projects = useSelector(state => state?.projectsReducer?.projects)
-  const fetchingProjectsLoading = useSelector(state => state?.projectsReducer?.fetchingProjectsLoading)
 
   useEffect(() => {
     dispatch(resetProjectsErrors())
@@ -89,12 +87,6 @@ export const HomeScreen = () => {
     )
   }
 
-  const uri1 = 'https://lh3.googleusercontent.com/6V1FwiAavhOXvs-IkKjvmUcJJ2FS6ku-ycrZejWb6Hp_7h1Qk1gqew5kMl9dNZWn00U';
-  const uri2 = 'https://png.pngtree.com/thumb_back/fh260/background/20200714/pngtree-modern-double-color-futuristic-neon-background-image_351866.jpg';
-  const uri3 = 'https://png.pngtree.com/thumb_back/fh260/background/20200714/pngtree-modern-double-color-futuristic-neon-background-image_351866.jpg';
-
-  const { width } = Dimensions.get('window');
-
   return (
     <>
       <View style={styles.header}>
@@ -108,7 +100,7 @@ export const HomeScreen = () => {
           ListHeaderComponent={_listHeaderComponent}
           showsVerticalScrollIndicator={false}
           onRefresh={_onRefresh}
-          refreshing={fetchingProjectsLoading}
+          refreshing={false}
           renderItem={_renderItem}
         />
       </View>

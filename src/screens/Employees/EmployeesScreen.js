@@ -4,7 +4,7 @@ import {
     StyleSheet,
     FlatList,
     ActivityIndicator,
-    ScrollView
+    ScrollView,
 } from 'react-native';
 import { Header, EmployeeItem as EI } from './components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +20,7 @@ export const EmployeesScreen = () => {
     const dispatch = useDispatch();
 
     const [focusedList, setFocusedList] = useState(1)
-    // const [undeletedSupervisor, seUndeletedSupervisor] = useState(false)
+    const [undeletedSupervisor, seUndeletedSupervisor] = useState(false)
 
     const all_employees = useSelector(state => state?.usersReducer?.all_employees);
     const fetchAllEmployeesLoading = useSelector(state => state?.usersReducer?.fetchAllEmployeesLoading);
@@ -65,25 +65,35 @@ export const EmployeesScreen = () => {
     }
 
     return (
-        <View style={styles.container}>
+        <>
             <Header text={'employees'} onEmployeePressed={onEmployeePressed} />
-            <ScrollView
-                horizontal
-                contentContainerStyle={{ paddingEnd: 40 }}
-                showsHorizontalScrollIndicator={false}>
-                <TouchableOpacity activeOpacity={0.7} onPress={() => setList(1)} style={styles.allEmp(focusedList, 1)}>
-                    <MyText>{'all'}</MyText>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.7} onPress={() => setList(2)} style={styles.allEmp(focusedList, 2)}>
-                    <MyText>{'supervisors'}</MyText>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.7} onPress={() => setList(3)} style={styles.allEmp(focusedList, 3)}>
-                    <MyText>{'deletedUsers'}</MyText>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.7} onPress={() => setList(4)} style={styles.allEmp(focusedList, 4)}>
-                    <MyText>{'noDeleted'}</MyText>
-                </TouchableOpacity>
-            </ScrollView>
+            <View>
+                <ScrollView
+                    horizontal
+                    contentContainerStyle={{ paddingEnd: 40, paddingStart: 10 }}
+                    showsHorizontalScrollIndicator={false}>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => setList(1)} style={styles.allEmp(focusedList, 1)}>
+                        <MyText>{'all'}</MyText>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => setList(2)} style={styles.allEmp(focusedList, 2)}>
+                        <MyText>{'supervisors'}</MyText>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => setList(3)} style={styles.allEmp(focusedList, 3)}>
+                        <MyText>{'deletedUsers'}</MyText>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => setList(4)} style={styles.allEmp(focusedList, 4)}>
+                        <MyText>{'noDeleted'}</MyText>
+                    </TouchableOpacity>
+                </ScrollView>
+            </View>
+            {focusedList === 2 ?
+                <View>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => seUndeletedSupervisor(!undeletedSupervisor)} style={styles.undeletedSupervisor(undeletedSupervisor)}>
+                        <MyText>{'notDeletedSupervisors'}</MyText>
+                    </TouchableOpacity>
+                </View>
+            : null}
+
             <View style={styles.employeesStateView}>
                 <MyText style={styles.empState}>
                     {focusedList === 1 ? 'all'
@@ -100,38 +110,20 @@ export const EmployeesScreen = () => {
                     :
                         focusedList === 3 ? deletedEmployees?.length
                     : undeletedEmployees?.length || ''} />
-                {/* {focusedList === 2 ?
-                    <TouchableOpacity style={{
-                        marginStart: 5,
-                        padding: 7,
-                        backgroundColor: focusedList === 2 && undeletedSupervisor ? '#fff' : '#b9b9b9',
-                        borderRadius: 20,
-                        borderWidth: 2,
-                        borderColor: '#999',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginVertical: 10
-                    }}>
-                        <MyText text={'undeleted'} />
-                    </TouchableOpacity>
-                : null} */}
-                {fetchAllEmployeesLoading && <ActivityIndicator size={'small'} color={Colors.black} />}
+                {fetchAllEmployeesLoading ? <ActivityIndicator size={12} color={Colors.black} /> : null}
             </View>
             <FlatList
                 keyExtractor={(item, index) => '#' + index.toString()}
                 data={focusedList === 1 ? all_employees : focusedList === 2 ? supervisors : focusedList === 3 ? deletedEmployees : undeletedEmployees}
                 onRefresh={onRefresh}
                 refreshing={fetchAllEmployeesLoading}
-                renderItem={({ item, index }) => <EI employee={item} key={index} onRefresh={onRefresh} />}
+                renderItem={({ item, index }) => <EI undeletedSupervisor={undeletedSupervisor} employee={item} key={index} onRefresh={onRefresh} />}
             />
-        </View>
+        </>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     cancelAllEmp: {
         marginStart: 10,
         width: 25,
@@ -145,6 +137,7 @@ const styles = StyleSheet.create({
         margin: 10
     },
     allEmp: (focusedList, id) => ({
+        alignSelf: 'flex-start',
         marginStart: 5,
         padding: 7,
         backgroundColor: focusedList === id ? '#fff' : '#b9b9b9',
@@ -154,6 +147,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginVertical: 10
+    }),
+    undeletedSupervisor: undeletedSupervisor => ({
+        alignSelf: 'flex-start',
+        marginStart: 5,
+        padding: 7,
+        backgroundColor: undeletedSupervisor ? '#fff' : '#b9b9b9',
+        borderRadius: 20,
+        borderWidth: 2,
+        borderColor: '#999',
+        justifyContent: 'center',
+        alignItems: 'center',
     }),
     empState: {
         marginStart: 10,
