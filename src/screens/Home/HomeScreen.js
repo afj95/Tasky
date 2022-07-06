@@ -71,7 +71,6 @@ export const HomeScreen = () => {
 
   const _listHeaderComponent = () => {
     return (
-      // <Ionicons name={'filter'} size={25} style={styles.filterIcon} onPress={openFilterModal} />
       <View style={styles.filterContainer}>
         <TouchableOpacity
           onPress={() => setStatus(status === 'active' ? 'finished' : 'active')}
@@ -132,10 +131,6 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 8
   }),
-  filterIcon: {
-    marginHorizontal: 10,
-    marginTop: 10,
-  },
   projectsContainer: {
     paddingHorizontal: 10,
     flex: 1,

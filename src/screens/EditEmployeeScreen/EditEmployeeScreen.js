@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 import { Formik } from 'formik';  
 import MyText from '../../components/UI/MyText';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { EditEmpoyeeForm, Header } from './components';
 import { editEmployee, resetUsersErrors } from '../../redux/reducers/Users/users-actions';

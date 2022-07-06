@@ -27,9 +27,7 @@ export const ProjectDetails = ({ route: { params: { project, status, deleted } }
     const fetchingProjectsLoading = useSelector((state) => state?.projectsReducer?.fetchingProjectsLoading);
     const fetchingProjectError = useSelector((state) => state?.projectsReducer?.fetchingProjectError);
 
-    // const [taskDetailsModal, setTaskDetailsModal] = useState(false);
     const [optionsModal, setOptionsModal] = useState(false);
-    // const [task, setTask] = useState('');
 
     useEffect(() => {
         dispatch(fetchingOneProject(project?._id))
@@ -135,7 +133,6 @@ export const ProjectDetails = ({ route: { params: { project, status, deleted } }
                     : null}
                 </>
             }
-            {/* <TaskDetailsModal task={task} visible={taskDetailsModal} closeModal={closeTaskInformationModal} /> */}
             <ProjectActionsModal visible={optionsModal} closeModal={closeOptionsModal} project={project} />
         </>
     )
