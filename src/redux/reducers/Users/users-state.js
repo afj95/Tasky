@@ -3,9 +3,10 @@ export const usersState = {
     all_employees: [],
     fetchAllEmployeesError: '',
 
-    fetchSupervisorsLoading: false,
     supervisors: [],
-    fetchSupervisorsError: '',
+
+    deletedEmployees: [],
+    undeletedEmployees: [],
 
     editEmpLoading: false,
     editEmpSuccess: '',

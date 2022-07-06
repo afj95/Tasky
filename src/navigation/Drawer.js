@@ -90,15 +90,9 @@ export const Drawer = ({ props }) => {
             <DrawerContentScrollView {...props}>
                 {Object.keys(user).length === 0 ? (
                     <></>
-                    ) : (
-                        <>
-                            {/* <View style={styles.profileContainer}>
-                            </View> */}
-                        </>
-                    )}
+                    ) : (<></>)}
                 <View>
                     <DrawerItemList state={state} {...rest} />
-                    {/* <DrawerPaper.Section style={styles.drawerSection} /> */}
                 </View>
             </DrawerContentScrollView>
             <DrawerItem style={styles.seperator} label={() => <></>} />
@@ -172,14 +166,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderTopWidth: 0.5,
         borderTopColor: Colors.text,
-    },
-    profileContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginHorizontal: 20,
-        marginVertical: 20,
-    },
-    drawerSection: {
-        marginTop: 10,
-    },
+    }
 })

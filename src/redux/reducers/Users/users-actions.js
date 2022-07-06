@@ -2,8 +2,12 @@ import {
     fetchAllEmployeesReq,
     fetchSuperVisorsReq,
     editEmployeeReq,
-    addEmployeeReq
-} from '../../../services';
+    addEmployeeReq, 
+    deleteEmployeeReq,
+    undoDeleteEmployeeReq,
+    fetchDeletedEmployeesReq,
+    fetchUndeletedEmployeesReq
+} from './requests';
 import {
     RESET_ERRORS,
 
@@ -15,6 +19,9 @@ import {
     FETCHING_SUPERVISORS_SUCCESS,
     FETCHING_SUPERVISORS_FAILED,
 
+    FETCHING_DELETED_SUCCESS,
+    FETCHING_DELETED_FAILED,
+
     EDIT_EMPLOYEE,
     EDIT_EMPLOYEE_SUCCEE,
     EDIT_EMPLOYEE_FAILED,
@@ -22,6 +29,7 @@ import {
     ADD_EMPLOYEE,
     ADD_EMPLOYEE_SUCCESS,
     ADD_EMPLOYEE_FAILED,
+    FETCHING_UNDELETED_SUCCESS,
 } from './users-types'
 
 const resetUsersErrors = () => {
@@ -62,22 +70,48 @@ const fetchSuperVisors = () => {
         } catch (error) {
             dispatch({
                 type: FETCHING_SUPERVISORS_FAILED,
-                fetchSupervisorsError: error
+                fetchAllEmployeesError: error
             })
         }
     }
 }
 
-const editEmployee = async emp_id => {
-    return async dispatch => {
+const fetchUndeletedEmployees = () => {
+    return async (dispatch) => {
         try {
-            dispatch({ type: EDIT_EMPLOYEE })
-
-            const editEmployeeRes = await editEmployeeReq(emp_id)
-
-            dispatch({ type: EDIT_EMPLOYEE_SUCCEE, editEmpSuccess: editEmployeeRes?.data?.data })
+            dispatch({ type: FETCHING_ALL_EMP })
+            
+            const fetchUndeletedEmployeesRes = await fetchUndeletedEmployeesReq();
+            
+            dispatch({
+                type: FETCHING_UNDELETED_SUCCESS,
+                undeletedEmployees: fetchUndeletedEmployeesRes?.data?.data?.undeletedUsers
+            })
         } catch (error) {
-            dispatch({ type: EDIT_EMPLOYEE_FAILED, editEmpError: error })
+            dispatch({
+                type: FETCHING_ALL_EMP_FAILED,
+                fetchAllEmployeesError: error
+            })
+        }
+    }
+}
+
+const fetchDeletedEmployees = () => {
+    return async (dispatch) => {
+        try {
+            dispatch({ type: FETCHING_ALL_EMP })
+            
+            const fetchDeletedEmployeesRes = await fetchDeletedEmployeesReq();
+            
+            dispatch({
+                type: FETCHING_DELETED_SUCCESS,
+                deletedEmployees: fetchDeletedEmployeesRes?.data?.data?.deletedUsers
+            })
+        } catch (error) {
+            dispatch({
+                type: FETCHING_ALL_EMP_FAILED,
+                fetchAllEmployeesError: error
+            })
         }
     }
 }
@@ -90,6 +124,7 @@ const addEmpoloyee = async (values) => {
             const editEmployeeRes = await addEmployeeReq(values)
 
             dispatch({ type: ADD_EMPLOYEE_SUCCESS, addEmployeeSuccess: editEmployeeRes.data?.message })
+            dispatch(resetUsersErrors())
             dispatch(fetchAllEmployees())
             dispatch(resetUsersErrors())
         } catch (error) {
@@ -99,11 +134,66 @@ const addEmpoloyee = async (values) => {
     }
 }
 
+const editEmployee = async (values) => {
+    return async dispatch => {
+        try {
+            dispatch({ type: EDIT_EMPLOYEE })
+
+            const editEmployeeRes = await editEmployeeReq(values)
+
+            dispatch({ type: EDIT_EMPLOYEE_SUCCEE, editEmpSuccess: editEmployeeRes?.data?.data })
+            dispatch(resetUsersErrors())
+            dispatch(fetchAllEmployees())
+            dispatch(fetchSuperVisors())
+        } catch (error) {
+            dispatch({ type: EDIT_EMPLOYEE_FAILED, editEmpError: error })
+        }
+    }
+}
+
+const deleteEmployee = async (emp_id) => {
+    return async dispatch => {
+        try {
+            dispatch({ type: EDIT_EMPLOYEE })
+
+            const deleteEmployeeRes = await deleteEmployeeReq(emp_id)
+
+            dispatch({ type: EDIT_EMPLOYEE_SUCCEE, editEmpSuccess: deleteEmployeeRes?.data?.data })
+            dispatch(resetUsersErrors())
+            dispatch(fetchAllEmployees())
+            dispatch(fetchSuperVisors())
+        } catch (error) {
+            dispatch({ type: EDIT_EMPLOYEE_FAILED, editEmpError: error })
+        }
+    }
+}
+
+const restoreEmployee = async (emp_id) => {
+    return async dispatch => {
+        try {
+            dispatch({ type: EDIT_EMPLOYEE })
+
+            const deleteEmployeeRes = await undoDeleteEmployeeReq(emp_id)
+
+            dispatch({ type: EDIT_EMPLOYEE_SUCCEE, editEmpSuccess: deleteEmployeeRes?.data?.data })
+            dispatch(resetUsersErrors())
+            dispatch(fetchAllEmployees())
+            dispatch(fetchSuperVisors())
+        } catch (error) {
+            dispatch({ type: EDIT_EMPLOYEE_FAILED, editEmpError: error })
+        }
+    }
+}
+
 export {
     resetUsersErrors,
 
     fetchAllEmployees,
     fetchSuperVisors,
+    fetchDeletedEmployees,
+    fetchUndeletedEmployees,
+    addEmpoloyee,
     editEmployee,
-    addEmpoloyee
+    deleteEmployee,
+    restoreEmployee
 }

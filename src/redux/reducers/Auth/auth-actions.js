@@ -19,9 +19,11 @@ const login = (username, password) => {
             const loginResponse = await loginRequest(username, password);
 
             dispatch({
-                type: AUTH_SUCCESS, 
-                user: loginResponse?.data?.data?.user,
-                authStatus: loginResponse?.status,
+                type: AUTH_SUCCESS,
+                payload: {
+                    user: loginResponse?.data?.data?.user,
+                    authStatus: loginResponse,
+                }
             });
             
         } catch (error) {

@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
 });
 
 const persistConfig = {
-    key: 'bidMe-v1.0.2',
+    key: 'tasky-V1.0.0',
     // key: 'root',
     storage: AsyncStorage,
     stateReconciler: hardSet

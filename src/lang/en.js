@@ -24,8 +24,6 @@ export default {
         name: "Name",
         haveAccount: "Have an account ? ",
         loggedinSuccessfully: "Welcome Back..",
-        wrongPassword: "Wrong password!",
-        notFoundedUser: "You don't have an account!",
         projects: "Projects",
         addProject: "Add Project",
         projectName1: "First Project Name",
@@ -69,7 +67,14 @@ export default {
         supervisors: "Supervisor",
         all: "All employees",
         addEmployee: "Add new Employee",
-        addEmployeeInstractions: "قم بتعبة بيانات الموظف الجديد أدناه",
-        addEmployeeNote: "ملاحظة: كلمة المرور ستكون مطابقة لرقم الهاتف للموظف لتسجيل الدخول"
+        addEmployeeInstractions: "Fill the employee data below",
+        addEmployeeNote: "Note: The password will be the same as the phone number for login",
+        editEmployeeInstractions: "Edit the employee data below",
+        deleted: "Deleted",
+        restoreEmployee: "Restore employee",
+        deletedUsers: "Deleted users",
+        role: "Role",
+        noDeleted: "Undeleted only",
+        notDeletedSupervisors: "Without deleted"
     }
 }

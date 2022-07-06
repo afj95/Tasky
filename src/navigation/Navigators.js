@@ -10,13 +10,14 @@ import {
   AddProjectScreen,
   ProjectDetails,
   EmployeesScreen,
-  AddEmployeeScreen
+  AddEmployeeScreen,
+  EditEmployeeScreen
 } from '../screens';
 import { t } from '../i18n';
 import { useSelector } from 'react-redux';
 
 const AuthStack = createStackNavigator();
-const AuthStackScreens = () => (
+export const AuthStackScreens = () => (
   <AuthStack.Navigator screenOptions={{headerShown: false }}>
     <AuthStack.Screen name="Login" component={LoginScreen} />
     <AuthStack.Screen name="Register" component={RegisterScreen} />
@@ -25,7 +26,7 @@ const AuthStackScreens = () => (
 )
 
 const HomeStack = createStackNavigator();
-const HomeStackScreens = () => (
+export const HomeStackScreens = () => (
   <HomeStack.Navigator screenOptions={{headerShown: false }}>
     <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
     <HomeStack.Screen name="AddProject" component={AddProjectScreen} />
@@ -46,11 +47,12 @@ const EmployeesStuckScreens = () => (
   <EmployeesStuck.Navigator screenOptions={{headerShown: false }}>
     <EmployeesStuck.Screen name={'EmployeesScreen'} component={EmployeesScreen} />
     <EmployeesStuck.Screen name={'AddEmployeeScreen'} component={AddEmployeeScreen} />
+    <EmployeesStuck.Screen name={'EditEmployeeScreen'} component={EditEmployeeScreen} />
   </EmployeesStuck.Navigator>
 )
 
 const Drawer = createDrawerNavigator();
-const DrawerScreens = () => {
+export const DrawerScreens = () => {
   const user = useSelector(state => state.authReducer.user);
 
   return (
@@ -62,10 +64,4 @@ const DrawerScreens = () => {
       <Drawer.Screen name={t('app.employees')} component={EmployeesStuckScreens} /> : null}
     </Drawer.Navigator>
   )
-}
-
-export {
-  AuthStackScreens,
-  HomeStackScreens,
-  DrawerScreens
 }

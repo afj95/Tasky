@@ -3,11 +3,12 @@ import {
     View,
     StyleSheet,
     FlatList,
-    ActivityIndicator
+    ActivityIndicator,
+    ScrollView,
 } from 'react-native';
 import { Header, EmployeeItem as EI } from './components';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllEmployees, fetchSuperVisors, resetUsersErrors } from '../../redux/reducers/Users/users-actions';
+import { fetchAllEmployees, fetchDeletedEmployees, fetchSuperVisors, fetchUndeletedEmployees, resetUsersErrors } from '../../redux/reducers/Users/users-actions';
 import MyText from '../../components/UI/MyText';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { t } from 'i18n-js';
@@ -18,19 +19,22 @@ import Colors from '../../utils/Colors';
 export const EmployeesScreen = () => {
     const dispatch = useDispatch();
 
-    const [all, isAll] = useState(false)
+    const [focusedList, setFocusedList] = useState(1)
+    const [undeletedSupervisor, seUndeletedSupervisor] = useState(false)
 
     const all_employees = useSelector(state => state?.usersReducer?.all_employees);
     const fetchAllEmployeesLoading = useSelector(state => state?.usersReducer?.fetchAllEmployeesLoading);
     const fetchAllEmployeesError = useSelector(state => state?.usersReducer?.fetchAllEmployeesError);
 
     const supervisors = useSelector(state => state?.usersReducer?.supervisors);
-    const fetchSupervisorsLoading = useSelector(state => state?.usersReducer?.fetchSupervisorsLoading);
-    const fetchSupervisorsError = useSelector(state => state?.usersReducer?.fetchSupervisorsError);
+    const deletedEmployees = useSelector(state => state?.usersReducer?.deletedEmployees);
+    const undeletedEmployees = useSelector(state => state?.usersReducer?.undeletedEmployees);
 
     useEffect(() => {
         dispatch(fetchSuperVisors());
         dispatch(fetchAllEmployees());
+        dispatch(fetchDeletedEmployees());
+        dispatch(fetchUndeletedEmployees());
     }, [])
 
     useEffect(() => {
@@ -42,68 +46,84 @@ export const EmployeesScreen = () => {
             })
         }
         dispatch(resetUsersErrors())
-    }, [fetchAllEmployeesError, fetchSupervisorsError])
+    }, [fetchAllEmployeesError])
     
     const onRefresh = () => {
         dispatch(fetchAllEmployees());
         dispatch(fetchSuperVisors())
-    }
-
-    const getAll = () => {
-        isAll(!all)
-        onRefresh()
+        dispatch(fetchDeletedEmployees());
+        dispatch(fetchUndeletedEmployees());
     }
 
     const onEmployeePressed = () => {
         navigate('AddEmployeeScreen', {})
     }
 
+    const setList = id => {
+        setFocusedList(id);
+        onRefresh();
+    }
+
     return (
-        <View style={styles.container}>
+        <>
             <Header text={'employees'} onEmployeePressed={onEmployeePressed} />
-            <View style={styles.filterContainer}>
-                {all && <TouchableOpacity onPress={getAll} style={styles.cancelAllEmp}>
-                    <MyText text={'X'} />
-                </TouchableOpacity>}
-                <TouchableOpacity activeOpacity={0.7} disabled={all} onPress={getAll} style={styles.allEmp(all)}>
-                    <MyText text={'All'} />
-                </TouchableOpacity>
+            <View>
+                <ScrollView
+                    horizontal
+                    contentContainerStyle={{ paddingEnd: 40, paddingStart: 10 }}
+                    showsHorizontalScrollIndicator={false}>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => setList(1)} style={styles.allEmp(focusedList, 1)}>
+                        <MyText>{'all'}</MyText>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => setList(2)} style={styles.allEmp(focusedList, 2)}>
+                        <MyText>{'supervisors'}</MyText>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => setList(3)} style={styles.allEmp(focusedList, 3)}>
+                        <MyText>{'deletedUsers'}</MyText>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => setList(4)} style={styles.allEmp(focusedList, 4)}>
+                        <MyText>{'noDeleted'}</MyText>
+                    </TouchableOpacity>
+                </ScrollView>
             </View>
+            {focusedList === 2 ?
+                <View>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => seUndeletedSupervisor(!undeletedSupervisor)} style={styles.undeletedSupervisor(undeletedSupervisor)}>
+                        <MyText>{'notDeletedSupervisors'}</MyText>
+                    </TouchableOpacity>
+                </View>
+            : null}
+
             <View style={styles.employeesStateView}>
-                <MyText style={styles.empState}>{all ? 'all' : 'supervisors'}</MyText>
-                <MyText style={styles.empState} text={all ? all_employees.length : supervisors.length} />
-                {fetchAllEmployeesLoading || fetchSupervisorsLoading ?
-                    <ActivityIndicator size={'small'} color={Colors.black} />
-                :null}
+                <MyText style={styles.empState}>
+                    {focusedList === 1 ? 'all'
+                    :
+                        focusedList === 2 ? 'supervisors'
+                    :
+                        focusedList === 3 ? 'deletedUsers'
+                    : 'noDeleted'}
+                </MyText>
+                <MyText style={styles.empState}
+                    text={focusedList === 1 ? all_employees?.length
+                    :
+                        focusedList === 2 ? supervisors?.length
+                    :
+                        focusedList === 3 ? deletedEmployees?.length
+                    : undeletedEmployees?.length || ''} />
+                {fetchAllEmployeesLoading ? <ActivityIndicator size={12} color={Colors.black} /> : null}
             </View>
             <FlatList
                 keyExtractor={(item, index) => '#' + index.toString()}
-                data={all ? all_employees : supervisors}
+                data={focusedList === 1 ? all_employees : focusedList === 2 ? supervisors : focusedList === 3 ? deletedEmployees : undeletedEmployees}
                 onRefresh={onRefresh}
-                refreshing={all ? fetchAllEmployeesLoading : fetchSupervisorsLoading}
-                renderItem={({ item, index }) => <EI employee={item} key={index} />}
+                refreshing={fetchAllEmployeesLoading}
+                renderItem={({ item, index }) => <EI undeletedSupervisor={undeletedSupervisor} employee={item} key={index} onRefresh={onRefresh} />}
             />
-            {/* <View style={{
-                height: 50, width: 50, borderRadius: 25,
-                backgroundColor: 'red',
-                position: 'absolute',
-                bottom: 20,
-                end: 20,
-            }}>
-            </View> */}
-        </View>
+        </>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    filterContainer: {
-        flexDirection: 'row',
-        // justifyContent: 'center',
-        alignItems: 'center'
-    },
     cancelAllEmp: {
         marginStart: 10,
         width: 25,
@@ -116,20 +136,32 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         margin: 10
     },
-    allEmp: all => ({
+    allEmp: (focusedList, id) => ({
+        alignSelf: 'flex-start',
         marginStart: 5,
-        width: 70,
-        height: 40,
-        backgroundColor: all ? '#fff' : '#b9b9b9',
+        padding: 7,
+        backgroundColor: focusedList === id ? '#fff' : '#b9b9b9',
         borderRadius: 20,
-        borderWidth: 1,
-        borderColor: '#333',
+        borderWidth: 2,
+        borderColor: '#999',
         justifyContent: 'center',
         alignItems: 'center',
         marginVertical: 10
     }),
+    undeletedSupervisor: undeletedSupervisor => ({
+        alignSelf: 'flex-start',
+        marginStart: 5,
+        padding: 7,
+        backgroundColor: undeletedSupervisor ? '#fff' : '#b9b9b9',
+        borderRadius: 20,
+        borderWidth: 2,
+        borderColor: '#999',
+        justifyContent: 'center',
+        alignItems: 'center',
+    }),
     empState: {
         marginStart: 10,
+        marginEnd: 3,
         marginTop: 10,
         marginBottom: 5
     },

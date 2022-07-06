@@ -14,18 +14,14 @@ import { useNavigation } from '@react-navigation/native';
 
 const { height } = Dimensions.get("screen");
 
-export const Header = ({ user, text, showModal }) => {
+export const Header = ({ user, text }) => {
     const navigation = useNavigation();
 
     const _onAddProjectPressed = () => navigate('AddProject', {})
 
     return (
         <View style={styles.subHeader}>
-            <TouchableOpacity activeOpacity={0.5} onPress={showModal}>
-                {/* <MyText text={I18nManager.isRTL ? 'English' : 'العربية'} /> */}
-                {/* <Entypo name={'dots-three-vertical'} size={25} color={Colors.black} /> */}
-                <Ionicons name={'reorder-three'} size={35} color={Colors.buttons} onPress={navigation.toggleDrawer} />
-            </TouchableOpacity>
+            <Ionicons name={'reorder-three'} size={35} color={Colors.buttons} onPress={navigation.toggleDrawer} />
             <MyText style={{ fontSize: 20, fontWeight: 'bold' }}>{text}</MyText>
             {user.role === 'admin' ? <View style={styles.addProjectView}>
                 <Ionicons name={'md-add-circle'} size={22} color={Colors.buttons} onPress={_onAddProjectPressed} />
