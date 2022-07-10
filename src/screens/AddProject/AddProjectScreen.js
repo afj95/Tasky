@@ -5,6 +5,8 @@ import { addNewProject, resetProjectsErrors } from '../../redux/reducers/Project
 import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from 'react-native-flash-message';
 import { t } from '../../i18n';
+import { View } from 'react-native';
+import Colors from '../../utils/Colors';
 
 export const AddProjectScreen = () => {
     const dispatch = useDispatch();
@@ -14,30 +16,30 @@ export const AddProjectScreen = () => {
 
     const validate = (values) => {
         const errors = {};
-        if(!values?.projectName1) {
+        if (!values?.projectName1) {
             errors.projectName1 = 'fieldRequired'
         }
-        if(!values?.projectName2) {
+        if (!values?.projectName2) {
             errors.projectName2 = 'fieldRequired'
         }
-        if(!values?.projectSupervisors) {
+        if (!values?.projectSupervisors) {
             errors.projectSupervisors = 'fieldRequired'
         }
-        if(!values?.projectDescription) {
+        if (!values?.projectDescription) {
             errors.projectDescription = 'fieldRequired'
         }
         return errors;
     };
 
     useEffect(() => {
-        if(addProjectResponse === true) {
+        if (addProjectResponse === true) {
             showMessage({
                 message: t('app.projectAddedSuccess'),
                 type: 'success',
                 duration: 1500,
                 style: { paddingTop: 40 }
             })
-        } else if(addProjectResponse === false) {
+        } else if (addProjectResponse === false) {
             showMessage({
                 message: t('app.projectNotAdded'),
                 type: 'danger',
@@ -64,11 +66,11 @@ export const AddProjectScreen = () => {
             validate={validate}
             onSubmit={onSubmit}
             initialValues={initialValues}>
-            {props => 
-                <>
+            {props =>
+                <View style={{ backgroundColor: Colors.primary, flex: 1 }}>
                     <Header title={'addProject'} onPress={props?.handleSubmit} isLoading={fetchingProjectsLoading} />
                     <AddProjectForm addProjectProps={props} />
-                </>
+                </View>
             }
         </Formik>
     )

@@ -12,12 +12,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { t } from '../../../i18n';
 import { showMessage } from 'react-native-flash-message';
 import { addNewTask, resetTasksState } from '../../../redux/reducers/Tasks/tasks-actions';
+import Colors from '../../../utils/Colors';
 
 export const AddTask = ({ project, _scrollRef }) => {
     const dispatch = useDispatch();
 
     let textInputRef = null;
-    
+
     const [currentTask, setTask] = useState('');
     const [autoFocus, setAutoFocus] = useState(false);
 
@@ -26,20 +27,20 @@ export const AddTask = ({ project, _scrollRef }) => {
     const task = useSelector(state => state.tasksReducer.task);
 
     useEffect(() => {
-        if(addTaskError == 500) {
+        if (addTaskError == 500) {
             showMessage({
                 message: t('app.errorHappened'),
                 type: 'danger',
                 duration: 1500
             })
-        } else if(addTaskError == 404) {
+        } else if (addTaskError == 404) {
             showMessage({
                 message: t('app.errorHappened'),
                 description: t('app.errorCode') + ' ' + addTaskError,
                 type: 'danger',
                 duration: 1500
             })
-        } else if(addTaskError == 400) {
+        } else if (addTaskError == 400) {
             showMessage({
                 message: t('app.wrongData'),
                 type: 'danger',
@@ -54,7 +55,7 @@ export const AddTask = ({ project, _scrollRef }) => {
     }, [addTaskLoading])
 
     const onAddButtonPressed = () => {
-        if(currentTask !== '') {
+        if (currentTask !== '') {
             setAutoFocus(false)
             dispatch(addNewTask(project._id, currentTask))
             setTask('')
@@ -71,6 +72,7 @@ export const AddTask = ({ project, _scrollRef }) => {
                     onChangeText={setTask}
                     autoFocus={autoFocus}
                     placeholder={t('app.AddNewTask')}
+                    placeholderTextColor={Colors.text}
                     blurOnSubmit={false}
                     onSubmitEditing={onAddButtonPressed}
                     editable={!addTaskLoading}
@@ -78,8 +80,8 @@ export const AddTask = ({ project, _scrollRef }) => {
                 <View style={styles.addStuff} onPress={onAddButtonPressed}>
                     {addTaskLoading ?
                         <ActivityIndicator size={'small'} color={'white'} />
-                    :
-                        <Ionicons name={'add'} size={30} color={'#fff'} onPress={onAddButtonPressed} />
+                        :
+                        <Ionicons name={'add'} size={30} color={Colors.primary} onPress={onAddButtonPressed} />
                     }
                 </View>
             </View>
@@ -90,11 +92,9 @@ export const AddTask = ({ project, _scrollRef }) => {
 const styles = StyleSheet.create({
     textInputContainer: {
         width: '100%',
-        backgroundColor: '#eee',
-        justifyContent: 'space-between',
+        backgroundColor: Colors.primary,
+        justifyContent: 'space-around',
         flexDirection: 'row',
-        borderWidth: 1,
-        borderColor: '#ddd',
         paddingVertical: 3,
         paddingHorizontal: 2,
         alignItems: 'center'
@@ -105,16 +105,15 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         width: '90%',
         height: 40,
-        borderWidth: 1,
-        borderColor: '#ddd',
-        backgroundColor: '#fff'
+        backgroundColor: Colors.secondary,
+        color: Colors.text
     },
     addStuff: {
-        width: 32,
+        width: '8%',
         height: 32,
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#4d4dff'
+        backgroundColor: Colors.lightBlue,
     },
 })

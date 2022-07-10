@@ -25,28 +25,28 @@ export const ProjectActionsModal = ({ visible, closeModal, project }) => {
     const deleteProjectFailed = useSelector(state => state.projectsReducer.deleteProjectFailed)
 
     useEffect(() => {
-        if(finishProjectSuccess) {
+        if (finishProjectSuccess) {
             flash.current.showMessage({
                 message: 'success finish',
                 type: 'success',
                 duration: 1500,
             })
         }
-        if(finishProjectFailed) {
+        if (finishProjectFailed) {
             flash.current.showMessage({
                 message: 'failed finish',
                 type: 'danger',
                 duration: 1500,
             })
         }
-        if(deleteProjectSuccess) {
+        if (deleteProjectSuccess) {
             flash.current.showMessage({
                 message: 'success delete',
                 type: 'success',
                 duration: 1500,
             })
         }
-        if(deleteProjectFailed) {
+        if (deleteProjectFailed) {
             flash.current.showMessage({
                 message: 'failed delete',
                 type: 'danger',
@@ -60,7 +60,7 @@ export const ProjectActionsModal = ({ visible, closeModal, project }) => {
         dispatch(finishProject(currentProject?._id))
         dispatch(fetchingOneProject(currentProject?._id))
     }
-    
+
     const onDeleteProjectPressed = () => {
         dispatch(deleteProject(currentProject?._id))
         dispatch(fetchingOneProject(currentProject?._id))
@@ -78,16 +78,16 @@ export const ProjectActionsModal = ({ visible, closeModal, project }) => {
                             <AntDesign
                                 name={'closecircle'}
                                 size={24}
-                                color={Colors.black}
+                                color={Colors.buttons}
                                 onPress={closeModal}
                                 style={{ alignSelf: 'center' }}
                             />
-                            {projectActionsLoading && <ActivityIndicator size={'small'} color={Colors.black} /> }
+                            {projectActionsLoading && <ActivityIndicator size={'small'} color={Colors.black} />}
                         </View>
-                            <TouchableOpacity disabled activeOpacity={0.5} style={styles.editProject}>
-                                <MyText>editProejct</MyText>
-                                <MyText style={{ fontSize: 10 }}>editProejctDisabled</MyText>
-                            </TouchableOpacity>
+                        {/* <TouchableOpacity disabled activeOpacity={0.5} style={styles.editProject}>
+                            <MyText>editProejct</MyText>
+                            <MyText style={{ fontSize: 10 }}>editProejctDisabled</MyText>
+                        </TouchableOpacity> */}
                         {currentProject?.status !== 'finished' &&
                             <TouchableOpacity onPress={onFinishProjectPressed} activeOpacity={0.5} style={styles.finishProject(currentProject?.deleted)}>
                                 <MyText>finishProject</MyText>
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     modalView: {
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.secondary,
         borderTopStartRadius: 20,
         borderTopEndRadius: 20,
         padding: 10,
@@ -143,4 +143,3 @@ const styles = StyleSheet.create({
         padding: 10,
     },
 });
-  

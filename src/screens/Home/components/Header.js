@@ -21,14 +21,14 @@ export const Header = ({ user, text }) => {
 
     return (
         <View style={styles.subHeader}>
-            <Ionicons name={'reorder-three'} size={35} color={Colors.buttons} onPress={navigation.toggleDrawer} />
-            <MyText style={{ fontSize: 20, fontWeight: 'bold' }}>{text}</MyText>
+            <Ionicons name={'reorder-three'} size={35} color={Colors.appWhite} onPress={navigation.toggleDrawer} />
+            <MyText style={{ fontSize: 20, fontWeight: 'bold', color: Colors.text }}>{text}</MyText>
             {user.role === 'admin' ? <View style={styles.addProjectView}>
                 <Ionicons name={'md-add-circle'} size={22} color={Colors.buttons} onPress={_onAddProjectPressed} />
-                <MyText style={styles.addProjectText}>addProject</MyText>
+                <MyText>addProject</MyText>
             </View> : <View />}
         </View>
-    )   
+    )
 }
 
 const styles = StyleSheet.create({
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingHorizontal: 10,
         paddingTop: height > 600 ? 55 : 10,
-        backgroundColor: '#fff',
+        backgroundColor: Colors.secondary,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -46,14 +46,11 @@ const styles = StyleSheet.create({
         shadowColor: '#999999',
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.8,
-        shadowRadius: 2,  
+        shadowRadius: 2,
         elevation: 4,
     },
     addProjectView: {
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    addProjectText: {
-        color: Colors.text
     }
 })

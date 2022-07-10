@@ -9,16 +9,17 @@ import { TextInput } from 'react-native-paper';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import MyText from '../../../components/UI/MyText';
 import { t } from '../../../i18n';
+import Colors from '../../../utils/Colors';
 
 export const AddEmpoyeeForm = ({ RegisterProps: { handleChange, values, errors, handleBlur, handleSubmit }, isLoading }) => {
     return (
         <View>
             <View style={styles.textContainer}>
-                <AntDesign name={'user'} size={15} style={{ marginEnd: 5 }} color={'#000'} />
+                <AntDesign name={'user'} size={15} style={{ marginEnd: 5 }} color={Colors.buttons} />
                 <MyText>name</MyText>
             </View>
             <TextInput
-                style={styles.input(isLoading)}
+                style={styles.input}
                 placeholder={t('app.name')}
                 mode={'flat'}
                 onChangeText={handleChange('name')}
@@ -27,14 +28,14 @@ export const AddEmpoyeeForm = ({ RegisterProps: { handleChange, values, errors, 
                 onBlur={handleBlur('name')}
                 theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
             />
-            {errors?.name ? <ErrorText error={errors?.name}/> : null}
+            {errors?.name ? <ErrorText error={errors?.name} /> : null}
 
             <View style={styles.textContainer}>
-                <Entypo name={'mobile'} size={15} style={{ marginEnd: 5 }} color={'#000'} />
+                <Entypo name={'mobile'} size={15} style={{ marginEnd: 5 }} color={Colors.buttons} />
                 <MyText>phone</MyText>
             </View>
             <TextInput
-                style={styles.input(isLoading)}
+                style={styles.input}
                 placeholder={'05XXXXXXXX'}
                 mode={'flat'}
                 onChangeText={handleChange('username')}
@@ -45,18 +46,18 @@ export const AddEmpoyeeForm = ({ RegisterProps: { handleChange, values, errors, 
                 maxLength={10}
                 theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
             />
-            {errors?.username ? <ErrorText error={errors?.username}/> : null}
-            
+            {errors?.username ? <ErrorText error={errors?.username} /> : null}
+
             {isLoading ?
-                <View 
+                <View
                     style={styles.registerButton}>
                     <ActivityIndicator size={'large'} color={'white'} />
                 </View>
-            :
+                :
                 <TouchableOpacity
                     style={styles.registerButton}
                     onPress={handleSubmit}>
-                    <MyText style={{ color: 'white', fontSize: 18 }}>addEmployee</MyText>
+                    <MyText style={{ color: 'white', fontSize: 18, color: Colors.primary }}>addEmployee</MyText>
                 </TouchableOpacity>
             }
         </View>
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     },
     registerButton: {
         height: 50,
-        backgroundColor: 'black',
+        backgroundColor: Colors.lightBlue,
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
@@ -80,14 +81,14 @@ const styles = StyleSheet.create({
         shadowColor: '#888888',
         shadowOffset: { width: 0, height: 5 },
         shadowOpacity: 0.8,
-        shadowRadius: 2,  
+        shadowRadius: 2,
         elevation: 5
     },
-    input: (isLoading) => ({
+    input: {
         width: '100%',
         justifyContent: 'center',
-        backgroundColor: isLoading ? '#f2f2f2' : 'white',
-    })
+        backgroundColor: Colors.appWhite,
+    }
 })
 
 const ErrorText = ({ error }) => <MyText style={{ color: '#B22323', fontSize: 12 }}>{error}</MyText>

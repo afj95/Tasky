@@ -11,19 +11,22 @@ import { useSelector } from 'react-redux';
 import { t } from 'i18next';
 
 export const EmployeeItem = ({ employee, onRefresh, undeletedSupervisor }) => {
-    
+
     const [empModalVisible, setEmpModal] = useState(false)
+    const [anyChange, isAnyChange] = useState(false)
 
     const user = useSelector((state) => state?.authReducer?.user)
 
     const closeEmpOptionsModal = () => {
         setEmpModal(false);
-        onRefresh();
+        if (anyChange) {
+            onRefresh();
+        }
     }
 
     const openEmployeeModal = () => setEmpModal(true)
 
-    if(undeletedSupervisor && employee.deleted) {
+    if (undeletedSupervisor && employee.deleted) {
         return null;
     }
 
@@ -31,21 +34,22 @@ export const EmployeeItem = ({ employee, onRefresh, undeletedSupervisor }) => {
         <>
             <View style={styles.container(employee.deleted)}>
                 <View>
-                    <MyText text={employee.name} />
-                    <MyText text={employee.role} />
+                    <MyText style={styles.text} text={employee.name} />
+                    <MyText style={styles.text} text={employee.role} />
                 </View>
                 {employee._id === user._id ? null :
-                <Entypo
-                    name={'dots-three-vertical'}
-                    size={20}
-                    color={Colors.black}
-                    onPress={openEmployeeModal}
-                />}
+                    <Entypo
+                        name={'dots-three-vertical'}
+                        size={20}
+                        color={Colors.black}
+                        onPress={openEmployeeModal}
+                    />}
             </View>
             <EmpOptionsModal
                 employee={employee}
                 visible={empModalVisible}
                 closeModal={closeEmpOptionsModal}
+                isAnyChange={isAnyChange}
             />
         </>
     )
@@ -53,7 +57,7 @@ export const EmployeeItem = ({ employee, onRefresh, undeletedSupervisor }) => {
 
 const styles = StyleSheet.create({
     container: (deleted) => ({
-        backgroundColor: deleted ? '#ffb3b3' : '#fff',
+        backgroundColor: deleted ? '#ffb3b3' : Colors.lightBlue,
         marginBottom: 5,
         paddingHorizontal: 10,
         flexDirection: 'row',
@@ -65,4 +69,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: 'bold'
     },
+    text: {
+        color: Colors.black
+    }
 })

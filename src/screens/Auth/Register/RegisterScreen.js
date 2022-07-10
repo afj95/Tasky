@@ -5,7 +5,7 @@ import {
     KeyboardAvoidingView,
     Platform
 } from 'react-native';
-import { Formik } from 'formik';  
+import { Formik } from 'formik';
 import { RegisterForm } from './components';
 import MyText from '../../../components/UI/MyText';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -13,6 +13,7 @@ import { resetAuth, register } from '../../../redux/reducers/Auth/auth-actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from 'react-native-flash-message';
 import { t } from '../../../i18n';
+import Colors from '../../../utils/Colors';
 
 export const RegisterScreen = () => {
     const dispatch = useDispatch();
@@ -21,7 +22,7 @@ export const RegisterScreen = () => {
     const user = useSelector((state) => state?.authReducer?.user)
 
     useEffect(() => {
-        switch(authStatus) {
+        switch (authStatus) {
             case 201:
                 showMessage({
                     message: t('app.registeredSuccessfully'),
@@ -30,7 +31,7 @@ export const RegisterScreen = () => {
                     duration: 3000
                 })
                 // TODO: Store token and navigate to home
-            break;
+                break;
             case 409:
                 showMessage({
                     message: t('app.registeringDuplicate'),
@@ -38,7 +39,7 @@ export const RegisterScreen = () => {
                     type: 'danger',
                     duration: 3000
                 })
-            break;
+                break;
             case 500:
                 showMessage({
                     message: t('app.serverError'),
@@ -46,7 +47,7 @@ export const RegisterScreen = () => {
                     type: 'danger',
                     duration: 3000
                 })
-            break;
+                break;
         }
         dispatch(resetAuth());
     }, [authStatus, user])
@@ -61,16 +62,16 @@ export const RegisterScreen = () => {
 
     const validate = (values) => {
         const errors = {};
-        if(!values.name) {
+        if (!values.name) {
             errors.name = 'required'
         }
         if (!values.username) {
-          errors.username = 'required';
-        } else if(isNaN(values.username)) {
+            errors.username = 'required';
+        } else if (isNaN(values.username)) {
             errors.username = 'onlyNumbers'
-        } else if(values.username.charAt(0) !== '0') {
+        } else if (values.username.charAt(0) !== '0') {
             errors.username = 'phonneNumstart'
-        } else if(values.username.length < 10) {
+        } else if (values.username.length < 10) {
             errors.username = 'phoneNumlength'
         }
         if (!values.password) {
@@ -95,7 +96,7 @@ export const RegisterScreen = () => {
                         validate={validate}
                         onSubmit={onSubmit}
                         initialValues={initialValues}>
-                        {props => <RegisterForm RegisterProps={props} /> }
+                        {props => <RegisterForm RegisterProps={props} />}
                     </Formik>
                 </View>
             </ScrollView>
@@ -106,7 +107,8 @@ export const RegisterScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 20
+        paddingTop: 20,
+        backgroundColor: Colors.primary
     },
     welcomeContainer: {
         height: '20%',
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
     },
     formContainer: {
         width: '90%',
-        backgroundColor: 'white',
+        backgroundColor: Colors.secondary,
         paddingVertical: 25,
         paddingHorizontal: 10,
         borderRadius: 10,
@@ -124,7 +126,7 @@ const styles = StyleSheet.create({
         shadowColor: '#999999',
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.8,
-        shadowRadius: 2,  
+        shadowRadius: 2,
         elevation: 5
     },
 })

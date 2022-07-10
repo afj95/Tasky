@@ -12,58 +12,61 @@ import MyText from '../../../../components/UI/MyText';
 import { t } from '../../../../i18n';
 import { useSelector } from 'react-redux';
 import { navigate } from '../../../../navigation/RootNavigation';
+import Colors from '../../../../utils/Colors';
 
-export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBlur, handleSubmit }}) => {
+export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBlur, handleSubmit } }) => {
 
     const authLoading = useSelector((state) => state?.authReducer?.authLoading);
     const [showPass, setShowPass] = useState(false);
-    
+
     const onRegisterTextPressed = () => navigate('Register', {})
 
     return (
         <View>
             <View style={styles.textContainer}>
-                <AntDesign name={'user'} size={15} style={{ marginEnd: 5 }} color={'#000'} />
+                <AntDesign name={'user'} size={15} style={{ marginEnd: 5 }} color={Colors.appWhite} />
                 <MyText>phone</MyText>
             </View>
             <TextInput
-                style={styles.input(authLoading)}
+                style={styles.input}
                 placeholder={'05XXXXXXXX'}
+                placeholderTextColor={Colors.secondary}
                 mode={'flat'}
                 onChangeText={handleChange('username')}
                 value={values?.username}
                 error={errors?.username}
                 onBlur={handleBlur('username')}
                 keyboardType="decimal-pad"
-                theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                theme={{ colors: { text: Colors.secondary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
             />
-            {errors?.username ? <ErrorText error={errors?.username}/> : null}
+            {errors?.username ? <ErrorText error={errors?.username} /> : null}
 
             <View style={[styles.textContainer, { marginTop: 30 }]}>
-                <Feather name={'lock'} size={15} style={{ marginEnd: 5 }} color={'#000'} />
+                <Feather name={'lock'} size={15} style={{ marginEnd: 5 }} color={Colors.appWhite} />
                 <MyText>password</MyText>
             </View>
             <TextInput
-                style={styles.input(authLoading)}
+                style={styles.input}
                 placeholder={t('app.password')}
+                placeholderTextColor={Colors.secondary}
                 mode={'flat'}
                 onChangeText={handleChange('password')}
                 value={values?.password}
                 error={errors?.password}
                 secureTextEntry={showPass ? false : true}
                 onBlur={handleBlur('password')}
-                theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                theme={{ colors: { text: Colors.secondary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
                 right={
                     <TextInput.Icon
                         name={showPass ? 'eye' : 'eye-off'}
                         size={24}
-                        color={'#595959'}
+                        color={Colors.secondary}
                         style={{ paddingRight: 10 }}
                         onPress={() => setShowPass(!showPass)}
                     />
                 }
             />
-            {errors?.password ? <ErrorText error={errors?.password}/> : null}
+            {errors?.password ? <ErrorText error={errors?.password} /> : null}
 
             <TouchableOpacity
                 style={styles.loginButton}
@@ -71,8 +74,8 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
                 onPress={handleSubmit}>
                 {authLoading ?
                     <ActivityIndicator size={'large'} color={'white'} />
-                :
-                    <MyText style={{ color: 'white', fontSize: 18 }}>login</MyText>
+                    :
+                    <MyText style={styles.loginText}>login</MyText>
                 }
             </TouchableOpacity>
             <View style={styles.newHere}>
@@ -92,7 +95,7 @@ const styles = StyleSheet.create({
     },
     loginButton: {
         height: 50,
-        backgroundColor: 'black',
+        backgroundColor: Colors.lightBlue,
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
@@ -102,14 +105,15 @@ const styles = StyleSheet.create({
         shadowColor: '#888888',
         shadowOffset: { width: 0, height: 5 },
         shadowOpacity: 0.8,
-        shadowRadius: 2,  
+        shadowRadius: 2,
     },
-    input: (authLoading) => ({
+    loginText: { color: Colors.primary, fontSize: 18 },
+    input: {
         width: '100%',
         marginTop: 5,
         justifyContent: 'center',
-        backgroundColor: authLoading ? '#f2f2f2' : 'white',
-    }),
+        backgroundColor: Colors.appWhite,
+    },
     forgotPass: {
         width: '100%',
         alignItems: 'center',
@@ -118,11 +122,11 @@ const styles = StyleSheet.create({
     newHere: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent:  'center',
+        justifyContent: 'center',
         marginTop: 15
     },
     signupText: {
-        color: 'blue',
+        color: Colors.lightBlue,
         textDecorationLine: 'underline'
     }
 })

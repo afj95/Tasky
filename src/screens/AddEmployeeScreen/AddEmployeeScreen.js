@@ -5,13 +5,14 @@ import {
     KeyboardAvoidingView,
     Platform
 } from 'react-native';
-import { Formik } from 'formik';  
+import { Formik } from 'formik';
 import MyText from '../../components/UI/MyText';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from 'react-native-flash-message';
 import { AddEmpoyeeForm, Header } from './components';
 import { addEmpoloyee } from '../../redux/reducers/Users/users-actions'
+import Colors from '../../utils/Colors';
 
 export const AddEmployeeScreen = () => {
     const dispatch = useDispatch();
@@ -21,7 +22,7 @@ export const AddEmployeeScreen = () => {
     const addEmployeeError = useSelector((state) => state?.usersReducer?.addEmployeeError)
 
     useEffect(() => {
-        if(addEmployeeError) {
+        if (addEmployeeError) {
             showMessage({
                 message: addEmployeeError + '',
                 type: 'danger',
@@ -30,7 +31,7 @@ export const AddEmployeeScreen = () => {
                 titleStyle: { fontSize: 18 }
             })
         }
-        if(addEmployeeSuccess) {
+        if (addEmployeeSuccess) {
             showMessage({
                 message: addEmployeeSuccess + '',
                 type: 'success',
@@ -50,23 +51,23 @@ export const AddEmployeeScreen = () => {
 
     const validate = (values) => {
         const errors = {};
-        if(!values.name) {
+        if (!values.name) {
             errors.name = 'required'
         }
         if (!values.username) {
-          errors.username = 'required';
-        } else if(isNaN(values.username)) {
+            errors.username = 'required';
+        } else if (isNaN(values.username)) {
             errors.username = 'onlyNumbers'
-        } else if(values.username.charAt(0) !== '0') {
+        } else if (values.username.charAt(0) !== '0') {
             errors.username = 'phonneNumstart'
-        } else if(values.username.length < 10) {
+        } else if (values.username.length < 10) {
             errors.username = 'phoneNumlength'
         }
         return errors;
     };
 
     return (
-        <>
+        <View style={styles.container}>
             <Header text={'addEmployee'} showGoBackButton />
             <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
                 <View style={styles.instractionsView}>
@@ -79,19 +80,19 @@ export const AddEmployeeScreen = () => {
                             validate={validate}
                             onSubmit={onSubmit}
                             initialValues={initialValues}>
-                            {props => <AddEmpoyeeForm RegisterProps={props} isLoading={addEmployeeLoading} /> }
+                            {props => <AddEmpoyeeForm RegisterProps={props} isLoading={addEmployeeLoading} />}
                         </Formik>
                     </View>
                 </ScrollView>
             </KeyboardAvoidingView>
-        </>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 20,
+        backgroundColor: Colors.primary
     },
     scrollStyles: {
         flex: 1,
@@ -104,16 +105,17 @@ const styles = StyleSheet.create({
         marginTop: 25
     },
     instractionsText: {
-        fontSize: 18
+        fontSize: 18,
+        color: Colors.text
     },
     notesText: {
         fontSize: 10,
         marginStart: 5,
-        color: '#333'
+        color: Colors.text
     },
     formContainer: {
         width: '90%',
-        backgroundColor: 'white',
+        backgroundColor: Colors.secondary,
         paddingVertical: 25,
         paddingHorizontal: 10,
         borderRadius: 10,
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
         shadowColor: '#999999',
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.8,
-        shadowRadius: 2,  
+        shadowRadius: 2,
         elevation: 5
     },
 })

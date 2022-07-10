@@ -12,21 +12,24 @@ import { useDispatch } from 'react-redux';
 import { navigate } from '../../../navigation/RootNavigation';
 import { deleteEmployee, restoreEmployee } from '../../../redux/reducers/Users/users-actions';
 
-export const EmpOptionsModal = ({ visible, closeModal, employee }) => {
+export const EmpOptionsModal = ({ visible, closeModal, employee, isAnyChange }) => {
 
     const dispatch = useDispatch();
 
     const onEditEmployeePressed = () => {
+        isAnyChange(true)
         closeModal();
-        navigate('EditEmployeeScreen', {employee: employee})
+        navigate('EditEmployeeScreen', { employee: employee })
     }
 
     const onDeleteEmployeePressed = () => {
+        isAnyChange(true)
         dispatch(deleteEmployee(employee._id))
         closeModal();
     }
 
     const onRestoreEmployeePressed = () => {
+        isAnyChange(true)
         dispatch(restoreEmployee(employee._id))
         closeModal();
     }
@@ -43,7 +46,7 @@ export const EmpOptionsModal = ({ visible, closeModal, employee }) => {
                             <AntDesign
                                 name={'closecircle'}
                                 size={24}
-                                color={Colors.black}
+                                color={Colors.buttons}
                                 onPress={closeModal}
                             />
                         </View>
@@ -61,7 +64,7 @@ export const EmpOptionsModal = ({ visible, closeModal, employee }) => {
                                 style={styles.deleteEmployeeContainer}>
                                 <MyText>deleteEmployee</MyText>
                             </TouchableOpacity>
-                        :
+                            :
                             <TouchableOpacity
                                 activeOpacity={0.5}
                                 onPress={onRestoreEmployeePressed}
@@ -85,7 +88,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     modalView: {
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.primary,
         borderTopStartRadius: 20,
         borderTopEndRadius: 20,
         padding: 10,
@@ -100,6 +103,7 @@ const styles = StyleSheet.create({
     closeButton: { alignSelf: 'flex-end' },
     editEmployeeContainer: {
         borderBottomWidth: 0.6,
+        borderBottomColor: Colors.lightBlue,
         padding: 10,
         borderTopStartRadius: 8,
         borderTopEndRadius: 8,

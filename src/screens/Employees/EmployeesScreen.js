@@ -38,7 +38,7 @@ export const EmployeesScreen = () => {
     }, [])
 
     useEffect(() => {
-        if(fetchAllEmployeesError === 500) {
+        if (fetchAllEmployeesError === 500) {
             showMessage({
                 message: t('app.serverError'),
                 type: 'danger',
@@ -47,7 +47,7 @@ export const EmployeesScreen = () => {
         }
         dispatch(resetUsersErrors())
     }, [fetchAllEmployeesError])
-    
+
     const onRefresh = () => {
         dispatch(fetchAllEmployees());
         dispatch(fetchSuperVisors())
@@ -64,53 +64,63 @@ export const EmployeesScreen = () => {
         onRefresh();
     }
 
+    const setEmployeesType = (list) => {
+        if (undeletedEmployees) {
+            seUndeletedSupervisor(!undeletedEmployees)
+        }
+        setList(list)
+    }
+
     return (
-        <>
+        <View style={styles.container}>
             <Header text={'employees'} onEmployeePressed={onEmployeePressed} />
             <View>
                 <ScrollView
                     horizontal
                     contentContainerStyle={{ paddingEnd: 40, paddingStart: 10 }}
                     showsHorizontalScrollIndicator={false}>
-                    <TouchableOpacity activeOpacity={0.7} onPress={() => setList(1)} style={styles.allEmp(focusedList, 1)}>
-                        <MyText>{'all'}</MyText>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => setEmployeesType(1)} style={styles.allEmp(focusedList, 1)}>
+                        <MyText style={styles.filterText}>{'all'}</MyText>
                     </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.7} onPress={() => setList(2)} style={styles.allEmp(focusedList, 2)}>
-                        <MyText>{'supervisors'}</MyText>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => setEmployeesType(2)} style={styles.allEmp(focusedList, 2)}>
+                        <MyText style={styles.filterText}>{'supervisors'}</MyText>
                     </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.7} onPress={() => setList(3)} style={styles.allEmp(focusedList, 3)}>
-                        <MyText>{'deletedUsers'}</MyText>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => setEmployeesType(3)} style={styles.allEmp(focusedList, 3)}>
+                        <MyText style={styles.filterText}>{'deletedUsers'}</MyText>
                     </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.7} onPress={() => setList(4)} style={styles.allEmp(focusedList, 4)}>
-                        <MyText>{'noDeleted'}</MyText>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => setEmployeesType(4)} style={styles.allEmp(focusedList, 4)}>
+                        <MyText style={styles.filterText}>{'noDeleted'}</MyText>
                     </TouchableOpacity>
                 </ScrollView>
             </View>
             {focusedList === 2 ?
                 <View>
-                    <TouchableOpacity activeOpacity={0.7} onPress={() => seUndeletedSupervisor(!undeletedSupervisor)} style={styles.undeletedSupervisor(undeletedSupervisor)}>
-                        <MyText>{'notDeletedSupervisors'}</MyText>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => seUndeletedSupervisor(!undeletedSupervisor)}
+                        style={styles.undeletedSupervisor(undeletedSupervisor)}>
+                        <MyText style={styles.filterText}>{'notDeletedSupervisors'}</MyText>
                     </TouchableOpacity>
                 </View>
-            : null}
+                : null}
 
             <View style={styles.employeesStateView}>
                 <MyText style={styles.empState}>
                     {focusedList === 1 ? 'all'
-                    :
+                        :
                         focusedList === 2 ? 'supervisors'
-                    :
-                        focusedList === 3 ? 'deletedUsers'
-                    : 'noDeleted'}
+                            :
+                            focusedList === 3 ? 'deletedUsers'
+                                : 'noDeleted'}
                 </MyText>
                 <MyText style={styles.empState}
                     text={focusedList === 1 ? all_employees?.length
-                    :
+                        :
                         focusedList === 2 ? supervisors?.length
-                    :
-                        focusedList === 3 ? deletedEmployees?.length
-                    : undeletedEmployees?.length || ''} />
-                {fetchAllEmployeesLoading ? <ActivityIndicator size={12} color={Colors.black} /> : null}
+                            :
+                            focusedList === 3 ? deletedEmployees?.length
+                                : undeletedEmployees?.length || ''} />
+                {fetchAllEmployeesLoading ? <ActivityIndicator size={12} color={Colors.buttons} /> : null}
             </View>
             <FlatList
                 keyExtractor={(item, index) => '#' + index.toString()}
@@ -119,11 +129,15 @@ export const EmployeesScreen = () => {
                 refreshing={fetchAllEmployeesLoading}
                 renderItem={({ item, index }) => <EI undeletedSupervisor={undeletedSupervisor} employee={item} key={index} onRefresh={onRefresh} />}
             />
-        </>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: Colors.primary
+    },
     cancelAllEmp: {
         marginStart: 10,
         width: 25,
@@ -140,7 +154,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         marginStart: 5,
         padding: 7,
-        backgroundColor: focusedList === id ? '#fff' : '#b9b9b9',
+        backgroundColor: focusedList === id ? Colors.lightBlue : Colors.secondary,
         borderRadius: 20,
         borderWidth: 2,
         borderColor: '#999',
@@ -148,11 +162,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginVertical: 10
     }),
+    filterText: {
+        color: Colors.black,
+    },
     undeletedSupervisor: undeletedSupervisor => ({
         alignSelf: 'flex-start',
         marginStart: 5,
         padding: 7,
-        backgroundColor: undeletedSupervisor ? '#fff' : '#b9b9b9',
+        backgroundColor: undeletedSupervisor ? Colors.lightBlue : Colors.secondary,
         borderRadius: 20,
         borderWidth: 2,
         borderColor: '#999',
@@ -163,7 +180,8 @@ const styles = StyleSheet.create({
         marginStart: 10,
         marginEnd: 3,
         marginTop: 10,
-        marginBottom: 5
+        marginBottom: 5,
+        color: Colors.text
     },
     employeesStateView: {
         flexDirection: 'row',
