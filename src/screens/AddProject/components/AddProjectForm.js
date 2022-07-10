@@ -30,11 +30,12 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                     mode={'flat'}
                     value={values?.projectName1}
                     error={errors?.projectName1}
-                    style={styles.input(isLoading)}
+                    style={styles.input}
                     onBlur={handleBlur('projectName1')}
                     placeholder={t('app.projectName1')}
+                    placeholderTextColor={Colors.text}
                     onChangeText={handleChange('projectName1')}
-                    theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                    theme={{ colors: { text: Colors.text, error: '#B22323', primary: '#595959' }, roundness: 12 }}
                 />
                 {errors?.projectName1 ? <ErrorText error={errors?.projectName1} /> : null}
 
@@ -42,14 +43,15 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                     <MyText>projectName2</MyText>
                 </View>
                 <TextInput
-                    style={styles.input(isLoading)}
+                    style={styles.input}
                     placeholder={t('app.projectName2')}
+                    placeholderTextColor={Colors.text}
                     mode={'flat'}
                     onChangeText={handleChange('projectName2')}
                     value={values?.projectName2}
                     error={errors?.projectName2}
                     onBlur={handleBlur('projectName2')}
-                    theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                    theme={{ colors: { text: Colors.text, error: '#B22323', primary: '#595959' }, roundness: 12 }}
                 />
                 {errors?.projectName2 ? <ErrorText error={errors?.projectName2} /> : null}
 
@@ -59,8 +61,9 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                 </View>
                 <Pressable onPress={() => setModalVisible(!modalVisible)} >
                     <TextInput
-                        style={styles.input(isLoading)}
+                        style={styles.input}
                         placeholder={t('app.projectSupervisors')}
+                        placeholderTextColor={Colors.text}
                         mode={'flat'}
                         editable={false}
                         pointerEvents={'none'}
@@ -68,7 +71,7 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                         value={values?.projectSupervisor} // here will show the label from the modal
                         error={errors?.projectSupervisors}
                         onBlur={handleBlur('projectSupervisors')}
-                        theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                        theme={{ colors: { text: Colors.text, error: '#B22323', primary: '#595959' }, roundness: 12 }}
                     />
                 </Pressable>
                 {errors?.projectSupervisors ? <ErrorText error={errors?.projectSupervisors} /> : null}
@@ -86,8 +89,9 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                 </View>
                 <TextInput
                     roundness={0}
-                    style={{ ...styles.input(isLoading), height: 180 }}
+                    style={{ ...styles.input, height: 180 }}
                     placeholder={t('app.projectDescription')}
+                    placeholderTextColor={Colors.text}
                     mode={'flat'}
                     onChangeText={handleChange('projectDescription')}
                     value={values?.projectDescription}
@@ -96,7 +100,7 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                     multiline={true}
                     numberOfLines={10}
                     // onBlur={handleBlur('projectDescription')}
-                    theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                    theme={{ colors: { text: Colors.text, error: '#B22323', primary: '#595959' }, roundness: 12 }}
                 />
                 {errors?.projectDescription ? <ErrorText error={errors?.projectDescription} /> : null}
             </ScrollView>
@@ -108,6 +112,7 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         paddingHorizontal: 10,
+        backgroundColor: Colors.primary
     },
     textContainer: {
         flexDirection: 'row',
@@ -129,14 +134,15 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         elevation: 5
     },
-    input: (isLoading) => ({
+    input: {
         width: '100%',
         height: 60,
         justifyContent: 'center',
-        backgroundColor: isLoading ? '#f2f2f2' : 'white',
+        backgroundColor: Colors.secondary,
         borderRadius: 8,
-        padding: 10
-    }),
+        padding: 10,
+        color: Colors.text
+    },
     haveAccount: {
         flexDirection: 'row',
         alignItems: 'center',

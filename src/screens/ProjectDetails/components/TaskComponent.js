@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import { Fontisto, Ionicons } from '@expo/vector-icons';
 import React, { useState, useEffect } from 'react'
 import {
     ActivityIndicator,
@@ -10,6 +10,7 @@ import {
 import { showMessage } from 'react-native-flash-message';
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../../components/UI/MyText';
+import { fetchingOneProject } from '../../../redux/reducers/Projects/projects-actions';
 import { deleteTask, checkTask as checkTaskAction, resetTasksState, unCheckTask } from '../../../redux/reducers/Tasks/tasks-actions';
 import Colors from '../../../utils/Colors';
 
@@ -20,18 +21,18 @@ export const TaskComponent = ({ project, index, task, onPress }) => {
     const deleteTaskError = useSelector((state) => state?.tasksReducer?.deleteTaskError)
     const checkTaskError = useSelector((state) => state?.tasksReducer?.checkTaskError)
     const fetchingProjectsLoading = useSelector((state) => state?.projectsReducer?.fetchingProjectsLoading)
-    
+
     const [checked, setChecked] = useState(false);
     const [deleted, setDeleted] = useState(false);
 
     useEffect(() => {
-        if(deleteTaskError) {
+        if (deleteTaskError) {
             showMessage({
                 message: t('app.errorHappened'),
                 type: 'danger',
                 duration: 1500,
             })
-        } else if(checkTaskError) {
+        } else if (checkTaskError) {
             showMessage({
                 message: t('app.errorHappened'),
                 type: 'danger',
@@ -41,7 +42,7 @@ export const TaskComponent = ({ project, index, task, onPress }) => {
         dispatch(resetTasksState())
     }, [fetchingProjectsLoading])
 
-    const deleteTaskPressed = async() => {
+    const deleteTaskPressed = async () => {
         setDeleted(true)
         await dispatch(deleteTask(task._id, project._id))
         setDeleted(false)
@@ -49,11 +50,12 @@ export const TaskComponent = ({ project, index, task, onPress }) => {
 
     const checkTask = async () => {
         setChecked(true)
-        if(!task?.checked) {
-            await dispatch(checkTaskAction(task._id, project._id))
+        if (task?.checked) {
+            await dispatch(unCheckTask(task._id))
         } else {
-            await dispatch(unCheckTask(task._id, project._id))
+            await dispatch(checkTaskAction(task._id))
         }
+        await dispatch(fetchingOneProject(project._id))
         setChecked(false)
     }
 
@@ -64,24 +66,24 @@ export const TaskComponent = ({ project, index, task, onPress }) => {
             activeOpacity={0.6}
             onPress={onPress}>
             {/* onPress={() => openTaskInformationModal(task)} */}
-            <MyText style={styles.taskText(task?.checked)} text={`${task?.task}`} />
+            <MyText style={styles.taskText(task?.checked)} numberOfLines={3} text={`${task?.task}`} />
             <View style={styles.checkContainer}>
                 {/* delete task - only if admin */}
                 {
-                    deleted ? <ActivityIndicator size={'small'} color={Colors.black} />
-                    :
-                    user?.role === 'admin' && project?.status !== 'finished' && !project?.deleted ?
-                        <Ionicons name={'trash-bin'} size={20} color={Colors.red} onPress={deleteTaskPressed} />
-                    : <View />
+                    deleted ? <ActivityIndicator size={'small'} color={task.checked ? Colors.secondary : Colors.primary} />
+                        :
+                        user?.role === 'admin' && project?.status !== 'finished' && !project?.deleted ?
+                            <Ionicons name={'trash-bin'} size={20} color={Colors.red} onPress={deleteTaskPressed} />
+                            : <View />
                 }
-                {checked ? <ActivityIndicator size={'small'} color={Colors.black} /> :
+                {checked ? <ActivityIndicator size={'small'} color={task.checked ? Colors.secondary : Colors.primary} /> :
                     project?.status === 'finished' || project?.deleted ? null :
-                    <CheckBox
-                        value={task?.checked}
-                        onValueChange={checkTask}
-                        tintColors={{ true: Colors.black, false: Colors.white }}
-                        style={styles.checkbox}
-                    />
+                        <Fontisto
+                            name={task.checked ? 'checkbox-active' : 'checkbox-passive'}
+                            size={20}
+                            onPress={checkTask}
+                            color={task.checked ? Colors.secondary : Colors.primary}
+                        />
                 }
             </View>
         </TouchableOpacity>
@@ -90,19 +92,27 @@ export const TaskComponent = ({ project, index, task, onPress }) => {
 
 const styles = StyleSheet.create({
     taskContainer: (index, length, checked) => ({
-        backgroundColor: checked ? '#ddd' : Colors.white,
+        backgroundColor: checked ? Colors.primary : Colors.secondary,
+        alignItems: 'center',
         borderRadius: 4,
         paddingHorizontal: 5,
         fontSize: 13,
         width: '100%',
-        height: 35,
+        // height: 35,
+        paddingVertical: 5,
         borderBottomWidth: index !== length - 1 ? 0.5 : 0,
+        marginVertical: 2,
         borderColor: '#ccc',
         justifyContent: 'space-between',
         flexDirection: 'row'
     }),
     taskText: (checked) => ({
-        textDecorationLine: checked ? 'line-through' : 'none'
+        textDecorationLine: checked ? 'line-through' : 'none',
+        textDecorationColor: Colors.text,
+        color: Colors.text,
+        textDecorationStyle: 'solid',
+        width: '80%',
+        alignSelf: 'flex-start'
     }),
     checkContainer: {
         width: 80,

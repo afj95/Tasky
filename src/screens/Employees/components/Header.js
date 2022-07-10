@@ -23,10 +23,10 @@ export const Header = ({ text, onEmployeePressed }) => {
                 color={Colors.buttons}
                 onPress={navigation.toggleDrawer}
             />
-            <MyText style={{ fontSize: 20, fontWeight: 'bold' }}>{text}</MyText>
-            <AntDesign name={'adduser'} size={30} color={Colors.black} onPress={onEmployeePressed} />
+            <MyText style={{ fontSize: 20, fontWeight: 'bold', color: Colors.text }}>{text}</MyText>
+            <AntDesign name={'adduser'} size={30} color={Colors.buttons} onPress={onEmployeePressed} />
         </View>
-    )   
+    )
 }
 
 const styles = StyleSheet.create({
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingHorizontal: 10,
         paddingTop: height > 600 ? 55 : 10,
-        backgroundColor: '#fff',
+        backgroundColor: Colors.secondary,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         shadowColor: '#999999',
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.8,
-        shadowRadius: 2,  
+        shadowRadius: 2,
         elevation: 4,
     }
 })

@@ -24,7 +24,7 @@ const addNewTask = (project_id, task) => {
     return async dispatch => {
         try {
             dispatch({ type: ADD_TASK })
-            
+
             const addTaskRes = await addTaskReq(project_id, task);
 
             dispatch(fetchingOneProject(project_id))
@@ -39,7 +39,7 @@ const deleteTask = (taskId, project_id) => {
     return async dispatch => {
         try {
             dispatch({ type: DELETE_TASK })
-            
+
             const deleteTaskRes = await deleteTaskReq(taskId);
 
             dispatch(fetchingOneProject(project_id))
@@ -50,30 +50,28 @@ const deleteTask = (taskId, project_id) => {
     }
 }
 
-const checkTask = (taskId, project_id) => {
+const checkTask = (taskId) => {
     return async dispatch => {
         try {
             dispatch({ type: CHECK_TASK })
-            
+
             const checkTaskRes = await checkTaskReq(taskId);
 
             dispatch({ type: CHECK_TASK_SUCCESS })
-            dispatch(fetchingOneProject(project_id))
         } catch (error) {
             dispatch({ type: CHECK_TASK_FAILED, checkTaskError: error })
         }
     }
 }
 
-const unCheckTask = (taskId, project_id) => {
+const unCheckTask = (taskId) => {
     return async dispatch => {
         try {
             dispatch({ type: CHECK_TASK })
-            
+
             const checkTaskRes = await unCheckTaskReq(taskId);
 
             dispatch({ type: CHECK_TASK_SUCCESS })
-            dispatch(fetchingOneProject(project_id))
         } catch (error) {
             dispatch({ type: CHECK_TASK_FAILED, checkTaskError: error })
         }

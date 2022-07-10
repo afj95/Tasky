@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, Platform, TouchableOpacity, Alert, I18nManager } from 'react-native';
-import { Formik } from 'formik';  
+import { Formik } from 'formik';
 import { LoginForm } from './components';
 import MyText from '../../../components/UI/MyText';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -13,6 +13,7 @@ import { t } from '../../../i18n';
 import { FontAwesome } from '@expo/vector-icons';
 import i18n from 'i18n-js';
 import { reloadAsync } from 'expo-updates';
+import Colors from '../../../utils/Colors';
 
 export const LoginScreen = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -23,9 +24,9 @@ export const LoginScreen = ({ navigation }) => {
     useEffect(() => {
         dispatch(resetAuth())
     }, [])
-    
+
     useEffect(() => {
-        switch(authStatus.status) {
+        switch (authStatus.status) {
             case 200:
                 showMessage({
                     message: t('app.loggedinSuccessfully'),
@@ -34,23 +35,23 @@ export const LoginScreen = ({ navigation }) => {
                     duration: 3000,
                     style: { paddingTop: 33, borderBottomStartRadius: 8, borderBottomEndRadius: 8 }
                 })
-            AsyncStorage.setItem('token', user?.token).then(() => {
-                navigation.dispatch(
-                    CommonActions.reset({
-                        index: 1,
-                        routes: [ { name: 'Home' } ]
+                AsyncStorage.setItem('token', user?.token).then(() => {
+                    navigation.dispatch(
+                        CommonActions.reset({
+                            index: 1,
+                            routes: [{ name: 'Home' }]
+                        })
+                    )
+                }).catch(e => {
+                    showMessage({
+                        message: t('app.serverError'),
+                        titleStyle: { textAlign: 'left' },
+                        type: 'danger',
+                        duration: 3000,
+                        style: { paddingTop: 33, borderBottomStartRadius: 8, borderBottomEndRadius: 8 }
                     })
-                )
-            }).catch(e => {
-                showMessage({
-                    message: t('app.serverError'),
-                    titleStyle: { textAlign: 'left' },
-                    type: 'danger',
-                    duration: 3000,
-                    style: { paddingTop: 33, borderBottomStartRadius: 8, borderBottomEndRadius: 8 }
                 })
-            })
-            break;
+                break;
             case 403:
                 showMessage({
                     message: authStatus.message,
@@ -59,7 +60,7 @@ export const LoginScreen = ({ navigation }) => {
                     duration: 3000,
                     style: { paddingTop: 33, borderBottomStartRadius: 8, borderBottomEndRadius: 8 }
                 })
-            break;
+                break;
             case 404:
                 showMessage({
                     message: authStatus.message,
@@ -68,7 +69,7 @@ export const LoginScreen = ({ navigation }) => {
                     duration: 3000,
                     style: { paddingTop: 33, borderBottomStartRadius: 8, borderBottomEndRadius: 8 }
                 })
-            break;
+                break;
             case 500:
                 showMessage({
                     message: t('app.serverError'),
@@ -78,7 +79,7 @@ export const LoginScreen = ({ navigation }) => {
                     style: { paddingTop: 33, borderBottomStartRadius: 8, borderBottomEndRadius: 8 }
                 })
                 break;
-            }
+        }
         dispatch(resetAuth());
     }, [authStatus, user])
 
@@ -88,18 +89,18 @@ export const LoginScreen = ({ navigation }) => {
     }
 
     const onSubmit = (values) => {
-        dispatch(login(values.username, values.password ))
+        dispatch(login(values.username, values.password))
     }
 
     const validate = (values) => {
         const errors = {}
         if (!values.username) {
-          errors.username = 'required';
-        } else if(isNaN(values.username)) {
+            errors.username = 'required';
+        } else if (isNaN(values.username)) {
             errors.username = 'phoneNumbersOnlyNums'
-        } else if(values.username.charAt(0) !== '0') {
+        } else if (values.username.charAt(0) !== '0') {
             errors.username = 'phonneNumstart'
-        } else if(values.username.length < 10) {
+        } else if (values.username.length < 10) {
             errors.username = 'phoneNumlength'
         }
         // Checking password
@@ -121,12 +122,12 @@ export const LoginScreen = ({ navigation }) => {
                 text: t('app.changeLangConfirm'),
                 onPress: () => {
                     AsyncStorage.getItem('lang', async (error, lang) => {
-                        if(error) {
+                        if (error) {
                             i18n.locale = "ar";
                             I18nManager.forceRTL(true);
                             I18nManager.allowRTL(true);
                         }
-                        if(lang === 'ar') {
+                        if (lang === 'ar') {
                             i18n.locale = 'en';
                             I18nManager.forceRTL(false);
                             I18nManager.allowRTL(false);
@@ -142,10 +143,10 @@ export const LoginScreen = ({ navigation }) => {
                 }
             }
         ],
-        {
-            /** @platform android */
-            cancelable: true,
-        })
+            {
+                /** @platform android */
+                cancelable: true,
+            })
     }
 
     return (
@@ -155,11 +156,13 @@ export const LoginScreen = ({ navigation }) => {
             </View>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ alignItems: 'center' }}>
                 <View style={styles.formContainer}>
-                    <TouchableOpacity activeOpacity={0.8} onPress={onChangeLanguagePressed} style={{ alignItems: 'flex-end' }}>
+                    <TouchableOpacity activeOpacity={0.8} onPress={onChangeLanguagePressed} style={styles.changeLanguage}>
                         <FontAwesome
                             name="language"
                             size={18}
+                            color={Colors.appWhite}
                         />
+                        <MyText style={styles.changeLanguageText} text={I18nManager.isRTL ? `تغيير\nاللغة` : `change\nLanguage`} />
                     </TouchableOpacity>
                     <View style={{ alignItems: 'center' }}>
                         <MyText style={{ marginBottom: 20, fontSize: 18 }}>login</MyText>
@@ -173,7 +176,7 @@ export const LoginScreen = ({ navigation }) => {
                         validate={validate}
                         onSubmit={onSubmit}
                         initialValues={initialValues}>
-                        {(props) => <LoginForm loginProps={props} /> }
+                        {(props) => <LoginForm loginProps={props} />}
                     </Formik>
                 </View>
             </ScrollView>
@@ -184,15 +187,25 @@ export const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: Colors.primary
     },
     welcomeContainer: {
         height: '20%',
         justifyContent: 'center',
         alignItems: 'center'
     },
+    changeLanguage: {
+        alignItems: 'center',
+        alignSelf: 'flex-end',
+        justifyContent: 'center'
+    },
+    changeLanguageText: {
+        fontSize: 10,
+        textAlign: 'center'
+    },
     formContainer: {
         width: '90%',
-        backgroundColor: 'white',
+        backgroundColor: Colors.secondary,
         paddingVertical: 25,
         paddingHorizontal: 10,
         borderRadius: 10,
@@ -201,7 +214,7 @@ const styles = StyleSheet.create({
         shadowColor: '#999999',
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.8,
-        shadowRadius: 2,  
+        shadowRadius: 2,
         elevation: 5
     },
 })

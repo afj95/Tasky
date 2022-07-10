@@ -10,7 +10,7 @@ import {
     DrawerContentScrollView,
     DrawerItem,
     DrawerItemList,
-  } from "@react-navigation/drawer";
+} from "@react-navigation/drawer";
 import Colors from '../utils/Colors';
 import MyText from '../components/UI/MyText';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -27,6 +27,7 @@ export const Drawer = ({ props }) => {
     const user = useSelector((state) => state.authReducer.user);
 
     const { state, ...rest } = props;
+    const { routes } = state
 
     const onChangeLanguagePressed = () => {
         Alert.alert(t('app.changeLangAlertTitle'), t('app.changeLangMessage'), [
@@ -54,10 +55,10 @@ export const Drawer = ({ props }) => {
                 }
             }
         ],
-        {
-            /** @platform android */
-            cancelable: true,
-        })
+            {
+                /** @platform android */
+                cancelable: true,
+            })
     }
 
     const onLogoutPressed = () => {
@@ -73,38 +74,50 @@ export const Drawer = ({ props }) => {
                     props.navigation.dispatch(
                         CommonActions.reset({
                             index: 1,
-                            routes: [ { name: 'Auth' } ]
+                            routes: [{ name: 'Auth' }]
                         })
                     )
                 }
             }
         ],
-        {
-            /** @platform android */
-            cancelable: true,
-        })
+            {
+                /** @platform android */
+                cancelable: true,
+            })
     }
+
+    // console.log('state', state)
+    // console.log('rest', rest)
 
     return (
         <View style={styles.container}>
             <DrawerContentScrollView {...props}>
                 {Object.keys(user).length === 0 ? (
                     <></>
-                    ) : (<></>)}
+                ) : (<></>)}
                 <View>
                     <DrawerItemList state={state} {...rest} />
+                    {/* <DrawerItemList {...props} /> */}
+                    {/* {routes?.map(route => {
+                        return (
+                            <DrawerItem
+                                label={() => <MyText text={route.name} />}
+                                onPress={() => navigate('')}
+                            />
+                        )
+                    })} */}
                 </View>
             </DrawerContentScrollView>
             <DrawerItem style={styles.seperator} label={() => <></>} />
             <DrawerItem
                 onPress={onChangeLanguagePressed}
-                label={() => 
+                label={() =>
                     <View style={styles.changeLanguage}>
                         <FontAwesome
                             name="language"
                             size={25}
                             style={{ marginRight: 30 }}
-                            color={Colors.black}
+                            color={Colors.buttons}
                         />
                         <MyText style={styles.logoutText}>
                             changeLanguage
@@ -123,7 +136,7 @@ export const Drawer = ({ props }) => {
                                 name="logout"
                                 size={25}
                                 style={{ marginRight: 30 }}
-                                color={Colors.black}
+                                color={Colors.buttons}
                             />
                             <MyText style={styles.logoutText}>
                                 logout
@@ -141,7 +154,7 @@ export const Drawer = ({ props }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white'
+        backgroundColor: Colors.secondary
     },
     changeLanguage: {
         flexDirection: "row",
@@ -153,7 +166,7 @@ const styles = StyleSheet.create({
     },
     logoutText: {
         fontSize: 14,
-        color: Colors.dark,
+        color: Colors.text,
         fontWeight: "500",
     },
     seperator: {

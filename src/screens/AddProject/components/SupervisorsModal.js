@@ -4,16 +4,11 @@ import {
     StyleSheet,
     Modal,
     TouchableOpacity,
-    Text,
     FlatList,
     ActivityIndicator,
-
-    Animated,
-    TouchableWithoutFeedback
 } from 'react-native';
 import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
-import { Searchbar } from 'react-native-paper';
 import MyText from '../../../components/UI/MyText';
 import _ from 'underscore';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,7 +25,6 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
     const _flashRef = useRef()
 
     const [reload, showReload] = useState(false)
-    const [addNewSupervisor, setAddNewSupervisor] = useState(false)
 
     const fetchSupervisorsLoading = useSelector(state => state.usersReducer.fetchSupervisorsLoading);
     const supervisors = useSelector(state => state.usersReducer.supervisors);
@@ -41,7 +35,7 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
     }, [])
 
     useEffect(() => {
-        if(fetchSupervisorsError) {
+        if (fetchSupervisorsError) {
             _flashRef?.current?.showMessage({
                 message: t('app.errorHappened'),
                 type: 'danger',
@@ -84,7 +78,7 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
     }
 
     return (
-      <Modal
+        <Modal
             animationType="fade"
             transparent={true}
             visible={modalVisible}>
@@ -92,7 +86,7 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
                 <Animatable.View duration={800} animation='fadeInUp' style={styles.modalView}>
                     <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
                         <TouchableOpacity activeOpacity={0.7} style={styles.closeButton} onPress={closeModal}>
-                            <AntDesign name={'closecircle'} size={20} color={'black'} />
+                            <AntDesign name={'closecircle'} size={20} color={Colors.buttons} />
                             <MyText>close</MyText>
                         </TouchableOpacity>
                         {reload ?
@@ -100,10 +94,10 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
                                 <Ionicons name={'refresh-circle'} size={20} color={'black'} />
                                 <MyText>refresh</MyText>
                             </TouchableOpacity>
-                        :
+                            :
                             <TouchableOpacity activeOpacity={0.7} style={styles.addSupervisor} onPress={addSupervisor}>
-                                <Entypo name={'add-user'} size={20} color={'black'} />
-                                <MyText style={{ textAlign: 'center'}}>addSupervisor</MyText>
+                                <Entypo name={'add-user'} size={20} color={Colors.buttons} />
+                                <MyText style={{ textAlign: 'center', color: Colors.text }}>addSupervisor</MyText>
                             </TouchableOpacity>
                         }
                     </View>
@@ -111,7 +105,7 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
                         <View style={styles.loader}>
                             <ActivityIndicator size={'small'} color={Colors.black} />
                         </View>
-                    :
+                        :
                         <FlatList
                             data={supervisors || []}
                             keyExtractor={(item, index) => '#' + index.toString()}
@@ -135,12 +129,12 @@ const styles = StyleSheet.create({
     modalView: {
         width: '100%',
         height: '50%',
-        backgroundColor: 'white',
+        backgroundColor: Colors.primary,
         borderTopEndRadius: 20,
         borderTopStartRadius: 20,
         padding: 10,
     },
-    closeButton: {        
+    closeButton: {
         width: 50,
         height: 50,
         alignSelf: 'flex-end',
@@ -168,11 +162,11 @@ const styles = StyleSheet.create({
         borderColor: '#999'
     },
     item: {
-        borderBottomWidth: 1,
-        borderColor: '#a1a1a1',
+        backgroundColor: Colors.secondary,
+        borderRadius: 8,
+        padding: 5,
         width: '100%',
-        height: 30,
-        marginVertical: 10,
+        marginVertical: 5,
         alignSelf: 'center'
     },
 })

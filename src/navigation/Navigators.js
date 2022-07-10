@@ -15,10 +15,12 @@ import {
 } from '../screens';
 import { t } from '../i18n';
 import { useSelector } from 'react-redux';
+import MyText from '../components/UI/MyText';
+import Colors from '../utils/Colors';
 
 const AuthStack = createStackNavigator();
 export const AuthStackScreens = () => (
-  <AuthStack.Navigator screenOptions={{headerShown: false }}>
+  <AuthStack.Navigator screenOptions={{ headerShown: false }}>
     <AuthStack.Screen name="Login" component={LoginScreen} />
     <AuthStack.Screen name="Register" component={RegisterScreen} />
     <AuthStack.Screen name="Home" component={DrawerScreens} />
@@ -27,7 +29,7 @@ export const AuthStackScreens = () => (
 
 const HomeStack = createStackNavigator();
 export const HomeStackScreens = () => (
-  <HomeStack.Navigator screenOptions={{headerShown: false }}>
+  <HomeStack.Navigator screenOptions={{ headerShown: false }}>
     <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
     <HomeStack.Screen name="AddProject" component={AddProjectScreen} />
     <HomeStack.Screen name="ProjectDetails" component={ProjectStuckScreens} />
@@ -37,14 +39,14 @@ export const HomeStackScreens = () => (
 
 const ProjectStuck = createStackNavigator();
 const ProjectStuckScreens = () => (
-  <ProjectStuck.Navigator screenOptions={{headerShown: false }}>
+  <ProjectStuck.Navigator screenOptions={{ headerShown: false }}>
     <ProjectStuck.Screen name={'ProjectDetailsScreen'} component={ProjectDetails} />
   </ProjectStuck.Navigator>
 )
 
 const EmployeesStuck = createStackNavigator();
 const EmployeesStuckScreens = () => (
-  <EmployeesStuck.Navigator screenOptions={{headerShown: false }}>
+  <EmployeesStuck.Navigator screenOptions={{ headerShown: false }}>
     <EmployeesStuck.Screen name={'EmployeesScreen'} component={EmployeesScreen} />
     <EmployeesStuck.Screen name={'AddEmployeeScreen'} component={AddEmployeeScreen} />
     <EmployeesStuck.Screen name={'EditEmployeeScreen'} component={EditEmployeeScreen} />
@@ -58,10 +60,25 @@ export const DrawerScreens = () => {
   return (
     <Drawer.Navigator
       drawerContent={props => <DrawerComponent props={props} />}
-      screenOptions={{headerShown: false }}>
-      <Drawer.Screen name={t('app.projects')} component={HomeStackScreens} />
+      screenOptions={{ headerShown: false }}>
+      <Drawer.Screen
+        name={t('app.projects')}
+        component={HomeStackScreens}
+        options={{
+          title: ({ focused }) => (
+            <MyText style={{ color: focused ? Colors.text : Colors.primary }}>projects</MyText>
+          )
+        }} />
       {user?.role === 'admin' ?
-      <Drawer.Screen name={t('app.employees')} component={EmployeesStuckScreens} /> : null}
+        <Drawer.Screen
+          name={t('app.employees')}
+          component={EmployeesStuckScreens}
+          options={{
+            title: ({ focused }) => (
+              <MyText style={{ color: focused ? Colors.text : Colors.primary }}>employees</MyText>
+            )
+          }}
+        /> : null}
     </Drawer.Navigator>
   )
 }
