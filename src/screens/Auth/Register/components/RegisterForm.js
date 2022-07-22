@@ -2,12 +2,11 @@ import React, { useState } from 'react'
 import {
     View,
     StyleSheet,
-    ActivityIndicator,
-    I18nManager
+    ActivityIndicator
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TextInput } from 'react-native-paper';
-import { AntDesign, Entypo, Feather, Fontisto } from '@expo/vector-icons';
+import { AntDesign, Entypo, Feather } from '@expo/vector-icons';
 import MyText from '../../../../components/UI/MyText';
 import { t } from '../../../../i18n';
 import { useSelector } from 'react-redux';
@@ -35,7 +34,7 @@ export const RegisterForm = ({ RegisterProps: { handleChange, values, errors, ha
                 value={values?.name}
                 error={errors?.name}
                 onBlur={handleBlur('name')}
-                theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                theme={{ colors: { text: Colors.secondary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
             />
             {errors?.name ? <ErrorText error={errors?.name} /> : null}
 
@@ -53,7 +52,7 @@ export const RegisterForm = ({ RegisterProps: { handleChange, values, errors, ha
                 error={errors?.username}
                 onBlur={handleBlur('username')}
                 keyboardType="decimal-pad"
-                theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                theme={{ colors: { text: Colors.secondary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
             />
             {errors?.username ? <ErrorText error={errors?.username} /> : null}
 
@@ -71,7 +70,7 @@ export const RegisterForm = ({ RegisterProps: { handleChange, values, errors, ha
                 error={errors?.password}
                 secureTextEntry={showPass ? false : true}
                 onBlur={handleBlur('password')}
-                theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                theme={{ colors: { text: Colors.secondary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
                 right={
                     <TextInput.Icon
                         name={showPass ? 'eye' : 'eye-off'}

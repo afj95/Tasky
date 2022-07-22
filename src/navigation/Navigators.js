@@ -66,7 +66,7 @@ export const DrawerScreens = () => {
         component={HomeStackScreens}
         options={{
           title: ({ focused }) => (
-            <MyText style={{ color: focused ? Colors.text : Colors.primary }}>projects</MyText>
+            <MyText style={{ color: focused ? Colors.text : Colors.lightBlue }}>projects</MyText>
           )
         }} />
       {user?.role === 'admin' ?
@@ -75,7 +75,7 @@ export const DrawerScreens = () => {
           component={EmployeesStuckScreens}
           options={{
             title: ({ focused }) => (
-              <MyText style={{ color: focused ? Colors.text : Colors.primary }}>employees</MyText>
+              <MyText style={{ color: focused ? Colors.text : Colors.lightBlue }}>employees</MyText>
             )
           }}
         /> : null}

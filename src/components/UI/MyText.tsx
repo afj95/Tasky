@@ -13,14 +13,11 @@ type MyTextProps = {
 type AllProps = MyTextProps & Text['props']
 
 const MyText = (props: AllProps) => {
-  const textStyle = [
-    styles.text,
-    props.style,
-  ]
+
   return (
     <View style={{ flexDirection: 'row' }}>
       <Text
-        style={textStyle}
+        style={[styles.text, props.style]}
         {...props}>
         {props.hide ? '******' :
           props.text === undefined ? t(`app.${props.children}`) : props.text}

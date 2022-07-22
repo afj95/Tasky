@@ -94,14 +94,12 @@ export const EmployeesScreen = () => {
                 </ScrollView>
             </View>
             {focusedList === 2 ?
-                <View>
-                    <TouchableOpacity
-                        activeOpacity={0.7}
-                        onPress={() => seUndeletedSupervisor(!undeletedSupervisor)}
-                        style={styles.undeletedSupervisor(undeletedSupervisor)}>
-                        <MyText style={styles.filterText}>{'notDeletedSupervisors'}</MyText>
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => seUndeletedSupervisor(!undeletedSupervisor)}
+                    style={styles.undeletedSupervisor(undeletedSupervisor)}>
+                    <MyText style={styles.filterText}>{'notDeletedSupervisors'}</MyText>
+                </TouchableOpacity>
                 : null}
 
             <View style={styles.employeesStateView}>

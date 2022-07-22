@@ -22,7 +22,7 @@ export const RegisterScreen = () => {
     const user = useSelector((state) => state?.authReducer?.user)
 
     useEffect(() => {
-        switch (authStatus) {
+        switch (authStatus.status) {
             case 201:
                 showMessage({
                     message: t('app.registeredSuccessfully'),
@@ -85,12 +85,12 @@ export const RegisterScreen = () => {
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
             <View style={styles.welcomeContainer}>
-                <MyText style={{ fontSize: 33 }}>welcome</MyText>
+                <MyText style={{ fontSize: 33, color: Colors.text }}>welcome</MyText>
             </View>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ alignItems: 'center' }}>
                 <View style={styles.formContainer}>
                     <View style={{ alignItems: 'center' }}>
-                        <MyText style={{ marginBottom: 20, fontSize: 18 }}>signup</MyText>
+                        <MyText style={{ marginBottom: 20, fontSize: 18, color: Colors.text }}>signup</MyText>
                     </View>
                     <Formik
                         validate={validate}

@@ -152,7 +152,7 @@ export const LoginScreen = ({ navigation }) => {
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
             <View style={styles.welcomeContainer}>
-                <MyText style={{ fontSize: 33 }}>welcomeBack</MyText>
+                <MyText style={{ fontSize: 33, color: Colors.text }}>welcomeBack</MyText>
             </View>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ alignItems: 'center' }}>
                 <View style={styles.formContainer}>
@@ -165,13 +165,13 @@ export const LoginScreen = ({ navigation }) => {
                         <MyText style={styles.changeLanguageText} text={I18nManager.isRTL ? `تغيير\nاللغة` : `change\nLanguage`} />
                     </TouchableOpacity>
                     <View style={{ alignItems: 'center' }}>
-                        <MyText style={{ marginBottom: 20, fontSize: 18 }}>login</MyText>
+                        <MyText style={{ marginBottom: 20, fontSize: 18, color: Colors.text }}>login</MyText>
                     </View>
                     <Formik
                         /*
-                            // 'validate' better the 'validationSchema'
-                            // cuz validation in schema can't sort which 
-                            // validate fun will start first.
+                            * 'validate' better the 'validationSchema'
+                            * cuz validation in schema can't sort which 
+                            * validate fun will start first.
                         */
                         validate={validate}
                         onSubmit={onSubmit}
@@ -201,7 +201,8 @@ const styles = StyleSheet.create({
     },
     changeLanguageText: {
         fontSize: 10,
-        textAlign: 'center'
+        textAlign: 'center',
+        color: Colors.text
     },
     formContainer: {
         width: '90%',

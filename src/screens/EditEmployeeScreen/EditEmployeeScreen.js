@@ -5,12 +5,13 @@ import {
     KeyboardAvoidingView,
     Platform
 } from 'react-native';
-import { Formik } from 'formik';  
+import { Formik } from 'formik';
 import MyText from '../../components/UI/MyText';
 import { useDispatch, useSelector } from 'react-redux';
 import { EditEmpoyeeForm, Header } from './components';
 import { editEmployee, resetUsersErrors } from '../../redux/reducers/Users/users-actions';
 import { showMessage } from 'react-native-flash-message';
+import Colors from '../../utils/Colors';
 
 export const EditEmployeeScreen = ({ route: { params: { employee } } }) => {
     const dispatch = useDispatch();
@@ -20,12 +21,12 @@ export const EditEmployeeScreen = ({ route: { params: { employee } } }) => {
     const editEmpError = useSelector(state => state.usersReducer.editEmpError);
 
     useEffect(() => {
-        if(editEmpSuccess) {
+        if (editEmpSuccess) {
             showMessage({
                 message: 'success',
                 type: 'success',
             })
-        } else if(editEmpError) {
+        } else if (editEmpError) {
             showMessage({
                 message: editEmpError,
                 type: 'danger',
@@ -50,23 +51,23 @@ export const EditEmployeeScreen = ({ route: { params: { employee } } }) => {
 
     const validate = (values) => {
         const errors = {};
-        if(!values.name) {
+        if (!values.name) {
             errors.name = 'required'
         }
         if (!values.username) {
-          errors.username = 'required';
-        } else if(isNaN(values.username)) {
+            errors.username = 'required';
+        } else if (isNaN(values.username)) {
             errors.username = 'onlyNumbers'
-        } else if(values.username.charAt(0) !== '0') {
+        } else if (values.username.charAt(0) !== '0') {
             errors.username = 'phonneNumstart'
-        } else if(values.username.length < 10) {
+        } else if (values.username.length < 10) {
             errors.username = 'phoneNumlength'
         }
         return errors;
     };
 
     return (
-        <>
+        <View style={styles.container}>
             <Header text={'editEmployee'} />
             <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
                 <View style={styles.instractionsView}>
@@ -81,7 +82,7 @@ export const EditEmployeeScreen = ({ route: { params: { employee } } }) => {
                     </Formik>
                 </View>
             </KeyboardAvoidingView>
-        </>
+        </View>
     )
 }
 
@@ -89,6 +90,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 20,
+        backgroundColor: Colors.primary
     },
     scrollStyles: {
         flex: 1,
@@ -101,7 +103,8 @@ const styles = StyleSheet.create({
         marginTop: 25
     },
     instractionsText: {
-        fontSize: 18
+        fontSize: 18,
+        color: Colors.appWhite
     },
     notesText: {
         fontSize: 10,
@@ -111,7 +114,7 @@ const styles = StyleSheet.create({
     formContainer: {
         width: '90%',
         alignSelf: 'center',
-        backgroundColor: 'white',
+        backgroundColor: Colors.secondary,
         paddingVertical: 25,
         paddingHorizontal: 10,
         borderRadius: 10,
@@ -119,7 +122,7 @@ const styles = StyleSheet.create({
         shadowColor: '#999999',
         shadowOffset: { width: 1, height: 1 },
         shadowOpacity: 0.8,
-        shadowRadius: 2,  
+        shadowRadius: 2,
         elevation: 5
     },
 })

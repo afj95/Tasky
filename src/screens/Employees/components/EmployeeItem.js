@@ -8,7 +8,6 @@ import { Entypo } from '@expo/vector-icons';
 import Colors from '../../../utils/Colors';
 import { EmpOptionsModal } from './EmpOptionsModal';
 import { useSelector } from 'react-redux';
-import { t } from 'i18next';
 
 export const EmployeeItem = ({ employee, onRefresh, undeletedSupervisor }) => {
 
@@ -21,6 +20,7 @@ export const EmployeeItem = ({ employee, onRefresh, undeletedSupervisor }) => {
         setEmpModal(false);
         if (anyChange) {
             onRefresh();
+            isAnyChange(false)
         }
     }
 

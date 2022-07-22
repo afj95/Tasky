@@ -74,13 +74,13 @@ export const HomeScreen = () => {
       <View style={styles.filterContainer}>
         <TouchableOpacity
           onPress={() => setStatus(status === 'active' ? 'finished' : 'active')}
-          style={styles.finishedContainer}>
-          <MyText>{status === 'active' ? 'finished' : 'active'}</MyText>
+          style={styles.finishedContainer(status)}>
+          <MyText style={styles.finishedText(status)}>{status === 'active' ? 'finished' : 'active'}</MyText>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setDeleted(!deleted)}
-          style={styles.deletedContainer}>
-          <MyText>deleted</MyText>
+          style={styles.deletedContainer(deleted)}>
+          <MyText style={styles.deletedText(deleted)}>deleted</MyText>
         </TouchableOpacity>
       </View>
     )
@@ -126,16 +126,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row'
   },
-  finishedContainer: {
-    backgroundColor: Colors.secondary,
+  finishedContainer: (status) => ({
+    backgroundColor: status === 'finished' ? Colors.lightBlue : Colors.secondary,
     padding: 5,
     borderRadius: 8
-  },
-  deletedContainer: {
-    backgroundColor: Colors.secondary,
+  }),
+  finishedText: (status) => ({
+    color: status === 'finished' ? Colors.primary : Colors.text
+  }),
+  deletedContainer: (deleted) => ({
+    backgroundColor: deleted ? Colors.lightBlue : Colors.secondary,
     padding: 5,
     borderRadius: 8
-  },
+  }),
+  deletedText: (deleted) => ({
+    color: deleted ? Colors.primary : Colors.text
+  }),
   projectsContainer: {
     paddingHorizontal: 10,
     flex: 1,
