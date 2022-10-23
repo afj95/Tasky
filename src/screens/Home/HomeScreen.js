@@ -53,7 +53,7 @@ export const HomeScreen = () => {
       <TouchableOpacity
         key={index}
         onPress={() => onProjectPressed(item)}
-        activeOpacity={0.5}
+        activeOpacity={0.85}
         style={styles.projectItem}>
         <View style={{ alignItems: 'center' }}>
           <MyText text={item?.projectName1} />
@@ -111,7 +111,7 @@ export const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.primary
+    backgroundColor: Colors.appWhite
   },
   header: {
     backgroundColor: '#ffffff',
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   finishedContainer: (status) => ({
-    backgroundColor: status === 'finished' ? Colors.lightBlue : Colors.secondary,
+    backgroundColor: status === 'finished' ? Colors.lightBlue : Colors.primary,
     padding: 5,
     borderRadius: 8
   }),
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     color: status === 'finished' ? Colors.primary : Colors.text
   }),
   deletedContainer: (deleted) => ({
-    backgroundColor: deleted ? Colors.lightBlue : Colors.secondary,
+    backgroundColor: deleted ? Colors.lightBlue : Colors.primary,
     padding: 5,
     borderRadius: 8
   }),
@@ -145,11 +145,10 @@ const styles = StyleSheet.create({
   projectsContainer: {
     paddingHorizontal: 10,
     flex: 1,
-    height: '100%',
-    backgroundColor: Colors.primary,
+    height: '100%'
   },
   projectItem: {
-    backgroundColor: Colors.secondary,
+    backgroundColor: Colors.primary,
     width: '100%',
     marginVertical: 5,
     borderWidth: 1,

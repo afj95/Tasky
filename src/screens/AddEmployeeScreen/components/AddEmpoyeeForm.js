@@ -15,28 +15,30 @@ export const AddEmpoyeeForm = ({ RegisterProps: { handleChange, values, errors, 
     return (
         <View>
             <View style={styles.textContainer}>
-                <AntDesign name={'user'} size={15} style={{ marginEnd: 5 }} color={Colors.buttons} />
+                <AntDesign name={'user'} size={15} style={{ marginEnd: 5 }} color={Colors.appWhite} />
                 <MyText>name</MyText>
             </View>
             <TextInput
                 style={styles.input}
                 placeholder={t('app.name')}
+                placeholderTextColor={Colors.secondary}
                 mode={'flat'}
                 onChangeText={handleChange('name')}
                 value={values?.name}
                 error={errors?.name}
                 onBlur={handleBlur('name')}
-                theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                theme={{ colors: { text: Colors.primary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
             />
             {errors?.name ? <ErrorText error={errors?.name} /> : null}
 
             <View style={styles.textContainer}>
-                <Entypo name={'mobile'} size={15} style={{ marginEnd: 5 }} color={Colors.buttons} />
+                <Entypo name={'mobile'} size={15} style={{ marginEnd: 5 }} color={Colors.appWhite} />
                 <MyText>phone</MyText>
             </View>
             <TextInput
                 style={styles.input}
                 placeholder={'05XXXXXXXX'}
+                placeholderTextColor={Colors.secondary}
                 mode={'flat'}
                 onChangeText={handleChange('username')}
                 value={values?.username}
@@ -44,20 +46,19 @@ export const AddEmpoyeeForm = ({ RegisterProps: { handleChange, values, errors, 
                 onBlur={handleBlur('username')}
                 keyboardType="decimal-pad"
                 maxLength={10}
-                theme={{ colors: { error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                theme={{ colors: { text: Colors.primary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
             />
             {errors?.username ? <ErrorText error={errors?.username} /> : null}
 
             {isLoading ?
-                <View
-                    style={styles.registerButton}>
+                <View style={styles.registerButton}>
                     <ActivityIndicator size={'large'} color={'white'} />
                 </View>
                 :
                 <TouchableOpacity
                     style={styles.registerButton}
                     onPress={handleSubmit}>
-                    <MyText style={{ color: 'white', fontSize: 18, color: Colors.primary }}>addEmployee</MyText>
+                    <MyText style={{ fontSize: 18, color: Colors.text }}>addEmployee</MyText>
                 </TouchableOpacity>
             }
         </View>
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
     },
     registerButton: {
         height: 50,
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: Colors.secondary,
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',

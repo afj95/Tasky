@@ -25,12 +25,12 @@ const MainNavigator = () => {
 
     useEffect(() => {
         AsyncStorage.getItem('lang', (error, lang) => {
-            if(error) {
+            if (error) {
                 i18n.locale = "ar";
                 I18nManager.forceRTL(true);
                 I18nManager.allowRTL(true);
             }
-            if(lang) {
+            if (lang) {
                 i18n.locale = lang;
                 I18nManager.forceRTL(lang === 'ar');
                 I18nManager.allowRTL(lang === 'ar');
@@ -41,11 +41,11 @@ const MainNavigator = () => {
     useEffect(() => {
         // Checking the token
         AsyncStorage.getItem('token', (error, token) => {
-            if(error) {
+            if (error) {
                 setInitialRouteName('Auth')
-            } else if(token) {
+            } else if (token) {
                 // In case of there is a token
-                if(user && Object.keys(user).length > 0) {
+                if (user && Object.keys(user).length > 0) {
                     // Checking if the user saved in redux
                     setInitialRouteName('Home')
                 } else {
@@ -58,9 +58,9 @@ const MainNavigator = () => {
         })
     }, [initialRouteName])
 
-    if(!initialRouteName) {
+    if (!initialRouteName) {
         setTimeout(() => {
-          setScreenToShow(<ErrorScreen />)
+            setScreenToShow(<ErrorScreen />)
         }, 5000) // After 5 seconds if the initialRouteName not modified it will show error screen
         return screenToShow
     } else {

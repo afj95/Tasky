@@ -86,9 +86,6 @@ export const Drawer = ({ props }) => {
             })
     }
 
-    // console.log('state', state)
-    // console.log('rest', rest)
-
     return (
         <View style={styles.container}>
             <DrawerContentScrollView {...props}>
@@ -117,7 +114,7 @@ export const Drawer = ({ props }) => {
                             name="language"
                             size={25}
                             style={{ marginRight: 30 }}
-                            color={Colors.buttons}
+                            color={Colors.primary}
                         />
                         <MyText style={styles.logoutText}>
                             changeLanguage
@@ -136,7 +133,7 @@ export const Drawer = ({ props }) => {
                                 name="logout"
                                 size={25}
                                 style={{ marginRight: 30 }}
-                                color={Colors.buttons}
+                                color={Colors.primary}
                             />
                             <MyText style={styles.logoutText}>
                                 logout
@@ -154,7 +151,7 @@ export const Drawer = ({ props }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.secondary
+        backgroundColor: Colors.appWhite
     },
     changeLanguage: {
         flexDirection: "row",
@@ -166,7 +163,7 @@ const styles = StyleSheet.create({
     },
     logoutText: {
         fontSize: 14,
-        color: Colors.text,
+        color: Colors.primary,
         fontWeight: "500",
     },
     seperator: {

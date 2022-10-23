@@ -37,7 +37,7 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
                 error={errors?.username}
                 onBlur={handleBlur('username')}
                 keyboardType="decimal-pad"
-                theme={{ colors: { text: Colors.secondary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                theme={{ colors: { text: Colors.primary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
             />
             {errors?.username ? <ErrorText error={errors?.username} /> : null}
 
@@ -55,7 +55,7 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
                 error={errors?.password}
                 secureTextEntry={showPass ? false : true}
                 onBlur={handleBlur('password')}
-                theme={{ colors: { text: Colors.secondary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                theme={{ colors: { text: Colors.primary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
                 right={
                     <TextInput.Icon
                         name={showPass ? 'eye' : 'eye-off'}
@@ -95,19 +95,19 @@ const styles = StyleSheet.create({
     },
     loginButton: {
         height: 50,
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: Colors.secondary,
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        elevation: 5,
         marginTop: 50,
         // shadow
+        elevation: 5,
         shadowColor: '#888888',
         shadowOffset: { width: 0, height: 5 },
         shadowOpacity: 0.8,
         shadowRadius: 2,
     },
-    loginText: { color: Colors.primary, fontSize: 18 },
+    loginText: { color: Colors.text, fontSize: 18 },
     input: {
         width: '100%',
         marginTop: 5,

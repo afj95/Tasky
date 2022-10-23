@@ -46,7 +46,7 @@ export const EmpOptionsModal = ({ visible, closeModal, employee, isAnyChange }) 
                             <AntDesign
                                 name={'closecircle'}
                                 size={24}
-                                color={Colors.buttons}
+                                color={Colors.primary}
                                 onPress={closeModal}
                             />
                         </View>
@@ -55,21 +55,21 @@ export const EmpOptionsModal = ({ visible, closeModal, employee, isAnyChange }) 
                                 activeOpacity={0.5}
                                 onPress={onEditEmployeePressed}
                                 style={styles.editEmployeeContainer}>
-                                <MyText>editEmployee</MyText>
+                                <MyText style={{ color: Colors.primary }}>editEmployee</MyText>
                             </TouchableOpacity>}
                         {!employee.deleted ?
                             <TouchableOpacity
                                 activeOpacity={0.5}
                                 onPress={onDeleteEmployeePressed}
                                 style={styles.deleteEmployeeContainer}>
-                                <MyText>deleteEmployee</MyText>
+                                <MyText style={{ color: Colors.red }}>deleteEmployee</MyText>
                             </TouchableOpacity>
                             :
                             <TouchableOpacity
                                 activeOpacity={0.5}
                                 onPress={onRestoreEmployeePressed}
                                 style={styles.deleteEmployeeContainer}>
-                                <MyText>restoreEmployee</MyText>
+                                <MyText style={{ color: Colors.primary }}>restoreEmployee</MyText>
                             </TouchableOpacity>
                         }
                     </View>
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     modalView: {
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.appWhite,
         borderTopStartRadius: 20,
         borderTopEndRadius: 20,
         padding: 10,

@@ -152,7 +152,7 @@ export const LoginScreen = ({ navigation }) => {
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
             <View style={styles.welcomeContainer}>
-                <MyText style={{ fontSize: 33, color: Colors.text }}>welcomeBack</MyText>
+                <MyText style={{ fontSize: 33, color: Colors.primary }}>welcomeBack</MyText>
             </View>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ alignItems: 'center' }}>
                 <View style={styles.formContainer}>
@@ -187,7 +187,7 @@ export const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.primary
+        backgroundColor: Colors.appWhite
     },
     welcomeContainer: {
         height: '20%',
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     },
     formContainer: {
         width: '90%',
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.primary,
         paddingVertical: 25,
         paddingHorizontal: 10,
         borderRadius: 10,

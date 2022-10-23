@@ -34,7 +34,7 @@ export const RegisterForm = ({ RegisterProps: { handleChange, values, errors, ha
                 value={values?.name}
                 error={errors?.name}
                 onBlur={handleBlur('name')}
-                theme={{ colors: { text: Colors.secondary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                theme={{ colors: { text: Colors.primary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
             />
             {errors?.name ? <ErrorText error={errors?.name} /> : null}
 
@@ -52,7 +52,7 @@ export const RegisterForm = ({ RegisterProps: { handleChange, values, errors, ha
                 error={errors?.username}
                 onBlur={handleBlur('username')}
                 keyboardType="decimal-pad"
-                theme={{ colors: { text: Colors.secondary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                theme={{ colors: { text: Colors.primary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
             />
             {errors?.username ? <ErrorText error={errors?.username} /> : null}
 
@@ -70,7 +70,7 @@ export const RegisterForm = ({ RegisterProps: { handleChange, values, errors, ha
                 error={errors?.password}
                 secureTextEntry={showPass ? false : true}
                 onBlur={handleBlur('password')}
-                theme={{ colors: { text: Colors.secondary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                theme={{ colors: { text: Colors.primary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
                 right={
                     <TextInput.Icon
                         name={showPass ? 'eye' : 'eye-off'}
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     },
     registerButton: {
         height: 50,
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: Colors.secondary,
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 15
     },
-    signupText: { color: Colors.primary, fontSize: 18 },
+    signupText: { color: Colors.text, fontSize: 18 },
     loginText: {
         color: Colors.lightBlue,
         textDecorationLine: 'underline'

@@ -91,8 +91,7 @@ export const AddEmployeeScreen = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: Colors.primary
+        flex: 1
     },
     scrollStyles: {
         flex: 1,
@@ -106,16 +105,16 @@ const styles = StyleSheet.create({
     },
     instractionsText: {
         fontSize: 18,
-        color: Colors.text
+        color: Colors.primary
     },
     notesText: {
         fontSize: 10,
         marginStart: 5,
-        color: Colors.text
+        color: Colors.primary
     },
     formContainer: {
         width: '90%',
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.primary,
         paddingVertical: 25,
         paddingHorizontal: 10,
         borderRadius: 10,

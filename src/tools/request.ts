@@ -17,7 +17,7 @@ export const request = async ({ url, method, params }: RequesProps) => {
             let timeout = false;
             setTimeout(() => {
                 timeout = true;
-            }, 15000);
+            }, 10000);
 
             let modfiedHeaders = {
                 Authorization: `Bearer ${user?.token}`,

@@ -133,8 +133,7 @@ export const EmployeesScreen = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: Colors.primary
+        flex: 1
     },
     cancelAllEmp: {
         marginStart: 10,
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         marginStart: 5,
         padding: 7,
-        backgroundColor: focusedList === id ? Colors.lightBlue : Colors.secondary,
+        backgroundColor: focusedList === id ? Colors.secondary : Colors.primary,
         borderRadius: 20,
         borderWidth: 2,
         borderColor: '#999',
@@ -161,13 +160,13 @@ const styles = StyleSheet.create({
         marginVertical: 10
     }),
     filterText: {
-        color: Colors.black,
+        color: Colors.white,
     },
     undeletedSupervisor: undeletedSupervisor => ({
         alignSelf: 'flex-start',
         marginStart: 5,
         padding: 7,
-        backgroundColor: undeletedSupervisor ? Colors.lightBlue : Colors.secondary,
+        backgroundColor: undeletedSupervisor ? Colors.secondary : Colors.primary,
         borderRadius: 20,
         borderWidth: 2,
         borderColor: '#999',
@@ -179,7 +178,7 @@ const styles = StyleSheet.create({
         marginEnd: 3,
         marginTop: 10,
         marginBottom: 5,
-        color: Colors.text
+        color: Colors.primary
     },
     employeesStateView: {
         flexDirection: 'row',

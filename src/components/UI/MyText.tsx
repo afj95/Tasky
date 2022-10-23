@@ -13,11 +13,15 @@ type MyTextProps = {
 type AllProps = MyTextProps & Text['props']
 
 const MyText = (props: AllProps) => {
-
+  const textStyle = [
+    styles.text,
+    props.style,
+  ]
+  // @ts-ignore
   return (
     <View style={{ flexDirection: 'row' }}>
       <Text
-        style={[styles.text, props.style]}
+        style={textStyle}
         {...props}>
         {props.hide ? '******' :
           props.text === undefined ? t(`app.${props.children}`) : props.text}
@@ -29,7 +33,7 @@ const MyText = (props: AllProps) => {
 const styles = StyleSheet.create({
   text: {
     fontSize: 14,
-    color: Colors.appWhite,
+    color: Colors.text,
     marginVertical: 3,
     textAlign: 'left'
   },

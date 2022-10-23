@@ -85,7 +85,7 @@ export const RegisterScreen = () => {
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
             <View style={styles.welcomeContainer}>
-                <MyText style={{ fontSize: 33, color: Colors.text }}>welcome</MyText>
+                <MyText style={{ fontSize: 33, color: Colors.primary }}>welcome</MyText>
             </View>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ alignItems: 'center' }}>
                 <View style={styles.formContainer}>
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingTop: 20,
-        backgroundColor: Colors.primary
+        backgroundColor: Colors.appWhite
     },
     welcomeContainer: {
         height: '20%',
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     },
     formContainer: {
         width: '90%',
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.primary,
         paddingVertical: 25,
         paddingHorizontal: 10,
         borderRadius: 10,
