@@ -20,11 +20,11 @@ export const Header = ({ text, onEmployeePressed }) => {
             <Ionicons
                 name={'reorder-three'}
                 size={35}
-                color={Colors.buttons}
+                color={Colors.appWhite}
                 onPress={navigation.toggleDrawer}
             />
             <MyText style={{ fontSize: 20, fontWeight: 'bold', color: Colors.text }}>{text}</MyText>
-            <AntDesign name={'adduser'} size={30} color={Colors.buttons} onPress={onEmployeePressed} />
+            <AntDesign name={'adduser'} size={30} color={Colors.appWhite} onPress={onEmployeePressed} />
         </View>
     )
 }
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingHorizontal: 10,
         paddingTop: height > 600 ? 55 : 10,
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.primary,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

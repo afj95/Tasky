@@ -79,9 +79,9 @@ export const AddTask = ({ project, _scrollRef }) => {
                 />
                 <View style={styles.addStuff} onPress={onAddButtonPressed}>
                     {addTaskLoading ?
-                        <ActivityIndicator size={'small'} color={'white'} />
+                        <ActivityIndicator size={'small'} color={Colors.lightBlue} />
                         :
-                        <Ionicons name={'add'} size={30} color={Colors.primary} onPress={onAddButtonPressed} />
+                        <Ionicons name={'add'} size={30} color={Colors.lightBlue} onPress={onAddButtonPressed} />
                     }
                 </View>
             </View>
@@ -92,7 +92,6 @@ export const AddTask = ({ project, _scrollRef }) => {
 const styles = StyleSheet.create({
     textInputContainer: {
         width: '100%',
-        backgroundColor: Colors.primary,
         justifyContent: 'space-around',
         flexDirection: 'row',
         paddingVertical: 3,
@@ -105,7 +104,7 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         width: '90%',
         height: 40,
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.primary,
         color: Colors.text
     },
     addStuff: {
@@ -114,6 +113,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: Colors.primary,
     },
 })

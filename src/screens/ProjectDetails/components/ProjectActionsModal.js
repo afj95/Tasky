@@ -78,7 +78,7 @@ export const ProjectActionsModal = ({ visible, closeModal, project }) => {
                             <AntDesign
                                 name={'closecircle'}
                                 size={24}
-                                color={Colors.buttons}
+                                color={Colors.primary}
                                 onPress={closeModal}
                                 style={{ alignSelf: 'center' }}
                             />
@@ -90,7 +90,7 @@ export const ProjectActionsModal = ({ visible, closeModal, project }) => {
                         </TouchableOpacity> */}
                         {currentProject?.status !== 'finished' &&
                             <TouchableOpacity onPress={onFinishProjectPressed} activeOpacity={0.5} style={styles.finishProject(currentProject?.deleted)}>
-                                <MyText>finishProject</MyText>
+                                <MyText style={{ color: Colors.primary }}>finishProject</MyText>
                             </TouchableOpacity>
                         }
                         {!currentProject?.deleted &&
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     modalView: {
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.bg,
         borderTopStartRadius: 20,
         borderTopEndRadius: 20,
         padding: 10,

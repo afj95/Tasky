@@ -67,7 +67,7 @@ export const AddProjectScreen = () => {
             onSubmit={onSubmit}
             initialValues={initialValues}>
             {props =>
-                <View style={{ backgroundColor: Colors.primary, flex: 1 }}>
+                <View style={{ flex: 1 }}>
                     <Header title={'addProject'} onPress={props?.handleSubmit} isLoading={fetchingProjectsLoading} />
                     <AddProjectForm addProjectProps={props} />
                 </View>

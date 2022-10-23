@@ -24,7 +24,7 @@ export const Header = ({ user, text }) => {
             <Ionicons name={'reorder-three'} size={35} color={Colors.appWhite} onPress={navigation.toggleDrawer} />
             <MyText style={{ fontSize: 20, fontWeight: 'bold', color: Colors.text }}>{text}</MyText>
             {user.role === 'admin' ? <View style={styles.addProjectView}>
-                <Ionicons name={'md-add-circle'} size={22} color={Colors.buttons} onPress={_onAddProjectPressed} />
+                <Ionicons name={'md-add-circle'} size={22} color={Colors.appWhite} onPress={_onAddProjectPressed} />
                 <MyText>addProject</MyText>
             </View> : <View />}
         </View>
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingHorizontal: 10,
         paddingTop: height > 600 ? 55 : 10,
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.primary,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

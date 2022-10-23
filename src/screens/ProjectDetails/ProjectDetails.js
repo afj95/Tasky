@@ -90,7 +90,7 @@ export const ProjectDetails = ({ route: { params: { project, status, deleted } }
                                     <RefreshControl
                                         refreshing={false}
                                         onRefresh={onRefresh}
-                                        colors={[Colors.primary, Colors.secondary, Colors.lightBlue]}
+                                        colors={[Colors.primary, Colors.secondary, Colors.appWhite]}
                                     />
                                 }>
                                 <View style={styles.nameContainer}>
@@ -141,13 +141,11 @@ export const ProjectDetails = ({ route: { params: { project, status, deleted } }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: Colors.primary,
+        flex: 1
     },
     detailsContainer: {
         flex: 1,
-        backgroundColor: Colors.primary,
-        paddingTop: 15
+        paddingTop: 2
     },
     scrollContainer: { paddingBottom: 120 },
     status: {
@@ -166,16 +164,17 @@ const styles = StyleSheet.create({
         backgroundColor: 'green',
     },
     nameContainer: {
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.primary,
         marginBottom: 2.5,
         paddingHorizontal: 10,
-        paddingVertical: 5
+        paddingVertical: 5,
+        borderRadius: 8
     },
     supervisorContainer: {
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.primary,
         marginVertical: 2.5,
         paddingHorizontal: 10,
-        paddingVertical: 5
+        paddingVertical: 5,
     },
     supervisor: {
         paddingHorizontal: 5,
@@ -184,19 +183,21 @@ const styles = StyleSheet.create({
     },
     phoneNumberContainer: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius: 8
     },
     phoneNumber: {
         paddingHorizontal: 5,
         fontSize: 13,
-        color: 'blue',
+        color: Colors.lightBlue,
         textDecorationLine: 'underline'
     },
     descriptionContainer: {
         marginVertical: 2.5,
         paddingVertical: 5,
         paddingHorizontal: 10,
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.primary,
+        borderRadius: 8
     },
     description: {
         paddingHorizontal: 5,
@@ -206,7 +207,9 @@ const styles = StyleSheet.create({
     tasksContainer: {
         marginVertical: 2.5,
         paddingHorizontal: 10,
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.primary,
+        borderRadius: 8,
+        paddingBottom: 8
     },
     label: {
         fontWeight: 'bold',

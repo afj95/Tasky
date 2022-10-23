@@ -16,13 +16,13 @@ export const Header = ({ onPress, title, isLoading }) => {
     return (
         <>
             <View style={styles.header}>
-                <RNAppbar.BackAction size={25} style={{ padding: 2 }} color={Colors.buttons} onPress={() => goBack()} />
+                <RNAppbar.BackAction size={25} style={{ padding: 2 }} color={Colors.appWhite} onPress={() => goBack()} />
                 <MyText style={{ fontSize: 22, fontWeight: 'bold', color: Colors.text }}>{title}</MyText>
                 {isLoading ?
-                    <ActivityIndicator size={'large'} color={Colors.buttons} />
+                    <ActivityIndicator size={'large'} color={Colors.appWhite} />
                     :
                     <TouchableOpacity onPress={onPress} activeOpacity={0.5} style={styles.addProjectButton}>
-                        <Ionicons name={'md-add-circle'} size={22} color={Colors.buttons} />
+                        <Ionicons name={'md-add-circle'} size={22} color={Colors.appWhite} />
                         <MyText>add</MyText>
                     </TouchableOpacity>
                 }
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingHorizontal: 10,
         paddingTop: height > 600 ? 55 : 10,
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.primary,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

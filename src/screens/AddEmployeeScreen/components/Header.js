@@ -16,7 +16,7 @@ export const Header = ({ text, showGoBackButton }) => {
     return (
         <View style={styles.subHeader}>
             {showGoBackButton ?
-                <RNAppbar.BackAction size={25} style={{ padding: 2 }} color={Colors.buttons} onPress={() => goBack()} />
+                <RNAppbar.BackAction size={25} style={{ padding: 2 }} color={Colors.appWhite} onPress={() => goBack()} />
                 : <View />}
             <MyText style={{ fontSize: 20, fontWeight: 'bold', color: Colors.text }}>{text}</MyText>
             <View />
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingHorizontal: 10,
         paddingTop: height > 600 ? 55 : 10,
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.primary,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

@@ -22,17 +22,17 @@ export const Header = ({ user, text, showModal, showGoBackButton, fetchingProjec
     return (
         <View style={styles.subHeader}>
             {showGoBackButton ?
-                <RNAppbar.BackAction size={25} style={{ padding: 2 }} color={Colors.buttons} onPress={() => goBack()} />
+                <RNAppbar.BackAction size={25} style={{ padding: 2 }} color={Colors.appWhite} onPress={() => goBack()} />
                 : <View />}
             {fetchingProjectsLoading ?
-                <ActivityIndicator color={Colors.buttons} size={'small'} />
+                <ActivityIndicator color={Colors.appWhite} size={'small'} />
                 :
                 <TouchableOpacity onPress={onRefresh} activeOpacity={1}>
-                    <MyText style={{ fontSize: 20, fontWeight: 'bold', color: Colors.primary }} text={text} />
+                    <MyText style={{ fontSize: 20, fontWeight: 'bold', color: Colors.text }} text={text} />
                 </TouchableOpacity>
             }
             {user.role === 'admin' ? <TouchableOpacity activeOpacity={0.5} onPress={openOptionsModal}>
-                <Entypo name={'dots-three-vertical'} size={25} color={Colors.buttons} />
+                <Entypo name={'dots-three-vertical'} size={25} color={Colors.appWhite} />
             </TouchableOpacity> : <View />}
         </View>
     )
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingHorizontal: 10,
         paddingTop: height > 600 ? 55 : 10,
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.primary,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

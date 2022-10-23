@@ -24,7 +24,7 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.mainContainer}>
             <ScrollView showsVerticalScrollIndicator={false} ref={_scroll} contentContainerStyle={{ paddingBottom: 120 }}>
                 <View style={styles.textContainer}>
-                    <MyText>projectName1</MyText>
+                    <MyText style={styles.label}>projectName1</MyText>
                 </View>
                 <TextInput
                     mode={'flat'}
@@ -40,7 +40,7 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                 {errors?.projectName1 ? <ErrorText error={errors?.projectName1} /> : null}
 
                 <View style={styles.textContainer}>
-                    <MyText>projectName2</MyText>
+                    <MyText style={styles.label}>projectName2</MyText>
                 </View>
                 <TextInput
                     style={styles.input}
@@ -57,7 +57,7 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
 
                 <View style={styles.textContainer}>
                     {/* TODO: change Supervisors to Supervisor */}
-                    <MyText>projectSupervisors</MyText>
+                    <MyText style={styles.label}>projectSupervisors</MyText>
                 </View>
                 <Pressable onPress={() => setModalVisible(!modalVisible)} >
                     <TextInput
@@ -85,7 +85,7 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                 />
 
                 <View style={styles.textContainer}>
-                    <MyText>projectDescription</MyText>
+                    <MyText style={styles.label}>projectDescription</MyText>
                 </View>
                 <TextInput
                     roundness={0}
@@ -111,8 +111,7 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        paddingHorizontal: 10,
-        backgroundColor: Colors.primary
+        paddingHorizontal: 10
     },
     textContainer: {
         flexDirection: 'row',
@@ -120,74 +119,18 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 5,
     },
-    registerButton: {
-        height: 50,
-        backgroundColor: 'black',
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginVertical: 25,
-        // shadow
-        shadowColor: '#888888',
-        shadowOffset: { width: 0, height: 5 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 5
+    label: {
+        color: Colors.primary
     },
     input: {
         width: '100%',
         height: 60,
         justifyContent: 'center',
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.primary,
         borderRadius: 8,
         padding: 10,
         color: Colors.text
-    },
-    haveAccount: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 15
-    },
-    signupText: {
-        color: 'blue',
-        textDecorationLine: 'underline'
-    },
-    seperator: {
-        width: '80%',
-        height: 1,
-        backgroundColor: '#b9b9b9',
-        marginVertical: 20,
-        alignSelf: 'center'
-    },
-    tasksText: {
-        alignSelf: 'center',
-        textAlign: 'center'
-    },
-    addTaskContainer: {
-        backgroundColor: Colors.buttons,
-        width: 40,
-        height: 40,
-        borderRadius: 40 / 2,
-        position: 'absolute',
-        bottom: 5,
-        end: 10,
-    },
-    addTaskView: {
-        width: 40,
-        height: 40,
-        borderRadius: 40 / 2,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    addTaskText: {
-        fontSize: 25,
-        color: Colors.white
-    },
-    taskView: {
-        backgroundColor: '#fff',
-        marginTop: 10
-    },
+    }
 })
 
 const ErrorText = ({ error }) => <MyText style={{ color: '#B22323', fontSize: 12 }}>{error}</MyText>

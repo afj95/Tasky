@@ -41,7 +41,7 @@ export const EmployeeItem = ({ employee, onRefresh, undeletedSupervisor }) => {
                     <Entypo
                         name={'dots-three-vertical'}
                         size={20}
-                        color={Colors.black}
+                        color={Colors.primary}
                         onPress={openEmployeeModal}
                     />}
             </View>

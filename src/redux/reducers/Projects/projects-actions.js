@@ -23,7 +23,7 @@ import {
 
     FINISH_PROJECT_SUCCESS,
     FINISH_PROJECT_FAILED,
-    
+
     DELETE_PROJECT_SUCCESS,
     DELETE_PROJECT_FAILED
 } from "./projects-types"
@@ -88,13 +88,13 @@ const addNewProject = (project) => {
 const editProject = (projectId) => {
     return async (dispatch) => {
         try {
-            dispatch({  })
+            dispatch({})
 
             const editProjectResponse = await editProjectRequest(projectId);
 
-            dispatch({  })   
+            dispatch({})
         } catch (error) {
-            dispatch({  })
+            dispatch({})
         }
     }
 }
