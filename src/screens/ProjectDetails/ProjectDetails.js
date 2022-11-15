@@ -165,14 +165,15 @@ const styles = StyleSheet.create({
     },
     nameContainer: {
         backgroundColor: Colors.primary,
-        marginBottom: 2.5,
+        marginBottom: 1.5,
         paddingHorizontal: 10,
         paddingVertical: 5,
-        borderRadius: 8
+        borderTopEndRadius: 8,
+        borderTopStartRadius: 8
     },
     supervisorContainer: {
         backgroundColor: Colors.primary,
-        marginVertical: 2.5,
+        marginVertical: 1.5,
         paddingHorizontal: 10,
         paddingVertical: 5,
     },
@@ -193,11 +194,10 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline'
     },
     descriptionContainer: {
-        marginVertical: 2.5,
+        marginVertical: 1.5,
         paddingVertical: 5,
         paddingHorizontal: 10,
         backgroundColor: Colors.primary,
-        borderRadius: 8
     },
     description: {
         paddingHorizontal: 5,
@@ -205,10 +205,11 @@ const styles = StyleSheet.create({
         color: Colors.text
     },
     tasksContainer: {
-        marginVertical: 2.5,
+        marginVertical: 1.5,
         paddingHorizontal: 10,
         backgroundColor: Colors.primary,
-        borderRadius: 8,
+        borderBottomEndRadius: 8,
+        borderBottomStartRadius: 8,
         paddingBottom: 8
     },
     label: {

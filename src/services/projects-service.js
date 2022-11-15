@@ -22,14 +22,14 @@ const addProjectRequest = async (project) => {
     })
 }
 
-const finishProjectRequest = async(projectId) => {
+const finishProjectRequest = async (projectId) => {
     return await request({
         url: `projects/finish?project_id=${projectId}`,
         method: 'put'
     })
 }
 
-const deleteProjectRequest = async(projectId) => {
+const deleteProjectRequest = async (projectId) => {
     return await request({
         url: `projects/del?project_id=${projectId}`,
         method: 'put'

@@ -84,10 +84,10 @@ export const ProjectActionsModal = ({ visible, closeModal, project }) => {
                             />
                             {projectActionsLoading && <ActivityIndicator size={'small'} color={Colors.black} />}
                         </View>
-                        {/* <TouchableOpacity disabled activeOpacity={0.5} style={styles.editProject}>
-                            <MyText>editProejct</MyText>
-                            <MyText style={{ fontSize: 10 }}>editProejctDisabled</MyText>
-                        </TouchableOpacity> */}
+                        <TouchableOpacity activeOpacity={0.5} style={styles.editProject}>
+                            <MyText style={{ color: Colors.primary }}>editProejct</MyText>
+                            {/* <MyText style={{ fontSize: 10 }}>editProejctDisabled</MyText> */}
+                        </TouchableOpacity>
                         {currentProject?.status !== 'finished' &&
                             <TouchableOpacity onPress={onFinishProjectPressed} activeOpacity={0.5} style={styles.finishProject(currentProject?.deleted)}>
                                 <MyText style={{ color: Colors.primary }}>finishProject</MyText>

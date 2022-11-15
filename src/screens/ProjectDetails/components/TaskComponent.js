@@ -76,13 +76,13 @@ export const TaskComponent = ({ project, index, task, onPress }) => {
                             <Ionicons name={'trash-bin'} size={20} color={Colors.red} onPress={deleteTaskPressed} />
                             : <View />
                 }
-                {checked ? <ActivityIndicator size={'small'} color={task.checked ? Colors.primary : Colors.appWhite} /> :
+                {checked ? <ActivityIndicator size={'small'} color={task.checked ? Colors.appWhite : Colors.primary} /> :
                     project?.status === 'finished' || project?.deleted ? null :
                         <Fontisto
                             name={task.checked ? 'checkbox-active' : 'checkbox-passive'}
                             size={20}
                             onPress={checkTask}
-                            color={task.checked ? Colors.primary : Colors.appWhite}
+                            color={task.checked ? Colors.appWhite : Colors.primary}
                         />
                 }
             </View>
@@ -92,10 +92,11 @@ export const TaskComponent = ({ project, index, task, onPress }) => {
 
 const styles = StyleSheet.create({
     taskContainer: (index, length, checked) => ({
-        backgroundColor: checked ? Colors.lightBlue : Colors.secondary,
+        backgroundColor: checked ? Colors.secondary : Colors.lightBlue,
         alignItems: 'center',
         borderRadius: 4,
-        paddingHorizontal: 5,
+        paddingEnd: 20,
+        paddingStart: 10,
         fontSize: 13,
         width: '100%',
         // height: 35,
@@ -109,10 +110,11 @@ const styles = StyleSheet.create({
     taskText: (checked) => ({
         textDecorationLine: checked ? 'line-through' : 'none',
         textDecorationColor: Colors.text,
-        color: checked ? Colors.primary : Colors.text,
+        color: checked ? Colors.text : Colors.primary,
         textDecorationStyle: 'solid',
         width: '80%',
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
+        fontSize: 15
     }),
     checkContainer: {
         width: 80,
