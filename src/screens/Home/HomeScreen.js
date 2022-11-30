@@ -15,6 +15,7 @@ import MyText from '../../components/UI/MyText';
 import { navigate } from '../../navigation/RootNavigation';
 import Colors from '../../utils/Colors';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { showMessage } from 'react-native-flash-message';
 
 export const HomeScreen = () => {
   const dispatch = useDispatch()
@@ -26,6 +27,18 @@ export const HomeScreen = () => {
 
   const user = useSelector((state) => state?.authReducer?.user)
   const projects = useSelector(state => state?.projectsReducer?.projects)
+  // const fetchingProjectsError = useSelector(state => state?.projectsReducer?.fetchingProjectsError)
+
+  // useEffect(() => {
+  //   // TODO: Localize
+  //   if (fetchingProjectsError) {
+  //     showMessage({
+  //       message: '' + fetchingProjectsError,
+  //       type: 'danger',
+  //       duration: 1500
+  //     })
+  //   }
+  // }, [fetchingProjectsError])
 
   useEffect(() => {
     dispatch(resetProjectsErrors())

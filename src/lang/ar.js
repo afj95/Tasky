@@ -25,12 +25,14 @@ export default {
         haveAccount: "لديك حساب ؟ ",
         loggedinSuccessfully: "مرحبًا بك ...",
         projects: "المشاريع",
+        latestProjects: "آخر المشاريع",
         addProject: "إضافة مشروع",
         projectName1: "الاسم الأول للمشروع",
         close: "اغلاق",
         projectName2: "الاسم الثاني للمشروع",
         projectDescription: "عن المشروع",
         projectSupervisors: "المشرفين",
+        admins: "المدراء",
         add: "إضافة",
         task: "المهمة",
         tasks: "المهام",
@@ -65,7 +67,7 @@ export default {
         editEmployee: "تعديل بيانات الموظف",
         deleteEmployee: "حذف الموظف",
         supervisors: "المشرفين",
-        all: "كل الموظفين",
+        allEmployees: "كل الموظفين",
         addEmployee: "إضافة موظف جديد",
         addEmployeeInstractions: "قم بتعبة بيانات الموظف الجديد أدناه",
         addEmployeeNote: "ملاحظة: كلمة المرور ستكون مطابقة لرقم الهاتف للموظف لتسجيل الدخول",
@@ -75,6 +77,10 @@ export default {
         deletedUsers: "الموظفين المحذوفين",
         role: "الرتبة",
         noDeleted: "الموظفين غير المحذوفين",
-        notDeletedSupervisors: "بدون المحذوف"
+        notDeletedSupervisors: "بدون المحذوف",
+        allProjects: "جميع المشاريع",
+        activeProjects: "المشاريع الجارية",
+        finishedProjects: "المشاريع المنتهية",
+        dashboardScreen: "لوحة التحكم"
     }
 }

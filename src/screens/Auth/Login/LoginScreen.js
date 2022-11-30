@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform, TouchableOpacity, Alert, I18nManager } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Platform, TouchableOpacity, Alert, I18nManager, StatusBar } from 'react-native';
 import { Formik } from 'formik';
 import { LoginForm } from './components';
 import MyText from '../../../components/UI/MyText';
@@ -154,7 +154,7 @@ export const LoginScreen = ({ navigation }) => {
             <View style={styles.welcomeContainer}>
                 <MyText style={{ fontSize: 33, color: Colors.primary }}>welcomeBack</MyText>
             </View>
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ alignItems: 'center' }}>
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollStyle}>
                 <View style={styles.formContainer}>
                     <TouchableOpacity activeOpacity={0.8} onPress={onChangeLanguagePressed} style={styles.changeLanguage}>
                         <FontAwesome
@@ -191,8 +191,9 @@ const styles = StyleSheet.create({
     },
     welcomeContainer: {
         height: '20%',
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        marginTop: StatusBar.currentHeight
     },
     changeLanguage: {
         alignItems: 'center',
@@ -204,13 +205,18 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: Colors.text
     },
+    scrollStyle: {
+        flex: 1,
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end'
+    },
     formContainer: {
-        width: '90%',
+        width: '100%',
         backgroundColor: Colors.primary,
-        paddingVertical: 25,
+        paddingVertical: 15,
         paddingHorizontal: 10,
-        borderRadius: 10,
-        marginVertical: 10,
+        borderTopStartRadius: 15,
+        borderTopEndRadius: 15,
         // shadow
         shadowColor: '#999999',
         shadowOffset: { width: 1, height: 1 },

@@ -11,7 +11,8 @@ import {
   ProjectDetails,
   EmployeesScreen,
   AddEmployeeScreen,
-  EditEmployeeScreen
+  EditEmployeeScreen,
+  DashboardScreen
 } from '../screens';
 import { t } from '../i18n';
 import { useSelector } from 'react-redux';
@@ -30,6 +31,7 @@ export const AuthStackScreens = () => (
 const HomeStack = createStackNavigator();
 export const HomeStackScreens = () => (
   <HomeStack.Navigator screenOptions={{ headerShown: false }}>
+    <HomeStack.Screen name="DashboardScreen" component={DashboardScreen} />
     <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
     <HomeStack.Screen name="AddProject" component={AddProjectScreen} />
     <HomeStack.Screen name="ProjectDetails" component={ProjectStuckScreens} />

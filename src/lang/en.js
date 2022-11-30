@@ -25,12 +25,14 @@ export default {
         haveAccount: "Have an account ? ",
         loggedinSuccessfully: "Welcome Back..",
         projects: "Projects",
+        latestProjects: "Latest Projects",
         addProject: "Add Project",
         projectName1: "First Project Name",
         close: "Close",
         projectName2: "Second Project Name",
         projectDescription: "Description",
         projectSupervisors: "Supervisors",
+        admins: "Admins",
         add: "Add",
         task: "Task",
         tasks: "Tasks",
@@ -65,7 +67,7 @@ export default {
         editEmployee: "Edit employee",
         deleteEmployee: "Delete employee",
         supervisors: "Supervisor",
-        all: "All employees",
+        allEmployees: "All employees",
         addEmployee: "Add new Employee",
         addEmployeeInstractions: "Fill the employee data below",
         addEmployeeNote: "Note: The password will be the same as the phone number for login",
@@ -75,6 +77,10 @@ export default {
         deletedUsers: "Deleted users",
         role: "Role",
         noDeleted: "Undeleted only",
-        notDeletedSupervisors: "Without deleted"
+        notDeletedSupervisors: "Without deleted",
+        allProjects: "All Projects",
+        activeProjects: "Active Projects",
+        finishedProjects: "Finished Projects",
+        dashboardScreen: "Dashboard"
     }
 }

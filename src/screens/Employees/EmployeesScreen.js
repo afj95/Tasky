@@ -80,7 +80,7 @@ export const EmployeesScreen = () => {
                     contentContainerStyle={{ paddingEnd: 40, paddingStart: 10 }}
                     showsHorizontalScrollIndicator={false}>
                     <TouchableOpacity activeOpacity={0.7} onPress={() => setEmployeesType(1)} style={styles.allEmp(focusedList, 1)}>
-                        <MyText style={styles.filterText}>{'all'}</MyText>
+                        <MyText style={styles.filterText}>{'allEmployees'}</MyText>
                     </TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.7} onPress={() => setEmployeesType(2)} style={styles.allEmp(focusedList, 2)}>
                         <MyText style={styles.filterText}>{'supervisors'}</MyText>
