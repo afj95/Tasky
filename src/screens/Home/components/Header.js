@@ -3,7 +3,7 @@ import {
     StyleSheet,
     Dimensions,
     View,
-    TouchableOpacity,
+    I18nManager
 } from 'react-native';
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import { navigate } from '../../../navigation/RootNavigation';
@@ -21,11 +21,22 @@ export const Header = ({ user, text }) => {
 
     return (
         <View style={styles.subHeader}>
-            <Ionicons name={'reorder-three'} size={35} color={Colors.appWhite} onPress={navigation.toggleDrawer} />
-            <MyText style={{ fontSize: 20, fontWeight: 'bold', color: Colors.text }}>{text}</MyText>
+            <Entypo
+                name={'list'}
+                color={Colors.appWhite}
+                size={30}
+                style={styles.drawerIcon}
+                onPress={navigation.toggleDrawer}
+            />
+            <MyText style={styles.title}>{text}</MyText>
             {user.role === 'admin' ? <View style={styles.addProjectView}>
-                <Ionicons name={'md-add-circle'} size={22} color={Colors.appWhite} onPress={_onAddProjectPressed} />
-                <MyText>addProject</MyText>
+                <Ionicons
+                    name={'md-add-circle'}
+                    size={22}
+                    color={Colors.appWhite}
+                    onPress={_onAddProjectPressed}
+                />
+                <MyText style={styles.addProjectText}>addProject</MyText>
             </View> : <View />}
         </View>
     )
@@ -49,8 +60,29 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         elevation: 4,
     },
+    title: {
+        fontSize: 20,
+        fontFamily: 'bold',
+        color: Colors.appWhite
+    },
     addProjectView: {
         alignItems: 'center',
         justifyContent: 'center',
-    }
+    },
+    addProjectText: {
+        color: Colors.appWhite,
+        fontFamily: 'light'
+    },
+    drawerIcon: {
+        transform: I18nManager.isRTL ?
+            [
+                { rotateY: "180deg" },
+                { rotateZ: "0deg" }
+            ]
+            :
+            [
+                { rotateY: "0deg" },
+                { rotateZ: "0deg" }
+            ]
+    },
 })

@@ -15,8 +15,8 @@ const { height } = Dimensions.get("screen");
 export const Header = ({ text }) => {
     return (
         <View style={styles.subHeader}>
-            <RNAppbar.BackAction size={25} color={Colors.buttons} onPress={goBack} />
-            <MyText style={{ fontSize: 20, fontWeight: 'bold', color: Colors.text }}>{text}</MyText>
+            <RNAppbar.BackAction size={25} color={Colors.appWhite} onPress={goBack} />
+            <MyText style={styles.title}>{text}</MyText>
             <View />
         </View>
     )
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingHorizontal: 10,
         paddingTop: height > 600 ? 55 : 10,
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.primary,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -39,5 +39,10 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
         shadowRadius: 2,
         elevation: 4,
+    },
+    title: {
+        fontSize: 20,
+        fontFamily: 'bold',
+        color: Colors.appWhite
     }
 })

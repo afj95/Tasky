@@ -14,6 +14,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import i18n from 'i18n-js';
 import { reloadAsync } from 'expo-updates';
 import Colors from '../../../utils/Colors';
+import { mainStyles } from '../../../constants';
 
 export const LoginScreen = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -165,7 +166,7 @@ export const LoginScreen = ({ navigation }) => {
                         <MyText style={styles.changeLanguageText} text={I18nManager.isRTL ? `تغيير\nاللغة` : `change\nLanguage`} />
                     </TouchableOpacity>
                     <View style={{ alignItems: 'center' }}>
-                        <MyText style={{ marginBottom: 20, fontSize: 18, color: Colors.text }}>login</MyText>
+                        <MyText style={styles.loginText}>login</MyText>
                     </View>
                     <Formik
                         /*
@@ -203,25 +204,26 @@ const styles = StyleSheet.create({
     changeLanguageText: {
         fontSize: 10,
         textAlign: 'center',
-        color: Colors.text
+        color: Colors.appWhite,
+        fontFamily: 'bold'
+    },
+    loginText: {
+        marginBottom: 25,
+        fontSize: 18,
+        color: Colors.appWhite,
+        fontFamily: 'bold'
     },
     scrollStyle: {
         flex: 1,
-        alignItems: 'flex-end',
-        justifyContent: 'flex-end'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     formContainer: {
-        width: '100%',
+        width: '90%',
         backgroundColor: Colors.primary,
         paddingVertical: 15,
         paddingHorizontal: 10,
-        borderTopStartRadius: 15,
-        borderTopEndRadius: 15,
-        // shadow
-        shadowColor: '#999999',
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 5
+        borderRadius: 15,
+        ...mainStyles.viewShadow
     },
 })

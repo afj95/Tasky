@@ -52,10 +52,11 @@ export const request = async ({ url, method, params }: RequesProps) => {
                      * returning the error status code 
                      * and the message came from the API.
                     */
-                    reject({
-                        status: error?.response?.status,
-                        message: error.response.data.message
-                    })
+                    reject(error)
+                    // reject({
+                    //     status: error?.response?.status,
+                    //     message: error.response.data.message
+                    // })
                 });
         });
     } catch (error) {

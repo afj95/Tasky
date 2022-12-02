@@ -3,8 +3,9 @@ import {
     StyleSheet,
     Dimensions,
     View,
+    I18nManager
 } from 'react-native';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { AntDesign, Entypo } from '@expo/vector-icons';
 // components
 import MyText from "../../../components/UI/MyText";
 import Colors from '../../../utils/Colors';
@@ -17,14 +18,20 @@ export const Header = ({ text, onEmployeePressed }) => {
 
     return (
         <View style={styles.subHeader}>
-            <Ionicons
-                name={'reorder-three'}
-                size={35}
+            <Entypo
+                name={'list'}
                 color={Colors.appWhite}
+                size={30}
+                style={styles.drawerIcon}
                 onPress={navigation.toggleDrawer}
             />
-            <MyText style={{ fontSize: 20, fontWeight: 'bold', color: Colors.text }}>{text}</MyText>
-            <AntDesign name={'adduser'} size={30} color={Colors.appWhite} onPress={onEmployeePressed} />
+            <MyText style={styles.title}>{text}</MyText>
+            <AntDesign
+                name={'adduser'}
+                size={30}
+                color={Colors.appWhite}
+                onPress={onEmployeePressed}
+            />
         </View>
     )
 }
@@ -40,11 +47,22 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomEndRadius: 10,
         borderBottomStartRadius: 10,
-        // shadow
-        shadowColor: '#999999',
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 4,
-    }
+    },
+    title: {
+        fontSize: 20,
+        fontFamily: 'bold',
+        color: Colors.appWhite,
+    },
+    drawerIcon: {
+        transform: I18nManager.isRTL ?
+            [
+                { rotateY: "180deg" },
+                { rotateZ: "0deg" }
+            ]
+            :
+            [
+                { rotateY: "0deg" },
+                { rotateZ: "0deg" }
+            ]
+    },
 })

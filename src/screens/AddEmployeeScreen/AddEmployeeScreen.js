@@ -105,24 +105,20 @@ const styles = StyleSheet.create({
     },
     instractionsText: {
         fontSize: 18,
-        color: Colors.primary
+        color: Colors.primary,
+        fontFamily: 'bold'
     },
     notesText: {
         fontSize: 10,
         marginStart: 5,
-        color: Colors.primary
+        color: Colors.primary,
+        fontFamily: 'light'
     },
     formContainer: {
         width: '90%',
         backgroundColor: Colors.primary,
         paddingVertical: 25,
         paddingHorizontal: 10,
-        borderRadius: 10,
-        // shadow
-        shadowColor: '#999999',
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 5
+        borderRadius: 10
     },
 })

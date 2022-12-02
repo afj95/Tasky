@@ -17,13 +17,13 @@ export const Header = ({ onPress, title, isLoading }) => {
         <>
             <View style={styles.header}>
                 <RNAppbar.BackAction size={25} style={{ padding: 2 }} color={Colors.appWhite} onPress={() => goBack()} />
-                <MyText style={{ fontSize: 22, fontWeight: 'bold', color: Colors.text }}>{title}</MyText>
+                <MyText style={styles.title}>{title}</MyText>
                 {isLoading ?
                     <ActivityIndicator size={'large'} color={Colors.appWhite} />
                     :
                     <TouchableOpacity onPress={onPress} activeOpacity={0.5} style={styles.addProjectButton}>
                         <Ionicons name={'md-add-circle'} size={22} color={Colors.appWhite} />
-                        <MyText>add</MyText>
+                        <MyText style={styles.addText}>add</MyText>
                     </TouchableOpacity>
                 }
             </View>
@@ -44,15 +44,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomEndRadius: 10,
         borderBottomStartRadius: 10,
-        // shadow
-        shadowColor: '#999999',
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 4
+    },
+    title: {
+        fontSize: 22,
+        fontFamily: 'bold',
+        color: Colors.appWhite
     },
     addProjectButton: {
         alignItems: 'center',
         justifyContent: 'center'
     },
+    addText: {
+        fontFamily: 'bold',
+        color: Colors.appWhite,
+    }
 })

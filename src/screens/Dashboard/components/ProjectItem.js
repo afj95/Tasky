@@ -6,13 +6,13 @@ import {
 import { TouchableOpacity } from '../../../components/UI/TouchableOpacity';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Colors from '../../../utils/Colors';
-import { navigate } from '../../../navigation/RootNavigation';
 import MyText from '../../../components/UI/MyText';
+import { navigate } from '../../../navigation/RootNavigation';
 
 export const ProjectItem = ({ item, index }) => {
 
     const onProjectPressed = (item) => {
-        navigate('ProjectDetails', {
+        navigate('Projects', {
             screen: 'ProjectDetailsScreen',
             params: {
                 project: item,

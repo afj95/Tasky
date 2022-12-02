@@ -81,6 +81,9 @@ export default {
         allProjects: "جميع المشاريع",
         activeProjects: "المشاريع الجارية",
         finishedProjects: "المشاريع المنتهية",
-        dashboardScreen: "لوحة التحكم"
+        dashboardScreen: "لوحة التحكم",
+        noRecentProjects: "لا يوجد مشاريع",
+        projectsFilter: "تصفية المشاريع",
+        employeesFilter: "تصفية الموظفين",
     }
 }

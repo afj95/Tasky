@@ -16,12 +16,12 @@ export const AddEmpoyeeForm = ({ RegisterProps: { handleChange, values, errors, 
         <View>
             <View style={styles.textContainer}>
                 <AntDesign name={'user'} size={15} style={{ marginEnd: 5 }} color={Colors.appWhite} />
-                <MyText>name</MyText>
+                <MyText style={styles.label}>name</MyText>
             </View>
             <TextInput
                 style={styles.input}
-                placeholder={t('app.name')}
-                placeholderTextColor={Colors.secondary}
+                // placeholder={t('app.name')}
+                // placeholderTextColor={Colors.secondary}
                 mode={'flat'}
                 onChangeText={handleChange('name')}
                 value={values?.name}
@@ -33,7 +33,7 @@ export const AddEmpoyeeForm = ({ RegisterProps: { handleChange, values, errors, 
 
             <View style={styles.textContainer}>
                 <Entypo name={'mobile'} size={15} style={{ marginEnd: 5 }} color={Colors.appWhite} />
-                <MyText>phone</MyText>
+                <MyText style={styles.label}>phone</MyText>
             </View>
             <TextInput
                 style={styles.input}
@@ -56,9 +56,9 @@ export const AddEmpoyeeForm = ({ RegisterProps: { handleChange, values, errors, 
                 </View>
                 :
                 <TouchableOpacity
-                    style={styles.registerButton}
+                    style={styles.addEmployeeButton}
                     onPress={handleSubmit}>
-                    <MyText style={{ fontSize: 18, color: Colors.text }}>addEmployee</MyText>
+                    <MyText style={{ fontSize: 18, color: Colors.appWhite, fontFamily: 'bold' }}>addEmployee</MyText>
                 </TouchableOpacity>
             }
         </View>
@@ -71,24 +71,24 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 30,
     },
-    registerButton: {
+    addEmployeeButton: {
         height: 50,
         backgroundColor: Colors.secondary,
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 25,
-        // shadow
-        shadowColor: '#888888',
-        shadowOffset: { width: 0, height: 5 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 5
+        marginTop: 25
     },
     input: {
         width: '100%',
+        marginTop: 5,
         justifyContent: 'center',
         backgroundColor: Colors.appWhite,
+        fontFamily: 'bold'
+    },
+    label: {
+        color: Colors.appWhite,
+        fontFamily: 'bold',
     }
 })
 

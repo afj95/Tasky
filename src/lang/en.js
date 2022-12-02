@@ -81,6 +81,9 @@ export default {
         allProjects: "All Projects",
         activeProjects: "Active Projects",
         finishedProjects: "Finished Projects",
-        dashboardScreen: "Dashboard"
+        dashboardScreen: "Dashboard",
+        noRecentProjects: "No recent projects",
+        projectsFilter: "Filter Projects",
+        employeesFilter: "Filter Employees"
     }
 }

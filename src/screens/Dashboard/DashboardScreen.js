@@ -9,7 +9,7 @@ import {
     I18nManager
 } from 'react-native';
 import { TouchableOpacity } from '../../components/UI/TouchableOpacity';
-import { Header, Title, DetailesText, ProjectItem } from './components';
+import { Header, Title, DetailesText, ProjectItem, ListEmptyComponent } from './components';
 import { mainStyles } from '../../constants';
 import { ProgressChart } from 'react-native-chart-kit';
 import Colors from '../../utils/Colors';
@@ -18,6 +18,8 @@ import { fetchingProjects } from '../../redux/reducers/Projects/projects-actions
 import { Entypo } from '@expo/vector-icons';
 import { animateList } from './helpers';
 import { useNavigation } from '@react-navigation/native';
+import { navigate } from '../../navigation/RootNavigation';
+import MyText from '../../components/UI/MyText';
 
 export const DashboardScreen = () => {
     const dispatch = useDispatch()
@@ -29,7 +31,9 @@ export const DashboardScreen = () => {
 
     useEffect(() => {
         dispatch(fetchingProjects('active', false))
-        animateList(_list)
+        // if (projects && projects.length > 0) {
+        //     animateList(_list)
+        // }
     }, [])
 
     // TODO: Change this data to get from API
@@ -61,13 +65,13 @@ export const DashboardScreen = () => {
                     {/* upper */}
                     <View style={styles.upperContainer}>
                         <View style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity style={styles.touchableView}>
+                            <TouchableOpacity style={styles.touchableView} onPress={() => navigate('HomeScreens')}>
                                 <Title text={'projects'} data={'projects'} onPress />
                                 <DetailesText text={'allProjects'} value={12} />
                                 <DetailesText text={'activeProjects'} value={12} />
                                 <DetailesText text={'finishedProjects'} value={12} />
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.touchableView}>
+                            <TouchableOpacity style={styles.touchableView} onPress={() => navigate('employeesScreen')}>
                                 <Title text={'employees'} data={'employees'} onPress />
                                 <DetailesText text={'allEmployees'} value={12} />
                                 <DetailesText text={'admins'} value={12} />
@@ -89,15 +93,15 @@ export const DashboardScreen = () => {
                     </View>
                     <View style={styles.listContainer}>
                         <Title text={'latestProjects'} data={'latestProjects'} onPress />
-                        <FlatList
+                        {projects && projects.length < 0 ? <FlatList
                             ref={_list}
+                            horizontal
                             style={styles.list}
                             keyExtractor={(item, index) => '#' + index.toString()}
                             data={projects || []}
-                            horizontal
                             showsHorizontalScrollIndicator={false}
                             renderItem={({ item, index }) => <ProjectItem item={item} index={index} />}
-                        />
+                        /> : <ListEmptyComponent />}
                     </View>
                 </View>
             </ScrollView>
@@ -143,7 +147,6 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.white,
         padding: 10,
         marginTop: 10,
-        width: '100%',
         borderRadius: 10,
         ...mainStyles.viewShadow,
     },

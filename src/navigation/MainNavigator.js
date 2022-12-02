@@ -10,7 +10,8 @@ import i18n from 'i18n-js';
 // Navigators
 import {
     AuthStackScreens,
-    DrawerScreens
+    DrawerScreens,
+    MainStackScreens
 } from './Navigators';
 import { StatusBar } from 'expo-status-bar';
 import FlashMessage from 'react-native-flash-message';

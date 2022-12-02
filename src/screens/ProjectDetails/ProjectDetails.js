@@ -114,20 +114,23 @@ export const ProjectDetails = ({ route: { params: { project, status, deleted } }
                                     <MyText style={styles.label}>projectDescription</MyText>
                                     <MyText style={styles.description} text={`${currentProject?.projectDescription}`} />
                                 </View>
-                                <View style={styles.tasksContainer}>
-                                    {currentProject?.tasks?.length > 0 && <MyText style={styles.label}>tasks</MyText>}
-                                    {currentProject?.tasks?.map((task, index) =>
-                                        <TaskComponent
-                                            task={task}
-                                            key={index}
-                                            index={index}
-                                            project={currentProject}
-                                        // TODO: Show taskDetailsModal
-                                        // onPress={() => openTaskInformationModal(task)}
-                                        />
-                                    )}
-                                </View>
-                            </ScrollView>}
+                                {currentProject?.tasks?.length > 0 ?
+                                    <View style={styles.tasksContainer}>
+                                        <MyText style={styles.label}>tasks</MyText>
+                                        {currentProject?.tasks?.map((task, index) =>
+                                            <TaskComponent
+                                                task={task}
+                                                key={index}
+                                                index={index}
+                                                project={currentProject}
+                                            // TODO: Show taskDetailsModal
+                                            // onPress={() => openTaskInformationModal(task)}
+                                            />
+                                        )}
+                                    </View>
+                                    : null}
+                            </ScrollView>
+                        }
                     </View>
                     {user?.role === 'admin' && currentProject?.status !== 'finished' && !currentProject?.deleted ?
                         <AddTask project={project} _scrollRef={_scroll} />
@@ -141,11 +144,12 @@ export const ProjectDetails = ({ route: { params: { project, status, deleted } }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: Colors.appWhite,
     },
     detailsContainer: {
         flex: 1,
-        paddingTop: 2
+        paddingTop: 2,
     },
     scrollContainer: { paddingBottom: 120 },
     status: {
@@ -153,18 +157,15 @@ const styles = StyleSheet.create({
         height: 20,
         backgroundColor: '#FA8072'
     },
-    loaderContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     deleted: {
         width: '100%',
         height: 20,
         backgroundColor: 'green',
     },
     nameContainer: {
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.white,
+        width: '95%',
+        alignSelf: 'center',
         marginBottom: 1.5,
         paddingHorizontal: 10,
         paddingVertical: 5,
@@ -172,15 +173,18 @@ const styles = StyleSheet.create({
         borderTopStartRadius: 8
     },
     supervisorContainer: {
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.white,
+        width: '95%',
+        alignSelf: 'center',
         marginVertical: 1.5,
         paddingHorizontal: 10,
         paddingVertical: 5,
     },
     supervisor: {
-        paddingHorizontal: 5,
+        marginHorizontal: 5,
         fontSize: 13,
-        color: Colors.text
+        color: Colors.primary,
+        fontFamily: 'light'
     },
     phoneNumberContainer: {
         flexDirection: 'row',
@@ -190,33 +194,38 @@ const styles = StyleSheet.create({
     phoneNumber: {
         paddingHorizontal: 5,
         fontSize: 13,
-        color: Colors.lightBlue,
-        textDecorationLine: 'underline'
+        color: Colors.secondary,
+        textDecorationLine: 'underline',
+        fontFamily: 'bold'
     },
     descriptionContainer: {
         marginVertical: 1.5,
         paddingVertical: 5,
         paddingHorizontal: 10,
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.white,
+        width: '95%',
+        alignSelf: 'center',
+        borderBottomStartRadius: 10,
+        borderBottomEndRadius: 10,
     },
     description: {
         paddingHorizontal: 5,
         fontSize: 13,
-        color: Colors.text
+        fontFamily: 'bold',
+        color: Colors.primary
     },
     tasksContainer: {
         marginVertical: 1.5,
         paddingHorizontal: 10,
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.white,
+        width: '95%',
+        alignSelf: 'center',
         borderBottomEndRadius: 8,
         borderBottomStartRadius: 8,
         paddingBottom: 8
     },
     label: {
-        fontWeight: 'bold',
+        fontFamily: 'bold',
         color: Colors.text
-    },
-    checkbox: {
-        alignSelf: "center",
-    },
+    }
 })

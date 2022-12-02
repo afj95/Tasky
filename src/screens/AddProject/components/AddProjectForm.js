@@ -12,6 +12,7 @@ import MyText from '../../../components/UI/MyText';
 import { t } from '../../../i18n';
 import { SupervisorsModal } from './SupervisorsModal';
 import Colors from '../../../utils/Colors';
+import { mainStyles } from '../../../constants';
 
 export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors, handleBlur, setFieldValue } }) => {
 
@@ -32,8 +33,8 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                     error={errors?.projectName1}
                     style={styles.input}
                     onBlur={handleBlur('projectName1')}
-                    placeholder={t('app.projectName1')}
-                    placeholderTextColor={Colors.text}
+                    // placeholder={t('app.projectName1')}
+                    // placeholderTextColor={Colors.text}
                     onChangeText={handleChange('projectName1')}
                     theme={{ colors: { text: Colors.text, error: '#B22323', primary: '#595959' }, roundness: 12 }}
                 />
@@ -44,8 +45,8 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                 </View>
                 <TextInput
                     style={styles.input}
-                    placeholder={t('app.projectName2')}
-                    placeholderTextColor={Colors.text}
+                    // placeholder={t('app.projectName2')}
+                    // placeholderTextColor={Colors.text}
                     mode={'flat'}
                     onChangeText={handleChange('projectName2')}
                     value={values?.projectName2}
@@ -62,8 +63,8 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                 <Pressable onPress={() => setModalVisible(!modalVisible)} >
                     <TextInput
                         style={styles.input}
-                        placeholder={t('app.projectSupervisors')}
-                        placeholderTextColor={Colors.text}
+                        // placeholder={t('app.projectSupervisors')}
+                        // placeholderTextColor={Colors.text}
                         mode={'flat'}
                         editable={false}
                         pointerEvents={'none'}
@@ -90,8 +91,8 @@ export const AddProjectForm = ({ addProjectProps: { handleChange, values, errors
                 <TextInput
                     roundness={0}
                     style={{ ...styles.input, height: 180 }}
-                    placeholder={t('app.projectDescription')}
-                    placeholderTextColor={Colors.text}
+                    // placeholder={t('app.projectDescription')}
+                    // placeholderTextColor={Colors.text}
                     mode={'flat'}
                     onChangeText={handleChange('projectDescription')}
                     value={values?.projectDescription}
@@ -120,17 +121,22 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     label: {
-        color: Colors.primary
+        color: Colors.primary,
+        fontFamily: 'bold',
+        fontSize: 15
     },
     input: {
         width: '100%',
         height: 60,
         justifyContent: 'center',
-        backgroundColor: Colors.primary,
-        borderRadius: 8,
+        backgroundColor: Colors.white,
+        borderWidth: 0.5,
+        borderColor: Colors.primary,
+        borderRadius: 10,
         padding: 10,
-        color: Colors.text
+        color: Colors.primary,
+        ...mainStyles.viewShadow
     }
 })
 
-const ErrorText = ({ error }) => <MyText style={{ color: '#B22323', fontSize: 12 }}>{error}</MyText>
+const ErrorText = ({ error }) => <MyText style={{ fontFamily: 'bold', color: '#B22323', fontSize: 12 }}>{error}</MyText>

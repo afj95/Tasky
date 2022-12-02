@@ -18,7 +18,7 @@ export const EditEmpoyeeForm = ({ RegisterProps: { handleChange, values, errors,
             <View style={styles.formContainer}>
                 <View style={styles.textContainer}>
                     <AntDesign name={'user'} size={15} style={{ marginEnd: 5 }} color={Colors.appWhite} />
-                    <MyText>name</MyText>
+                    <MyText style={styles.label}>name</MyText>
                 </View>
                 <TextInput
                     style={styles.input}
@@ -34,7 +34,7 @@ export const EditEmpoyeeForm = ({ RegisterProps: { handleChange, values, errors,
 
                 <View style={styles.textContainer}>
                     <Entypo name={'mobile'} size={15} style={{ marginEnd: 5 }} color={Colors.appWhite} />
-                    <MyText>phone</MyText>
+                    <MyText style={styles.label}>phone</MyText>
                 </View>
                 <TextInput
                     style={styles.input}
@@ -70,7 +70,7 @@ export const EditEmpoyeeForm = ({ RegisterProps: { handleChange, values, errors,
 
                 <View style={styles.textContainer}>
                     <Entypo name={'mobile'} size={15} style={{ marginEnd: 5 }} color={Colors.appWhite} />
-                    <MyText>password</MyText>
+                    <MyText style={styles.label}>password</MyText>
                 </View>
                 <TextInput
                     style={styles.input}
@@ -93,7 +93,7 @@ export const EditEmpoyeeForm = ({ RegisterProps: { handleChange, values, errors,
                     <TouchableOpacity
                         style={styles.registerButton}
                         onPress={handleSubmit}>
-                        <MyText style={{ color: Colors.primary, fontSize: 18 }}>editEmployee</MyText>
+                        <MyText style={styles.editText}>editEmployee</MyText>
                     </TouchableOpacity>
                 }
             </View>
@@ -104,12 +104,16 @@ export const EditEmpoyeeForm = ({ RegisterProps: { handleChange, values, errors,
 const styles = StyleSheet.create({
     formContainer: {
         flex: 1,
-        backgroundColor: Colors.secondary
     },
     textContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         marginTop: 30,
+    },
+    label: {
+        fontFamily: 'bold',
+        color: Colors.appWhite,
+        fontSize: 15
     },
     registerButton: {
         height: 50,
@@ -118,18 +122,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 25,
-        // shadow
-        shadowColor: '#888888',
-        shadowOffset: { width: 0, height: 5 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 5
+    },
+    editText: {
+        color: Colors.appWhite,
+        fontSize: 18,
+        fontFamily: 'bold'
     },
     input: {
         width: '100%',
+        marginTop: 5,
         justifyContent: 'center',
         backgroundColor: Colors.appWhite,
-    }
+        fontFamily: 'bold'
+    },
 })
 
 const ErrorText = ({ error }) => <MyText style={{ color: '#B22323', fontSize: 12 }}>{error}</MyText>

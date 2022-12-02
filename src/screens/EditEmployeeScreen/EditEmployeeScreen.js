@@ -9,9 +9,10 @@ import { Formik } from 'formik';
 import MyText from '../../components/UI/MyText';
 import { useDispatch, useSelector } from 'react-redux';
 import { EditEmpoyeeForm, Header } from './components';
-import { editEmployee, resetUsersErrors } from '../../redux/reducers/Users/users-actions';
+import { editEmployee } from '../../redux/reducers/Users/users-actions';
 import { showMessage } from 'react-native-flash-message';
 import Colors from '../../utils/Colors';
+import { mainStyles } from '../../constants';
 
 export const EditEmployeeScreen = ({ route: { params: { employee } } }) => {
     const dispatch = useDispatch();
@@ -78,7 +79,7 @@ export const EditEmployeeScreen = ({ route: { params: { employee } } }) => {
                         validate={validate}
                         onSubmit={onSubmit}
                         initialValues={initialValues}>
-                        {props => <EditEmpoyeeForm RegisterProps={props} isLoading={false} /> }
+                        {props => <EditEmpoyeeForm RegisterProps={props} isLoading={false} />}
                     </Formik>
                 </View>
             </KeyboardAvoidingView>
@@ -89,8 +90,7 @@ export const EditEmployeeScreen = ({ route: { params: { employee } } }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 20,
-        backgroundColor: Colors.primary
+        backgroundColor: Colors.appWhite
     },
     scrollStyles: {
         flex: 1,
@@ -104,7 +104,8 @@ const styles = StyleSheet.create({
     },
     instractionsText: {
         fontSize: 18,
-        color: Colors.appWhite
+        fontFamily: 'bold',
+        color: Colors.primary
     },
     notesText: {
         fontSize: 10,
@@ -114,15 +115,10 @@ const styles = StyleSheet.create({
     formContainer: {
         width: '90%',
         alignSelf: 'center',
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.primary,
         paddingVertical: 25,
         paddingHorizontal: 10,
         borderRadius: 10,
-        // shadow
-        shadowColor: '#999999',
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 5
+        ...mainStyles.viewShadow
     },
 })
