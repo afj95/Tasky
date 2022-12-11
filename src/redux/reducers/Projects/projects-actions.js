@@ -3,8 +3,13 @@ import {
     deleteProjectRequest,
     fetchingProjectsReq,
     fetchingOneProjectReq,
-    finishProjectRequest
+    finishProjectRequest,
+    getProjectsDetailsReq,
+    getLatestProjectsreq,
+    getEmployeesDetailsReq,
+    getChartsDataReq
 } from "../../../services";
+import { setError, setLoading, stopLoading } from "../Global/global-actions";
 import {
     RESET_PROJECTS_ERRORS,
 
@@ -25,7 +30,12 @@ import {
     FINISH_PROJECT_FAILED,
 
     DELETE_PROJECT_SUCCESS,
-    DELETE_PROJECT_FAILED
+    DELETE_PROJECT_FAILED,
+
+    DASHBOARD_PROJECTS_SUCCESS,
+    DASHBOARD_LATESTS_SUCCESS,
+    DASHBOARD_EMPLOYEES_SUCCESS,
+    DASHBOARD_CHARTS_SUCCESS
 } from "./projects-types"
 
 const resetProjectsErrors = () => {
@@ -127,11 +137,96 @@ const deleteProject = (projectId) => {
     }
 }
 
+// Dashboard routes
+
+const getProjectsDetails = () => {
+    return async (dispatch) => {
+        try {
+            dispatch(setLoading({ 'dashboard': true }))
+
+            const getProjectsDetailsRes = await getProjectsDetailsReq();
+
+            dispatch(stopLoading())
+            dispatch({ type: DASHBOARD_PROJECTS_SUCCESS, payload: getProjectsDetailsRes?.data?.data });
+        } catch (error) {
+            dispatch(stopLoading())
+            dispatch(setError({ 'dashboard': { message: error?.message } }))
+            dispatch({ type: DASHBOARD_PROJECTS_SUCCESS, payload: {} });
+        }
+    }
+}
+
+const getEmployeesDetails = () => {
+    return async (dispatch) => {
+        try {
+            dispatch(setLoading({ 'dashboard': true }))
+
+            const getEmployeesDetailsRes = await getEmployeesDetailsReq();
+
+            dispatch(stopLoading())
+            dispatch({ type: DASHBOARD_EMPLOYEES_SUCCESS, payload: getEmployeesDetailsRes?.data?.data });
+        } catch (error) {
+            dispatch(stopLoading())
+            dispatch(setError({ 'dashboard': { message: error?.message } }))
+            dispatch({ type: DASHBOARD_EMPLOYEES_SUCCESS, payload: {} });
+        }
+    }
+}
+
+const getChartsData = () => {
+    return async (dispatch) => {
+        try {
+            dispatch(setLoading({ 'dashboard': true }))
+
+            const getChartsDataRes = await getChartsDataReq()
+
+            dispatch(stopLoading())
+            dispatch({ type: DASHBOARD_CHARTS_SUCCESS, payload: getChartsDataRes?.data?.data }); // <- array [num, num]
+        } catch (error) {
+            dispatch(stopLoading())
+            dispatch(setError({ 'dashboard': { message: error?.message } }))
+            dispatch({ type: DASHBOARD_CHARTS_SUCCESS, payload: {} });
+        }
+    }
+}
+
+const getLatestProjects = () => {
+    return async (dispatch) => {
+        try {
+            dispatch(setLoading({ 'dashboard': true }))
+
+            const getLatestProjectsRes = await getLatestProjectsreq();
+
+            dispatch(stopLoading())
+            dispatch({ type: DASHBOARD_LATESTS_SUCCESS, payload: getLatestProjectsRes?.data?.data });
+        } catch (error) {
+            dispatch(stopLoading())
+            dispatch(setError({ 'dashboard': { latest: true } }))
+            dispatch({ type: DASHBOARD_LATESTS_SUCCESS, payload: [] });
+        }
+    }
+}
+
+const getDashboardData = () => {
+    return dispatch => {
+        dispatch(getProjectsDetails())
+        dispatch(getEmployeesDetails())
+        dispatch(getLatestProjects())
+        dispatch(getChartsData())
+    }
+}
+
 export {
     resetProjectsErrors,
     fetchingProjects,
     addNewProject,
     finishProject,
     deleteProject,
-    fetchingOneProject
+    fetchingOneProject,
+    // Dashboard routes
+    getDashboardData,
+    getEmployeesDetails,
+    getLatestProjects,
+    getChartsData,
+    getProjectsDetails,
 }

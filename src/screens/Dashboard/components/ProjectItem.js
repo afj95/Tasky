@@ -12,13 +12,10 @@ import { navigate } from '../../../navigation/RootNavigation';
 export const ProjectItem = ({ item, index }) => {
 
     const onProjectPressed = (item) => {
-        navigate('Projects', {
-            screen: 'ProjectDetailsScreen',
-            params: {
-                project: item,
-                status: item.status,
-                deleted: item.deleted
-            }
+        navigate('ProjectDetailsScreen', {
+            project: item,
+            status: item.status,
+            deleted: item.deleted
         })
     }
 
@@ -36,8 +33,6 @@ export const ProjectItem = ({ item, index }) => {
                 <FontAwesome5 name={'tasks'} color={Colors.primary} />
                 <MyText text={item?.tasks?.length} />
             </View>
-            {item?.deleted && <View style={styles.finishedIcon} />}
-            {item?.status === 'finished' && <View style={styles.deletedIcon} />}
         </TouchableOpacity>
     )
 }
@@ -66,19 +61,5 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-evenly',
-    },
-    finishedIcon: {
-        height: '100%',
-        backgroundColor: 'red',
-        width: 10,
-        position: 'absolute',
-        end: 10,
-    },
-    deletedIcon: {
-        height: '100%',
-        backgroundColor: 'green',
-        width: 10,
-        position: 'absolute',
-        end: 25,
-    },
+    }
 })

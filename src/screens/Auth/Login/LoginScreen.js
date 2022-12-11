@@ -153,7 +153,7 @@ export const LoginScreen = ({ navigation }) => {
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
             <View style={styles.welcomeContainer}>
-                <MyText style={{ fontSize: 33, color: Colors.primary }}>welcomeBack</MyText>
+                <MyText style={styles.welcomeText}>welcomeBack</MyText>
             </View>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollStyle}>
                 <View style={styles.formContainer}>
@@ -195,6 +195,11 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'center',
         marginTop: StatusBar.currentHeight
+    },
+    welcomeText: {
+        fontSize: 35,
+        color: Colors.primary,
+        fontFamily: 'bold'
     },
     changeLanguage: {
         alignItems: 'center',

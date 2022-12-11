@@ -7,8 +7,18 @@ import Modal from 'react-native-modal';
 import Colors from '../../../utils/Colors';
 import MyText from '../../../components/UI/MyText';
 import { TouchableOpacity } from '../../../components/UI/TouchableOpacity';
+import { Fontisto } from '@expo/vector-icons';
 
 export const FilterModal = ({ visible, close, status, setStatus, deleted, setDeleted }) => {
+
+    const changeBackColor = (type, number) => {
+        return {
+            marginVertical: 10,
+            backgroundColor: type === number ? Colors.secondary : Colors.appWhite,
+            borderRadius: 3,
+            padding: 5
+        }
+    }
 
     const changeStatus = () => {
         setStatus(status === 'active' ? 'finished' : 'active')
@@ -19,6 +29,8 @@ export const FilterModal = ({ visible, close, status, setStatus, deleted, setDel
         setDeleted(!deleted)
         close()
     }
+
+    const withoutDeleted = () => changeDeleted()
 
     return (
         <Modal
@@ -37,19 +49,35 @@ export const FilterModal = ({ visible, close, status, setStatus, deleted, setDel
                 <View style={styles.header}>
                     <MyText style={styles.headerText}>projectsFilter</MyText>
                 </View>
+                <View style={styles.undeletedContainer}>
+                    <Fontisto
+                        name={deleted ? 'checkbox-passive' : 'checkbox-active'}
+                        size={20}
+                        onPress={withoutDeleted}
+                        color={Colors.primary}
+                    />
+                    <MyText style={styles.undeletedText}>notDeletedSupervisors</MyText>
+                </View>
                 <TouchableOpacity
-                    style={styles.filterItem}
+                    style={changeBackColor(status === 'active' ? 1 : 2, 1)}
                     onPress={changeStatus}>
                     <MyText style={styles.filterItemText}>
-                        {status === 'active' ? 'finished' : 'active'}
+                        active
+                    </MyText>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={changeBackColor(status === 'active' ? 2 : 1, 1)}
+                    onPress={changeStatus}>
+                    <MyText style={styles.filterItemText}>
+                        finished
                     </MyText>
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                    style={styles.filterItem}
+                {/* <TouchableOpacity
+                    style={changeBackColor(deleted === true ? 2 : 1, 2)}
                     onPress={changeDeleted}>
                     <MyText style={styles.filterItemText}>deleted</MyText>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         </Modal>
     )
@@ -79,6 +107,16 @@ const styles = StyleSheet.create({
         fontFamily: 'bold',
         color: Colors.primary,
         fontSize: 18,
+    },
+    undeletedContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 10
+    },
+    undeletedText: {
+        fontFamily: 'bold',
+        color: Colors.primary,
+        marginStart: 5
     },
     filterItem: {
         marginVertical: 10,

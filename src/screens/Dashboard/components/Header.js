@@ -56,7 +56,8 @@ const styles = StyleSheet.create({
     profile: { width: '100%', height: '100%' },
     name: {
         color: Colors.primary,
-        fontSize: 15
+        fontSize: 15,
+        fontFamily: 'bold'
     },
     title: {
         fontSize: 18,

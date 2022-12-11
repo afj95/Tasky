@@ -4,7 +4,6 @@ import {
     StyleSheet,
     FlatList,
     ActivityIndicator,
-    ScrollView,
 } from 'react-native';
 import { Header, EmployeeItem as EI, FilterModal } from './components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -171,7 +170,8 @@ const styles = StyleSheet.create({
     empState: {
         marginStart: 10,
         marginEnd: 3,
-        color: Colors.primary
+        color: Colors.primary,
+        fontFamily: 'bold'
     },
     employeesStateView: {
         flexDirection: 'row',

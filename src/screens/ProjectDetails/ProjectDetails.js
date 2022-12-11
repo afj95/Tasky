@@ -18,9 +18,11 @@ import { TaskComponent, Header, ProjectActionsModal, AddTask } from './component
 import { t } from '../../i18n';
 import ErrorHappened from '../../components/UI/ErrorHappened';
 
-export const ProjectDetails = ({ route: { params: { project, status, deleted } } }) => {
+export const ProjectDetails = (props) => {
     const dispatch = useDispatch();
     const _scroll = useRef(null);
+
+    const { project, status, deleted } = props?.route?.params
 
     const user = useSelector((state) => state?.authReducer?.user);
     const currentProject = useSelector((state) => state?.projectsReducer?.project);

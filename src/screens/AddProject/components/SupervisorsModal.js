@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import {
     View,
     StyleSheet,
-    Modal,
     TouchableOpacity,
     FlatList,
     ActivityIndicator,
@@ -17,6 +16,7 @@ import Colors from '../../../utils/Colors';
 import FlashMessage from 'react-native-flash-message';
 import { t } from '../../../i18n';
 import { useNavigation } from '@react-navigation/native';
+import Modal from 'react-native-modal';
 
 export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
     const dispatch = useDispatch()
@@ -58,10 +58,17 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
         return (
             <TouchableOpacity
                 key={index.toString()}
-                style={styles.item}
+                style={styles.container}
                 activeOpacity={0.5}
                 onPress={() => onItemPressed(item)}>
-                <MyText text={item?.name} />
+                <View style={styles.employeeDetailsContainer}>
+                    <View style={styles.imageContainer}>
+                        <Ionicons name={'person'} size={20} color={Colors.primary} />
+                    </View>
+                    <View>
+                        <MyText style={styles.text} text={item.name} />
+                    </View>
+                </View>
             </TouchableOpacity>
         )
     }
@@ -72,32 +79,38 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
 
     const addSupervisor = () => {
         closeModal();
-        navigation.navigate('Employees', {
-            screen: 'AddEmployeeScreen'
-        })
+        navigation.navigate('AddEmployeeScreen')
     }
 
     return (
         <Modal
-            animationType="fade"
-            transparent={true}
-            visible={modalVisible}>
+            swipeThreshold={10}
+            isVisible={modalVisible}
+            style={styles.modal}
+            onBackdropPress={closeModal}
+            onSwipeComplete={closeModal}
+            onBackButtonPress={closeModal}
+            animationIn={'slideInUp'}
+            animationInTiming={500}
+            animationOutTiming={500}
+            swipeDirection={'down'}
+            useNativeDriver>
             <View style={styles.centeredView}>
-                <Animatable.View duration={800} animation='fadeInUp' style={styles.modalView}>
+                <View style={styles.modalView}>
                     <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
                         <TouchableOpacity activeOpacity={0.7} style={styles.closeButton} onPress={closeModal}>
-                            <AntDesign name={'closecircle'} size={20} color={Colors.buttons} />
-                            <MyText>close</MyText>
+                            <AntDesign name={'closecircle'} size={20} color={Colors.primary} />
+                            <MyText style={styles.closeText}>close</MyText>
                         </TouchableOpacity>
                         {reload ?
                             <TouchableOpacity activeOpacity={0.7} style={styles.closeButton} onPress={refresh}>
-                                <Ionicons name={'refresh-circle'} size={20} color={'black'} />
-                                <MyText>refresh</MyText>
+                                <Ionicons name={'refresh-circle'} size={30} color={Colors.primary} />
+                                <MyText style={styles.reload}>refresh</MyText>
                             </TouchableOpacity>
                             :
                             <TouchableOpacity activeOpacity={0.7} style={styles.addSupervisor} onPress={addSupervisor}>
-                                <Entypo name={'add-user'} size={20} color={Colors.buttons} />
-                                <MyText style={{ textAlign: 'center', color: Colors.text }}>addSupervisor</MyText>
+                                <Entypo name={'add-user'} size={20} color={Colors.primary} />
+                                <MyText style={styles.addSupervisorText}>addSupervisor</MyText>
                             </TouchableOpacity>
                         }
                     </View>
@@ -113,7 +126,7 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
                             showsVerticalScrollIndicator={false}
                         />
                     }
-                </Animatable.View>
+                </View>
                 <FlashMessage ref={_flashRef} position={'bottom'} />
             </View>
         </Modal>
@@ -121,15 +134,18 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
 }
 
 const styles = StyleSheet.create({
+    modal: {
+        margin: 0,
+        justifyContent: 'flex-end'
+    },
     centeredView: {
         flex: 1,
         justifyContent: "flex-end",
-        backgroundColor: '#00000095'
     },
     modalView: {
         width: '100%',
         height: '50%',
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.appWhite,
         borderTopEndRadius: 20,
         borderTopStartRadius: 20,
         padding: 10,
@@ -141,11 +157,23 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    closeText: {
+        fontFamily: 'bold',
+        color: Colors.primary
+    },
+    reload: {
+        fontFamily: 'bold'
+    },
     addSupervisor: {
         width: 50,
         height: 50,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    addSupervisorText: {
+        textAlign: 'center',
+        color: Colors.primary,
+        fontFamily: 'bold'
     },
     loader: {
         flex: 1,
@@ -162,11 +190,43 @@ const styles = StyleSheet.create({
         borderColor: '#999'
     },
     item: {
-        backgroundColor: Colors.secondary,
+        backgroundColor: Colors.white,
         borderRadius: 8,
         padding: 5,
         width: '100%',
         marginVertical: 5,
         alignSelf: 'center'
     },
+
+    container: {
+        backgroundColor: Colors.white,
+        marginBottom: 8,
+        paddingHorizontal: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    employeeDetailsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    imageContainer: {
+        borderWidth: 1,
+        borderColor: Colors.primary,
+        width: 30, height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 15,
+        marginHorizontal: 5,
+    },
+    deletedText: {
+        color: 'red',
+        fontSize: 12,
+        fontWeight: 'bold'
+    },
+    text: {
+        color: Colors.black,
+        fontFamily: 'light'
+    }
 })

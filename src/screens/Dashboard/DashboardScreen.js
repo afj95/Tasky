@@ -6,49 +6,73 @@ import {
     Dimensions,
     FlatList,
     ScrollView,
-    I18nManager
+    I18nManager,
+    RefreshControl
 } from 'react-native';
 import { TouchableOpacity } from '../../components/UI/TouchableOpacity';
-import { Header, Title, DetailesText, ProjectItem, ListEmptyComponent } from './components';
+import MyText from '../../components/UI/MyText';
+import { Header, Title, DetailesText, ProjectItem, ListEmptyComponent, EmptyChart } from './components';
 import { mainStyles } from '../../constants';
 import { ProgressChart } from 'react-native-chart-kit';
 import Colors from '../../utils/Colors';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchingProjects } from '../../redux/reducers/Projects/projects-actions';
+import { getDashboardData } from '../../redux/reducers/Projects/projects-actions';
 import { Entypo } from '@expo/vector-icons';
 import { animateList } from './helpers';
-import { useNavigation } from '@react-navigation/native';
 import { navigate } from '../../navigation/RootNavigation';
-import MyText from '../../components/UI/MyText';
+import { showMessage } from 'react-native-flash-message';
+import { setError } from '../../redux/reducers/Global/global-actions';
+import { t } from '../../i18n';
 
-export const DashboardScreen = () => {
+export const DashboardScreen = ({ navigation }) => {
     const dispatch = useDispatch()
     const _list = useRef(null)
-    const navigation = useNavigation();
+    // const navigation = useNavigation();
 
-    const projects = useSelector(state => state?.projectsReducer?.projects)
+    const loadings = useSelector((state) => state?.globalReducer?.loadings)
+    const errors = useSelector((state) => state?.globalReducer?.errors)
+
     const user = useSelector((state) => state?.authReducer?.user)
+    const dashboardProjects = useSelector(state => state?.projectsReducer?.dashboardProjects)
+    const dashboardEmployees = useSelector(state => state?.projectsReducer?.dashboardEmployees)
+    const dashboardCharts = useSelector(state => state?.projectsReducer?.dashboardCharts)
+    const dashboardLatests = useSelector(state => state?.projectsReducer?.dashboardLatests)
 
     useEffect(() => {
-        dispatch(fetchingProjects('active', false))
-        // if (projects && projects.length > 0) {
-        //     animateList(_list)
-        // }
+        dispatch(getDashboardData())
+        // TODO:  Get latest projects
+        if (dashboardLatests && dashboardLatests?.length > 0) {
+            animateList(_list)
+        }
     }, [])
 
-    // TODO: Change this data to get from API
-    const data = {
-        labels: ['label1', 'label2'],
-        colors: [Colors.primary, Colors.secondary],
-        data: [0.94, 0.65]
-    }
+    // useEffect(() => {
+    //     if (errors?.dashboard) {
+    //         if (!errors?.dashboard?.latest) {
+    //             showMessage({
+    //                 message: errors?.dashboard.message + '',
+    //                 type: 'danger',
+    //                 duration: 3000,
+    //             })
+    //         }
+    //     }
+    //     dispatch(setError(null))
+    // }, [loadings?.dashboard, errors?.dashboard])
 
     const chartConfig = {
         color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-        labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+        labelColor: (opacity = 1) => `rgba(0, 0, 0, ${1})`,
         backgroundGradientFrom: '#fff',
-        backgroundGradientTo: '#fff'
+        backgroundGradientTo: '#fff',
     }
+
+    const chartData = {
+        labels: ['', ''],
+        colors: [Colors.primary, Colors.secondary],
+        data: dashboardCharts, // <- [num, num]
+    }
+
+    const onRefresh = () => dispatch(getDashboardData())
 
     return (
         <View style={styles.container}>
@@ -60,45 +84,60 @@ export const DashboardScreen = () => {
                 style={styles.drawerIcon}
                 onPress={navigation.toggleDrawer}
             />
-            <ScrollView contentContainerStyle={{ paddingBottom: 25 }}>
+            <ScrollView
+                contentContainerStyle={{ paddingBottom: 25 }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={false}
+                        onRefresh={onRefresh}
+                        colors={[Colors.primary, Colors.secondary]}
+                    />
+                }>
                 <View style={styles.mainContainer}>
                     {/* upper */}
                     <View style={styles.upperContainer}>
                         <View style={{ flexDirection: 'row' }}>
-                            <TouchableOpacity style={styles.touchableView} onPress={() => navigate('HomeScreens')}>
-                                <Title text={'projects'} data={'projects'} onPress />
-                                <DetailesText text={'allProjects'} value={12} />
-                                <DetailesText text={'activeProjects'} value={12} />
-                                <DetailesText text={'finishedProjects'} value={12} />
+                            <TouchableOpacity style={styles.touchableView} onPress={() => navigate('HomeScreen')}>
+                                <Title loading={loadings?.dashboard} text={'projects'} data={'projectsExplain'} onPress />
+                                <DetailesText text={'allProjects'} value={dashboardProjects?.all} />
+                                <DetailesText text={'activeProjects'} value={dashboardProjects?.active} />
+                                <DetailesText text={'finishedProjects'} value={dashboardProjects?.finished} />
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.touchableView} onPress={() => navigate('employeesScreen')}>
-                                <Title text={'employees'} data={'employees'} onPress />
-                                <DetailesText text={'allEmployees'} value={12} />
-                                <DetailesText text={'admins'} value={12} />
-                                <DetailesText text={'projectSupervisors'} value={12} />
+                            <TouchableOpacity style={styles.touchableView} onPress={() => navigate('EmployeesScreen')}>
+                                <Title loading={loadings?.dashboard} text={'employees'} data={'employeesExplain'} onPress />
+                                <DetailesText text={'allEmployees'} value={dashboardEmployees?.all} />
+                                <DetailesText text={'admins'} value={dashboardEmployees?.admins} />
+                                <DetailesText text={'projectSupervisors'} value={dashboardEmployees?.supervisors} />
                             </TouchableOpacity>
                         </View>
                     </View>
                     {/* lower */}
                     <View style={styles.lowerContainer}>
-                        <Title text={'tasks'} data={'tasks'} onPress />
-                        <ProgressChart
-                            style={styles.chart}
-                            data={data}
-                            width={Dimensions.get('window').width - 15}
-                            height={220}
-                            chartConfig={chartConfig}
-                            withCustomBarColorFromData
-                        />
+                        <Title loading={loadings?.dashboard} text={'tasks'} data={'tasksExplain'} onPress />
+                        <View style={styles.circlesContainer}>
+                            <View style={styles.checkedCircle} />
+                            <MyText style={styles.circleText}>checked</MyText>
+                            <View style={styles.unCheckedCircle} />
+                            <MyText style={styles.circleText}>unChecked</MyText>
+                        </View>
+                        {chartData && dashboardCharts ?
+                            <ProgressChart
+                                style={styles.chart}
+                                data={chartData}
+                                width={Dimensions.get('window').width - 15}
+                                height={220}
+                                chartConfig={chartConfig}
+                                withCustomBarColorFromData
+                            /> : <EmptyChart />}
                     </View>
                     <View style={styles.listContainer}>
-                        <Title text={'latestProjects'} data={'latestProjects'} onPress />
-                        {projects && projects.length < 0 ? <FlatList
+                        <Title text={'latestProjects'} data={'latestProjectsExplain'} loading={loadings?.dashboard} onPress />
+                        {dashboardLatests && dashboardLatests?.length > 0 ? <FlatList
                             ref={_list}
                             horizontal
                             style={styles.list}
                             keyExtractor={(item, index) => '#' + index.toString()}
-                            data={projects || []}
+                            data={dashboardLatests || []}
                             showsHorizontalScrollIndicator={false}
                             renderItem={({ item, index }) => <ProjectItem item={item} index={index} />}
                         /> : <ListEmptyComponent />}
@@ -163,6 +202,31 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: '#fff',
         ...mainStyles.viewShadow,
+    },
+    circlesContainer: {
+        borderWidth: 0.4,
+        borderRadius: 8,
+        borderColor: Colors.secondary,
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        width: '50%',
+        alignSelf: 'center',
+        alignItems: 'center',
+    },
+    checkedCircle: {
+        height: 14,
+        width: 14,
+        borderRadius: 7,
+        backgroundColor: Colors.primary
+    },
+    unCheckedCircle: {
+        height: 14,
+        width: 14,
+        borderRadius: 7,
+        backgroundColor: Colors.secondary
+    },
+    circleText: {
+        fontFamily: 'bold',
     },
     touchableView: {
         borderRadius: 10,

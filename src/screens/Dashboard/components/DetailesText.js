@@ -2,14 +2,16 @@ import React from 'react'
 import {
     StyleSheet,
     View,
+    Text
 } from 'react-native'
 import MyText from '../../../components/UI/MyText'
+import Colors from '../../../utils/Colors'
 
-export const DetailesText = ({ text, value }) => {
+export const DetailesText = ({ text, value = 0 }) => {
     return (
         <View style={styles.detailsTextContainer}>
             <MyText style={styles.detailsText}>{text}</MyText>
-            <MyText text={value} style={styles.detailsText} />
+            <MyText style={[styles.detailsText, { color: value ? Colors.primary : Colors.red }]} text={value} />
         </View>
     )
 }

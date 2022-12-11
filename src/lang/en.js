@@ -84,6 +84,13 @@ export default {
         dashboardScreen: "Dashboard",
         noRecentProjects: "No recent projects",
         projectsFilter: "Filter Projects",
-        employeesFilter: "Filter Employees"
+        employeesFilter: "Filter Employees",
+        noData: "No data available",
+        checked: 'Checked',
+        unChecked: 'Un Checked',
+        projectsExplain: "All projects details in the app",
+        employeesExplain: "All employees details in the app",
+        tasksExplain: "The details of tasks finished and not finished yet",
+        latestProjectsExplain: "The latest 5 'Active' projects only"
     }
 }

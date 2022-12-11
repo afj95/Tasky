@@ -52,13 +52,10 @@ export const HomeScreen = () => {
   }
 
   const onProjectPressed = (item) => {
-    navigate('ProjectDetails', {
-      screen: 'ProjectDetailsScreen',
-      params: {
-        project: item,
-        status,
-        deleted
-      }
+    navigate('ProjectDetailsScreen', {
+      project: item,
+      status,
+      deleted
     })
   }
 
@@ -74,7 +71,7 @@ export const HomeScreen = () => {
           <MyText text={item?.projectName2} />
         </View>
         <View style={styles.tasksContainer}>
-          <FontAwesome5 name={'tasks'} color={Colors.appWhite} />
+          <FontAwesome5 name={'tasks'} color={Colors.primary} />
           <MyText text={item?.tasks?.length} />
         </View>
         {item?.deleted && <View style={styles.finishedIcon} />}

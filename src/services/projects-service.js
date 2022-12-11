@@ -36,10 +36,44 @@ const deleteProjectRequest = async (projectId) => {
     })
 }
 
+// Dashboard routes
+const getProjectsDetailsReq = async () => {
+    return await request({
+        url: `projects/dash/projects`,
+        method: 'get'
+    })
+}
+
+const getEmployeesDetailsReq = async () => {
+    return await request({
+        url: `projects/dash/employees`,
+        method: 'get'
+    })
+}
+
+const getChartsDataReq = async () => {
+    return await request({
+        url: `projects/dash/tasks`,
+        method: 'get'
+    })
+}
+
+const getLatestProjectsreq = async () => {
+    return await request({
+        url: `projects/dash/latest`,
+        method: 'get'
+    })
+}
+
 export {
     fetchingProjectsReq,
     fetchingOneProjectReq,
     addProjectRequest,
     finishProjectRequest,
-    deleteProjectRequest
+    deleteProjectRequest,
+    // Dashboard routes
+    getProjectsDetailsReq,
+    getEmployeesDetailsReq,
+    getChartsDataReq,
+    getLatestProjectsreq
 }

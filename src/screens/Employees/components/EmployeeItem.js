@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     text: {
-        color: Colors.black
+        color: Colors.black,
+        fontFamily: 'light'
     }
 })

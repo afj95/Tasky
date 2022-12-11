@@ -16,4 +16,9 @@ export const projectsState = {
 
     deleteProjectSuccess: '',
     deleteProjectFailed: '',
+
+    dashboardProjects: {},
+    dashboardEmployees: {},
+    dashboardCharts: [0, 0],
+    dashboardLatests: [],
 }

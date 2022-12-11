@@ -85,5 +85,12 @@ export default {
         noRecentProjects: "لا يوجد مشاريع",
         projectsFilter: "تصفية المشاريع",
         employeesFilter: "تصفية الموظفين",
+        noData: "لا يوجد بيانات",
+        checked: "المنجزة",
+        unChecked: "غير المنجزة",
+        projectsExplain: "تفاصيل جميع المشاريع في النظام",
+        employeesExplain: "تفاصيل جميع الموظفين في النظام",
+        tasksExplain: "تفاصيل المهام المنتهية والمهام الجارية",
+        latestProjectsExplain: "اخر 5 مشاريع جارية تم إضافتها"
     }
 }

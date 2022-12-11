@@ -9,7 +9,7 @@ import Modal from 'react-native-modal';
 import Colors from '../../utils/Colors';
 import MyText from './MyText';
 
-export default Question = ({ text }) => {
+export default Question = ({ data }) => {
 
     const [visible, setVisible] = useState(false);
 
@@ -26,7 +26,7 @@ export default Question = ({ text }) => {
                 swipeThreshold={10}
                 swipeDirection={'down'}>
                 <View style={styles.contentView}>
-                    <MyText text={text} />
+                    <MyText style={styles.data}>{data}</MyText>
                 </View>
 
             </Modal>
@@ -73,5 +73,10 @@ const styles = StyleSheet.create({
                 { rotateZ: "0deg" },
             ]
 
+    },
+    data: {
+        fontFamily: 'bold',
+        color: Colors.primary,
+        fontSize: 16
     }
 })

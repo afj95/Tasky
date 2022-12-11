@@ -71,7 +71,7 @@ const MainNavigator = () => {
                     initialRouteName={initialRouteName}
                     screenOptions={{ headerShown: false }} >
                     <MainStack.Screen name={'Auth'} component={AuthStackScreens} />
-                    <MainStack.Screen name={'Home'} component={DrawerScreens} />
+                    <MainStack.Screen name={'Home'} component={MainStackScreens} />
                 </MainStack.Navigator>
                 <StatusBar style={'auto'} />
                 <FlashMessage
