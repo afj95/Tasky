@@ -8,13 +8,15 @@ import {
 import Colors from '../../../utils/Colors';
 import { AntDesign } from '@expo/vector-icons';
 import MyText from '../../../components/UI/MyText';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { navigate } from '../../../navigation/RootNavigation';
 import { deleteEmployee, restoreEmployee } from '../../../redux/reducers/Users/users-actions';
 
 export const EmpOptionsModal = ({ visible, closeModal, employee, isAnyChange }) => {
 
     const dispatch = useDispatch();
+
+    const user = useSelector((state) => state?.authReducer?.user)
 
     const onEditEmployeePressed = () => {
         isAnyChange(true)
@@ -55,22 +57,22 @@ export const EmpOptionsModal = ({ visible, closeModal, employee, isAnyChange }) 
                                 activeOpacity={0.5}
                                 onPress={onEditEmployeePressed}
                                 style={styles.editEmployeeContainer}>
-                                <MyText style={{ color: Colors.primary }}>editEmployee</MyText>
+                                <MyText style={styles.option}>editEmployee</MyText>
                             </TouchableOpacity>}
-                        {!employee.deleted ?
+                        {!employee.deleted && user?._id !== employee?._id ?
                             <TouchableOpacity
                                 activeOpacity={0.5}
                                 onPress={onDeleteEmployeePressed}
                                 style={styles.deleteEmployeeContainer}>
-                                <MyText style={{ color: Colors.red }}>deleteEmployee</MyText>
+                                <MyText style={styles.deleteOption}>deleteEmployee</MyText>
                             </TouchableOpacity>
-                            :
-                            <TouchableOpacity
-                                activeOpacity={0.5}
-                                onPress={onRestoreEmployeePressed}
-                                style={styles.deleteEmployeeContainer}>
-                                <MyText style={{ color: Colors.primary }}>restoreEmployee</MyText>
-                            </TouchableOpacity>
+                            : user?._id !== employee?._id ?
+                                <TouchableOpacity
+                                    activeOpacity={0.5}
+                                    onPress={onRestoreEmployeePressed}
+                                    style={styles.deleteEmployeeContainer}>
+                                    <MyText style={styles.option}>restoreEmployee</MyText>
+                                </TouchableOpacity> : null
                         }
                     </View>
                 </View>
@@ -107,6 +109,14 @@ const styles = StyleSheet.create({
         padding: 10,
         borderTopStartRadius: 8,
         borderTopEndRadius: 8,
+    },
+    option: {
+        color: Colors.primary,
+        fontFamily: 'bold'
+    },
+    deleteOption: {
+        color: Colors.red,
+        fontFamily: 'bold'
     },
     deleteEmployeeContainer: {
         padding: 10,

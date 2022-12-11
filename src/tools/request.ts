@@ -53,9 +53,12 @@ export const request = async ({ url, method, params }: RequesProps) => {
                      * and the message came from the API.
                     */
                     reject({
-                        status: error?.response?.status,
-                        message: error.response.data.message
+                        message: error?.response?.data?.message
                     })
+                    // reject({
+                    //     status: error?.response?.status,
+                    //     message: error.response.data.message
+                    // })
                 });
         });
     } catch (error) {

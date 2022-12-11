@@ -19,35 +19,45 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
     const authLoading = useSelector((state) => state?.authReducer?.authLoading);
     const [showPass, setShowPass] = useState(false);
 
-    const onRegisterTextPressed = () => navigate('Register', {})
+    // const onRegisterTextPressed = () => navigate('Register', {})
+
+    const inputTheme = {
+        colors: {
+            text: Colors.primary,
+            error: '#B22323',
+            primary: '#595959'
+        },
+        roundness: 10
+    }
 
     return (
         <View>
             <View style={styles.textContainer}>
                 <AntDesign name={'user'} size={15} style={{ marginEnd: 5 }} color={Colors.appWhite} />
-                <MyText>phone</MyText>
+                <MyText style={styles.label}>phone</MyText>
             </View>
             <TextInput
                 style={styles.input}
                 placeholder={'05XXXXXXXX'}
                 placeholderTextColor={Colors.secondary}
                 mode={'flat'}
+                fontFamily={'light'}
                 onChangeText={handleChange('username')}
                 value={values?.username}
                 error={errors?.username}
                 onBlur={handleBlur('username')}
                 keyboardType="decimal-pad"
-                theme={{ colors: { text: Colors.primary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                theme={inputTheme}
             />
             {errors?.username ? <ErrorText error={errors?.username} /> : null}
 
             <View style={[styles.textContainer, { marginTop: 30 }]}>
                 <Feather name={'lock'} size={15} style={{ marginEnd: 5 }} color={Colors.appWhite} />
-                <MyText>password</MyText>
+                <MyText style={styles.label}>password</MyText>
             </View>
             <TextInput
                 style={styles.input}
-                placeholder={t('app.password')}
+                // placeholder={t('app.password')}
                 placeholderTextColor={Colors.secondary}
                 mode={'flat'}
                 onChangeText={handleChange('password')}
@@ -55,7 +65,7 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
                 error={errors?.password}
                 secureTextEntry={showPass ? false : true}
                 onBlur={handleBlur('password')}
-                theme={{ colors: { text: Colors.primary, error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                theme={inputTheme}
                 right={
                     <TextInput.Icon
                         name={showPass ? 'eye' : 'eye-off'}
@@ -71,6 +81,7 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
             <TouchableOpacity
                 style={styles.loginButton}
                 disabled={authLoading}
+                activeOpacity={0.8}
                 onPress={handleSubmit}>
                 {authLoading ?
                     <ActivityIndicator size={'large'} color={'white'} />
@@ -78,12 +89,12 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
                     <MyText style={styles.loginText}>login</MyText>
                 }
             </TouchableOpacity>
-            <View style={styles.newHere}>
+            {/* <View style={styles.newHere}>
                 <MyText>newHere</MyText>
                 <TouchableOpacity onPress={onRegisterTextPressed}>
                     <MyText style={styles.signupText}>signup</MyText>
                 </TouchableOpacity>
-            </View>
+            </View> */}
         </View>
     )
 }
@@ -92,6 +103,11 @@ const styles = StyleSheet.create({
     textContainer: {
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    label: {
+        color: Colors.appWhite,
+        fontFamily: 'bold',
+        fontSize: 15
     },
     loginButton: {
         height: 50,
@@ -107,12 +123,17 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
         shadowRadius: 2,
     },
-    loginText: { color: Colors.text, fontSize: 18 },
+    loginText: {
+        color: Colors.appWhite,
+        fontSize: 18,
+        fontFamily: 'bold'
+    },
     input: {
         width: '100%',
         marginTop: 5,
         justifyContent: 'center',
         backgroundColor: Colors.appWhite,
+        fontFamily: 'bold'
     },
     forgotPass: {
         width: '100%',
@@ -131,4 +152,19 @@ const styles = StyleSheet.create({
     }
 })
 
-const ErrorText = ({ error }) => <MyText style={{ color: '#B22323', fontSize: 12 }}>{error}</MyText>
+const ErrorText = ({ error }) => {
+    return (
+        <MyText
+            style={{
+                backgroundColor: 'rgba(153, 0, 0, 0.6)',
+                width: '100%',
+                borderRadius: 3,
+                color: '#ffb3b3',
+                fontSize: 12,
+                fontFamily: 'bold',
+                marginTop: 2,
+            }}>
+            {error}
+        </MyText>
+    )
+}

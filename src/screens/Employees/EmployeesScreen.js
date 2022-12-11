@@ -4,23 +4,23 @@ import {
     StyleSheet,
     FlatList,
     ActivityIndicator,
-    ScrollView,
 } from 'react-native';
-import { Header, EmployeeItem as EI } from './components';
+import { Header, EmployeeItem as EI, FilterModal } from './components';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllEmployees, fetchDeletedEmployees, fetchSuperVisors, fetchUndeletedEmployees, resetUsersErrors } from '../../redux/reducers/Users/users-actions';
 import MyText from '../../components/UI/MyText';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { t } from 'i18n-js';
 import { showMessage } from 'react-native-flash-message';
 import { navigate } from '../../navigation/RootNavigation';
 import Colors from '../../utils/Colors';
+import { Ionicons } from '@expo/vector-icons';
 
 export const EmployeesScreen = () => {
     const dispatch = useDispatch();
 
     const [focusedList, setFocusedList] = useState(1)
-    const [undeletedSupervisor, seUndeletedSupervisor] = useState(false)
+    const [undeletedSupervisor, seUndeletedSupervisor] = useState(true)
+    const [filterVisible, setVisible] = useState(false);
 
     const all_employees = useSelector(state => state?.usersReducer?.all_employees);
     const fetchAllEmployeesLoading = useSelector(state => state?.usersReducer?.fetchAllEmployeesLoading);
@@ -65,67 +65,60 @@ export const EmployeesScreen = () => {
     }
 
     const setEmployeesType = (list) => {
-        if (undeletedEmployees) {
-            seUndeletedSupervisor(!undeletedEmployees)
-        }
+        // Closing the modal
+        closeModal()
         setList(list)
     }
+
+    const closeModal = () => setVisible(false)
 
     return (
         <View style={styles.container}>
             <Header text={'employees'} onEmployeePressed={onEmployeePressed} />
-            <View>
-                <ScrollView
-                    horizontal
-                    contentContainerStyle={{ paddingEnd: 40, paddingStart: 10 }}
-                    showsHorizontalScrollIndicator={false}>
-                    <TouchableOpacity activeOpacity={0.7} onPress={() => setEmployeesType(1)} style={styles.allEmp(focusedList, 1)}>
-                        <MyText style={styles.filterText}>{'all'}</MyText>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.7} onPress={() => setEmployeesType(2)} style={styles.allEmp(focusedList, 2)}>
-                        <MyText style={styles.filterText}>{'supervisors'}</MyText>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.7} onPress={() => setEmployeesType(3)} style={styles.allEmp(focusedList, 3)}>
-                        <MyText style={styles.filterText}>{'deletedUsers'}</MyText>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.7} onPress={() => setEmployeesType(4)} style={styles.allEmp(focusedList, 4)}>
-                        <MyText style={styles.filterText}>{'noDeleted'}</MyText>
-                    </TouchableOpacity>
-                </ScrollView>
-            </View>
-            {focusedList === 2 ?
-                <TouchableOpacity
-                    activeOpacity={0.7}
-                    onPress={() => seUndeletedSupervisor(!undeletedSupervisor)}
-                    style={styles.undeletedSupervisor(undeletedSupervisor)}>
-                    <MyText style={styles.filterText}>{'notDeletedSupervisors'}</MyText>
-                </TouchableOpacity>
-                : null}
-
             <View style={styles.employeesStateView}>
-                <MyText style={styles.empState}>
-                    {focusedList === 1 ? 'all'
-                        :
-                        focusedList === 2 ? 'supervisors'
+                <View style={styles.stateContainer}>
+                    <MyText style={styles.empState}>
+                        {focusedList === 1 ? 'allEmployees'
                             :
-                            focusedList === 3 ? 'deletedUsers'
-                                : 'noDeleted'}
-                </MyText>
-                <MyText style={styles.empState}
-                    text={focusedList === 1 ? all_employees?.length
-                        :
-                        focusedList === 2 ? supervisors?.length
+                            focusedList === 2 ? 'supervisors'
+                                :
+                                focusedList === 3 ? 'deletedUsers'
+                                    : 'noDeleted'}
+                    </MyText>
+                    <MyText style={styles.empState}
+                        text={focusedList === 1 ? all_employees?.length
                             :
-                            focusedList === 3 ? deletedEmployees?.length
-                                : undeletedEmployees?.length || ''} />
-                {fetchAllEmployeesLoading ? <ActivityIndicator size={12} color={Colors.buttons} /> : null}
+                            focusedList === 2 ? supervisors?.length
+                                :
+                                focusedList === 3 ? deletedEmployees?.length
+                                    : undeletedEmployees?.length || ''} />
+                    {fetchAllEmployeesLoading ? <ActivityIndicator size={12} color={Colors.primary
+                    } /> : null}
+                </View>
+                <Ionicons
+                    name={'md-filter'}
+                    size={30}
+                    color={Colors.primary}
+                    onPress={() => setVisible(true)}
+                />
             </View>
-            <FlatList
-                keyExtractor={(item, index) => '#' + index.toString()}
-                data={focusedList === 1 ? all_employees : focusedList === 2 ? supervisors : focusedList === 3 ? deletedEmployees : undeletedEmployees}
-                onRefresh={onRefresh}
-                refreshing={fetchAllEmployeesLoading}
-                renderItem={({ item, index }) => <EI undeletedSupervisor={undeletedSupervisor} employee={item} key={index} onRefresh={onRefresh} />}
+            <View style={styles.listContainer}>
+                <FlatList
+                    keyExtractor={(item, index) => '#' + index.toString()}
+                    data={focusedList === 1 ? all_employees : focusedList === 2 ? supervisors : focusedList === 3 ? deletedEmployees : undeletedEmployees}
+                    onRefresh={onRefresh}
+                    refreshing={fetchAllEmployeesLoading}
+                    renderItem={({ item, index }) => <EI undeletedSupervisor={undeletedSupervisor} employee={item} key={index} onRefresh={onRefresh} />}
+                />
+            </View>
+            <FilterModal
+                visible={filterVisible}
+                close={closeModal}
+                setEmployeesType={setEmployeesType}
+                focusedList={focusedList}
+                undeletedSupervisor={undeletedSupervisor}
+                seUndeletedSupervisor={seUndeletedSupervisor}
+                employeeType={focusedList}
             />
         </View>
     )
@@ -133,7 +126,8 @@ export const EmployeesScreen = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: Colors.appWhite
     },
     cancelAllEmp: {
         marginStart: 10,
@@ -176,12 +170,28 @@ const styles = StyleSheet.create({
     empState: {
         marginStart: 10,
         marginEnd: 3,
-        marginTop: 10,
-        marginBottom: 5,
-        color: Colors.primary
+        color: Colors.primary,
+        fontFamily: 'bold'
     },
     employeesStateView: {
         flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginEnd: 10
+    },
+    stateContainer: {
+        flexDirection: 'row',
         alignItems: 'center'
-    }
+    },
+    listContainer: {
+        paddingTop: 10,
+        flex: 1,
+    },
+    filterContainer: {
+        height: 50,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        flexDirection: 'row',
+        marginEnd: 10
+    },
 })

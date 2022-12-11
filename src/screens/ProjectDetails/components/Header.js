@@ -28,7 +28,7 @@ export const Header = ({ user, text, showModal, showGoBackButton, fetchingProjec
                 <ActivityIndicator color={Colors.appWhite} size={'small'} />
                 :
                 <TouchableOpacity onPress={onRefresh} activeOpacity={1}>
-                    <MyText style={{ fontSize: 20, fontWeight: 'bold', color: Colors.text }} text={text} />
+                    <MyText style={styles.title} text={text} />
                 </TouchableOpacity>
             }
             {user.role === 'admin' ? <TouchableOpacity activeOpacity={0.5} onPress={openOptionsModal}>
@@ -62,5 +62,10 @@ const styles = StyleSheet.create({
     },
     addProjectText: {
         color: Colors.text
+    },
+    title: {
+        fontSize: 20,
+        fontFamily: 'bold',
+        color: Colors.appWhite
     }
 })

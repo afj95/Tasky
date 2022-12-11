@@ -62,27 +62,26 @@ export const TaskComponent = ({ project, index, task, onPress }) => {
     return (
         <TouchableOpacity
             disabled={!onPress}
-            style={styles.taskContainer(index, project?.tasks?.length, task?.checked)}
+            style={styles.taskContainer}
             activeOpacity={0.6}
             onPress={onPress}>
             {/* onPress={() => openTaskInformationModal(task)} */}
             <MyText style={styles.taskText(task?.checked)} numberOfLines={3} text={`${task?.task}`} />
             <View style={styles.checkContainer}>
                 {/* delete task - only if admin */}
-                {
-                    deleted ? <ActivityIndicator size={'small'} color={task.checked ? Colors.secondary : Colors.primary} />
-                        :
-                        user?.role === 'admin' && project?.status !== 'finished' && !project?.deleted ?
-                            <Ionicons name={'trash-bin'} size={20} color={Colors.red} onPress={deleteTaskPressed} />
-                            : <View />
+                {deleted ? <ActivityIndicator size={'small'} color={Colors.primary} />
+                    :
+                    user?.role === 'admin' && project?.status !== 'finished' && !project?.deleted ?
+                        <Ionicons name={'trash-bin'} size={20} color={Colors.red} onPress={deleteTaskPressed} />
+                        : <View />
                 }
-                {checked ? <ActivityIndicator size={'small'} color={task.checked ? Colors.primary : Colors.appWhite} /> :
+                {checked ? <ActivityIndicator size={'small'} color={Colors.primary} /> :
                     project?.status === 'finished' || project?.deleted ? null :
                         <Fontisto
                             name={task.checked ? 'checkbox-active' : 'checkbox-passive'}
                             size={20}
                             onPress={checkTask}
-                            color={task.checked ? Colors.primary : Colors.appWhite}
+                            color={Colors.primary}
                         />
                 }
             </View>
@@ -91,28 +90,29 @@ export const TaskComponent = ({ project, index, task, onPress }) => {
 }
 
 const styles = StyleSheet.create({
-    taskContainer: (index, length, checked) => ({
-        backgroundColor: checked ? Colors.lightBlue : Colors.secondary,
+    taskContainer: {
+        backgroundColor: Colors.white,
         alignItems: 'center',
+        borderWidth: 0.5,
         borderRadius: 4,
-        paddingHorizontal: 5,
+        borderColor: Colors.secondary,
+        paddingEnd: 20,
+        paddingStart: 10,
         fontSize: 13,
         width: '100%',
-        // height: 35,
         paddingVertical: 5,
-        borderBottomWidth: index !== length - 1 ? 0.5 : 0,
         marginVertical: 2,
-        borderColor: '#ccc',
         justifyContent: 'space-between',
         flexDirection: 'row'
-    }),
+    },
     taskText: (checked) => ({
         textDecorationLine: checked ? 'line-through' : 'none',
         textDecorationColor: Colors.text,
         color: checked ? Colors.primary : Colors.text,
         textDecorationStyle: 'solid',
         width: '80%',
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
+        fontSize: 15
     }),
     checkContainer: {
         width: 80,

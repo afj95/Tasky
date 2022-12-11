@@ -81,7 +81,7 @@ export const AddTask = ({ project, _scrollRef }) => {
                     {addTaskLoading ?
                         <ActivityIndicator size={'small'} color={Colors.lightBlue} />
                         :
-                        <Ionicons name={'add'} size={30} color={Colors.lightBlue} onPress={onAddButtonPressed} />
+                        <Ionicons name={'add'} size={30} color={Colors.appWhite} onPress={onAddButtonPressed} />
                     }
                 </View>
             </View>
@@ -104,8 +104,9 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         width: '90%',
         height: 40,
-        backgroundColor: Colors.primary,
-        color: Colors.text
+        backgroundColor: Colors.white,
+        color: Colors.primary,
+        fontFamily: 'bold'
     },
     addStuff: {
         width: '8%',

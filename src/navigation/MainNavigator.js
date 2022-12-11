@@ -10,7 +10,8 @@ import i18n from 'i18n-js';
 // Navigators
 import {
     AuthStackScreens,
-    DrawerScreens
+    DrawerScreens,
+    MainStackScreens
 } from './Navigators';
 import { StatusBar } from 'expo-status-bar';
 import FlashMessage from 'react-native-flash-message';
@@ -70,7 +71,7 @@ const MainNavigator = () => {
                     initialRouteName={initialRouteName}
                     screenOptions={{ headerShown: false }} >
                     <MainStack.Screen name={'Auth'} component={AuthStackScreens} />
-                    <MainStack.Screen name={'Home'} component={DrawerScreens} />
+                    <MainStack.Screen name={'Home'} component={MainStackScreens} />
                 </MainStack.Navigator>
                 <StatusBar style={'auto'} />
                 <FlashMessage

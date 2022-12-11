@@ -1,3 +1,4 @@
+// TODO:  Change backgtound of item
 import React from 'react'
 import {
     View,
@@ -27,7 +28,6 @@ export const Drawer = ({ props }) => {
     const user = useSelector((state) => state.authReducer.user);
 
     const { state, ...rest } = props;
-    const { routes } = state
 
     const onChangeLanguagePressed = () => {
         Alert.alert(t('app.changeLangAlertTitle'), t('app.changeLangMessage'), [
@@ -94,15 +94,6 @@ export const Drawer = ({ props }) => {
                 ) : (<></>)}
                 <View>
                     <DrawerItemList state={state} {...rest} />
-                    {/* <DrawerItemList {...props} /> */}
-                    {/* {routes?.map(route => {
-                        return (
-                            <DrawerItem
-                                label={() => <MyText text={route.name} />}
-                                onPress={() => navigate('')}
-                            />
-                        )
-                    })} */}
                 </View>
             </DrawerContentScrollView>
             <DrawerItem style={styles.seperator} label={() => <></>} />
@@ -164,12 +155,12 @@ const styles = StyleSheet.create({
     logoutText: {
         fontSize: 14,
         color: Colors.primary,
-        fontWeight: "500",
+        fontFamily: 'bold'
     },
     seperator: {
         justifyContent: 'center',
         borderBottomWidth: 0.5,
-        borderTopColor: Colors.text,
+        borderTopColor: Colors.primary,
     },
     version: {
         height: 30,

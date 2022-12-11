@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 // Components
-import { Header } from "./components";
+import { FilterModal, Header } from "./components";
 // redux & actions
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchingProjects, resetProjectsErrors } from '../../redux/reducers/Projects/projects-actions';
@@ -14,7 +14,8 @@ import { fetchingProjects, resetProjectsErrors } from '../../redux/reducers/Proj
 import MyText from '../../components/UI/MyText';
 import { navigate } from '../../navigation/RootNavigation';
 import Colors from '../../utils/Colors';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
+import { showMessage } from 'react-native-flash-message';
 
 export const HomeScreen = () => {
   const dispatch = useDispatch()
@@ -23,9 +24,22 @@ export const HomeScreen = () => {
   const [status, setStatus] = useState('active');
   // deleted = true - deleted = false
   const [deleted, setDeleted] = useState(false);
+  const [filterVisible, setVisible] = useState(false);
 
   const user = useSelector((state) => state?.authReducer?.user)
   const projects = useSelector(state => state?.projectsReducer?.projects)
+  // const fetchingProjectsError = useSelector(state => state?.projectsReducer?.fetchingProjectsError)
+
+  // useEffect(() => {
+  //   // TODO: Localize
+  //   if (fetchingProjectsError) {
+  //     showMessage({
+  //       message: '' + fetchingProjectsError,
+  //       type: 'danger',
+  //       duration: 1500
+  //     })
+  //   }
+  // }, [fetchingProjectsError])
 
   useEffect(() => {
     dispatch(resetProjectsErrors())
@@ -38,13 +52,10 @@ export const HomeScreen = () => {
   }
 
   const onProjectPressed = (item) => {
-    navigate('ProjectDetails', {
-      screen: 'ProjectDetailsScreen',
-      params: {
-        project: item,
-        status,
-        deleted
-      }
+    navigate('ProjectDetailsScreen', {
+      project: item,
+      status,
+      deleted
     })
   }
 
@@ -60,7 +71,7 @@ export const HomeScreen = () => {
           <MyText text={item?.projectName2} />
         </View>
         <View style={styles.tasksContainer}>
-          <FontAwesome5 name={'tasks'} color={Colors.appWhite} />
+          <FontAwesome5 name={'tasks'} color={Colors.primary} />
           <MyText text={item?.tasks?.length} />
         </View>
         {item?.deleted && <View style={styles.finishedIcon} />}
@@ -72,19 +83,17 @@ export const HomeScreen = () => {
   const _listHeaderComponent = () => {
     return (
       <View style={styles.filterContainer}>
-        <TouchableOpacity
-          onPress={() => setStatus(status === 'active' ? 'finished' : 'active')}
-          style={styles.finishedContainer(status)}>
-          <MyText style={styles.finishedText(status)}>{status === 'active' ? 'finished' : 'active'}</MyText>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setDeleted(!deleted)}
-          style={styles.deletedContainer(deleted)}>
-          <MyText style={styles.deletedText(deleted)}>deleted</MyText>
-        </TouchableOpacity>
+        <Ionicons
+          name={'md-filter'}
+          size={30}
+          color={Colors.primary}
+          onPress={() => setVisible(true)}
+        />
       </View>
     )
   }
+
+  const closeModal = () => setVisible(false)
 
   return (
     <View style={styles.container}>
@@ -104,6 +113,14 @@ export const HomeScreen = () => {
           renderItem={_renderItem}
         />
       </View>
+      <FilterModal
+        visible={filterVisible}
+        close={closeModal}
+        status={status}
+        setStatus={setStatus}
+        deleted={deleted}
+        setDeleted={setDeleted}
+      />
     </View>
   )
 };
@@ -122,37 +139,21 @@ const styles = StyleSheet.create({
   },
   filterContainer: {
     height: 50,
-    justifyContent: 'space-around',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     flexDirection: 'row'
   },
-  finishedContainer: (status) => ({
-    backgroundColor: status === 'finished' ? Colors.lightBlue : Colors.primary,
-    padding: 5,
-    borderRadius: 8
-  }),
-  finishedText: (status) => ({
-    color: status === 'finished' ? Colors.primary : Colors.text
-  }),
-  deletedContainer: (deleted) => ({
-    backgroundColor: deleted ? Colors.lightBlue : Colors.primary,
-    padding: 5,
-    borderRadius: 8
-  }),
-  deletedText: (deleted) => ({
-    color: deleted ? Colors.primary : Colors.text
-  }),
   projectsContainer: {
     paddingHorizontal: 10,
     flex: 1,
     height: '100%'
   },
   projectItem: {
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.white,
     width: '100%',
     marginVertical: 5,
     borderWidth: 1,
-    borderColor: Colors.lightBlue,
+    borderColor: Colors.secondary,
     alignSelf: 'center',
     borderRadius: 8,
     paddingHorizontal: 5,

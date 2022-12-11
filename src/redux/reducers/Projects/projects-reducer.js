@@ -12,17 +12,22 @@ import {
 
     ADD_PROJECT_SUCCESS,
     ADD_PROJECT_FAILED,
-    
+
     PROJECT_ACTIONS,
     FINISH_PROJECT_SUCCESS,
     FINISH_PROJECT_FAILED,
-    
+
     DELETE_PROJECT_SUCCESS,
-    DELETE_PROJECT_FAILED
+    DELETE_PROJECT_FAILED,
+
+    DASHBOARD_PROJECTS_SUCCESS,
+    DASHBOARD_LATESTS_SUCCESS,
+    DASHBOARD_EMPLOYEES_SUCCESS,
+    DASHBOARD_CHARTS_SUCCESS
 } from "./projects-types";
 
 const projectsReducer = (state = projectsState, action) => {
-    switch(action?.type) {
+    switch (action?.type) {
         case RESET_PROJECTS_ERRORS: {
             return {
                 ...state,
@@ -130,6 +135,31 @@ const projectsReducer = (state = projectsState, action) => {
                 ...state,
                 projectActionsLoading: false,
                 deleteProjectFailed: action?.deleteProjectFailed,
+            }
+        }
+
+        case DASHBOARD_PROJECTS_SUCCESS: {
+            return {
+                ...state,
+                dashboardProjects: action?.payload
+            }
+        }
+        case DASHBOARD_EMPLOYEES_SUCCESS: {
+            return {
+                ...state,
+                dashboardEmployees: action?.payload
+            }
+        }
+        case DASHBOARD_CHARTS_SUCCESS: {
+            return {
+                ...state,
+                dashboardCharts: action?.payload
+            }
+        }
+        case DASHBOARD_LATESTS_SUCCESS: {
+            return {
+                ...state,
+                dashboardLatests: action?.payload?.latests
             }
         }
 

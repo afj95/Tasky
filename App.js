@@ -8,16 +8,24 @@ import { persistor, store } from "./src/redux";
 import Loader from "./src/components/Loaders/Loader";
 import Colors from './src/utils/Colors';
 import { StatusBar } from 'expo-status-bar';
+import useCachedResources from './src/hooks/useCachedResources';
 
 export default function App() {
-  return (
-    <SafeAreaProvider style={{ backgroundColor: Colors.appWhite }}>
-      <ReduxProvider store={store}>
-        <PersistGate loading={<Loader />} persistor={persistor}>
-          <MainNavigator />
-          <StatusBar style={'auto'} />
-        </PersistGate>
-      </ReduxProvider>
-    </SafeAreaProvider>
-  )
+
+  const isLoadingComplete = useCachedResources();
+
+  if (!isLoadingComplete) {
+    return null;
+  } else {
+    return (
+      <SafeAreaProvider>
+        <ReduxProvider store={store}>
+          <PersistGate loading={<Loader />} persistor={persistor}>
+            <MainNavigator />
+            <StatusBar style={'auto'} />
+          </PersistGate>
+        </ReduxProvider>
+      </SafeAreaProvider>
+    )
+  }
 }

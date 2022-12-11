@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 // Navigation
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -11,9 +12,9 @@ import {
   ProjectDetails,
   EmployeesScreen,
   AddEmployeeScreen,
-  EditEmployeeScreen
+  EditEmployeeScreen,
+  DashboardScreen
 } from '../screens';
-import { t } from '../i18n';
 import { useSelector } from 'react-redux';
 import MyText from '../components/UI/MyText';
 import Colors from '../utils/Colors';
@@ -23,62 +24,74 @@ export const AuthStackScreens = () => (
   <AuthStack.Navigator screenOptions={{ headerShown: false }}>
     <AuthStack.Screen name="Login" component={LoginScreen} />
     <AuthStack.Screen name="Register" component={RegisterScreen} />
-    <AuthStack.Screen name="Home" component={DrawerScreens} />
   </AuthStack.Navigator>
 )
 
-const HomeStack = createStackNavigator();
-export const HomeStackScreens = () => (
-  <HomeStack.Navigator screenOptions={{ headerShown: false }}>
-    <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
-    <HomeStack.Screen name="AddProject" component={AddProjectScreen} />
-    <HomeStack.Screen name="ProjectDetails" component={ProjectStuckScreens} />
-    <HomeStack.Screen name="Employees" component={EmployeesStuckScreens} />
-  </HomeStack.Navigator>
-)
-
-const ProjectStuck = createStackNavigator();
-const ProjectStuckScreens = () => (
-  <ProjectStuck.Navigator screenOptions={{ headerShown: false }}>
-    <ProjectStuck.Screen name={'ProjectDetailsScreen'} component={ProjectDetails} />
-  </ProjectStuck.Navigator>
-)
-
-const EmployeesStuck = createStackNavigator();
-const EmployeesStuckScreens = () => (
-  <EmployeesStuck.Navigator screenOptions={{ headerShown: false }}>
-    <EmployeesStuck.Screen name={'EmployeesScreen'} component={EmployeesScreen} />
-    <EmployeesStuck.Screen name={'AddEmployeeScreen'} component={AddEmployeeScreen} />
-    <EmployeesStuck.Screen name={'EditEmployeeScreen'} component={EditEmployeeScreen} />
-  </EmployeesStuck.Navigator>
-)
-
 const Drawer = createDrawerNavigator();
-export const DrawerScreens = () => {
+const DrawerScreens = () => {
   const user = useSelector(state => state.authReducer.user);
 
   return (
     <Drawer.Navigator
+      initialRouteName={'DashboardScreen'}
       drawerContent={props => <DrawerComponent props={props} />}
       screenOptions={{ headerShown: false }}>
+      {user?.role === 'admin' ?
+        <Drawer.Screen
+          name={'DashboardScreen'}
+          component={DashboardScreen}
+          options={{
+            title: () => (
+              <MyText style={styles.title}>dashboardScreen</MyText>
+            )
+          }} /> : null}
       <Drawer.Screen
-        name={t('app.projects')}
-        component={HomeStackScreens}
+        name={'HomeScreen'}
+        component={HomeScreen}
         options={{
           title: () => (
-            <MyText style={{ color: Colors.primary }}>projects</MyText>
+            <MyText style={styles.title}>projects</MyText>
           )
         }} />
       {user?.role === 'admin' ?
         <Drawer.Screen
-          name={t('app.employees')}
-          component={EmployeesStuckScreens}
+          name={'EmployeesScreen'}
+          component={EmployeesScreen}
           options={{
             title: () => (
-              <MyText style={{ color: Colors.primary }}>employees</MyText>
+              <MyText style={styles.title}>employees</MyText>
             )
           }}
         /> : null}
     </Drawer.Navigator>
   )
 }
+
+const MainStack = createStackNavigator();
+export const MainStackScreens = () => (
+  <MainStack.Navigator>
+    <MainStack.Group screenOptions={{ headerShown: false }}>
+      <MainStack.Screen name="Dashboard" component={DrawerScreens} />
+      {/* <MainStack.Screen name="HomeScreenStack" component={HomeScreen} /> */}
+      <MainStack.Screen name="AddProject" component={AddProjectScreen} />
+    </MainStack.Group>
+
+    <MainStack.Group screenOptions={{ headerShown: false }}>
+      <MainStack.Screen name={'ProjectDetailsScreen'} component={ProjectDetails} />
+    </MainStack.Group>
+
+    <MainStack.Group screenOptions={{ headerShown: false }}>
+      {/* <MainStack.Screen name={'EmployeesScreenStack'} component={EmployeesScreen} /> */}
+      <MainStack.Screen name={'AddEmployeeScreen'} component={AddEmployeeScreen} />
+      <MainStack.Screen name={'EditEmployeeScreen'} component={EditEmployeeScreen} />
+    </MainStack.Group>
+  </MainStack.Navigator>
+)
+
+
+const styles = StyleSheet.create({
+  title: {
+    color: Colors.primary,
+    fontFamily: 'bold'
+  }
+})

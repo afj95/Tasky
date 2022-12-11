@@ -18,7 +18,7 @@ export const Header = ({ text, showGoBackButton }) => {
             {showGoBackButton ?
                 <RNAppbar.BackAction size={25} style={{ padding: 2 }} color={Colors.appWhite} onPress={() => goBack()} />
                 : <View />}
-            <MyText style={{ fontSize: 20, fontWeight: 'bold', color: Colors.text }}>{text}</MyText>
+            <MyText style={styles.title}>{text}</MyText>
             <View />
         </View>
     )
@@ -41,5 +41,10 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
         shadowRadius: 2,
         elevation: 4,
-    }
+    },
+    title: {
+        fontSize: 20,
+        fontFamily: 'bold',
+        color: Colors.appWhite
+    },
 })

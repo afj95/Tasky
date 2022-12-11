@@ -4,7 +4,7 @@ import {
     StyleSheet
 } from 'react-native';
 import MyText from '../../../components/UI/MyText';
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, Ionicons } from '@expo/vector-icons';
 import Colors from '../../../utils/Colors';
 import { EmpOptionsModal } from './EmpOptionsModal';
 import { useSelector } from 'react-redux';
@@ -32,18 +32,22 @@ export const EmployeeItem = ({ employee, onRefresh, undeletedSupervisor }) => {
 
     return (
         <>
-            <View style={styles.container(employee.deleted)}>
-                <View>
-                    <MyText style={styles.text} text={employee.name} />
-                    <MyText style={styles.text} text={employee.role} />
+            <View style={[styles.container, { backgroundColor: employee._id === user._id ? Colors.lightBlue : Colors.white }]}>
+                <View style={styles.employeeDetailsContainer}>
+                    <View style={[styles.imageContainer, { borderColor: employee.deleted ? Colors.red : Colors.primary }]}>
+                        <Ionicons name={'person'} size={20} color={employee.deleted ? Colors.red : Colors.primary} />
+                    </View>
+                    <View>
+                        <MyText style={styles.text} text={employee.name} />
+                        <MyText style={styles.text} text={employee.role} />
+                    </View>
                 </View>
-                {employee._id === user._id ? null :
-                    <Entypo
-                        name={'dots-three-vertical'}
-                        size={20}
-                        color={Colors.primary}
-                        onPress={openEmployeeModal}
-                    />}
+                <Entypo
+                    name={'dots-three-vertical'}
+                    size={20}
+                    color={Colors.primary}
+                    onPress={openEmployeeModal}
+                />
             </View>
             <EmpOptionsModal
                 employee={employee}
@@ -56,20 +60,35 @@ export const EmployeeItem = ({ employee, onRefresh, undeletedSupervisor }) => {
 }
 
 const styles = StyleSheet.create({
-    container: (deleted) => ({
-        backgroundColor: deleted ? '#ffb3b3' : Colors.lightBlue,
-        marginBottom: 5,
+    container: {
+        backgroundColor: Colors.white,
+        marginBottom: 8,
         paddingHorizontal: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
-    }),
+    },
+    employeeDetailsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    imageContainer: {
+        borderWidth: 1,
+        borderColor: Colors.primary,
+        width: 30, height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 15,
+        marginHorizontal: 5,
+    },
     deletedText: {
         color: 'red',
         fontSize: 12,
         fontWeight: 'bold'
     },
     text: {
-        color: Colors.black
+        color: Colors.black,
+        fontFamily: 'light'
     }
 })
