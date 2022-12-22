@@ -208,11 +208,13 @@ const getLatestProjects = () => {
 }
 
 const getDashboardData = () => {
-    return dispatch => {
-        dispatch(getProjectsDetails())
-        dispatch(getEmployeesDetails())
-        dispatch(getLatestProjects())
-        dispatch(getChartsData())
+    return async dispatch => {
+        await Promise.all([
+            dispatch(getProjectsDetails()),
+            dispatch(getEmployeesDetails()),
+            dispatch(getLatestProjects()),
+            dispatch(getChartsData()),
+        ])
     }
 }
 

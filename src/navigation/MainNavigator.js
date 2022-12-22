@@ -8,11 +8,7 @@ import Loader from '../components/Loaders/Loader';
 import { ErrorScreen } from '../screens/ErrorScreen';
 import i18n from 'i18n-js';
 // Navigators
-import {
-    AuthStackScreens,
-    DrawerScreens,
-    MainStackScreens
-} from './Navigators';
+import { AuthStackScreens, MainStackScreens } from './Navigators';
 import { StatusBar } from 'expo-status-bar';
 import FlashMessage from 'react-native-flash-message';
 import { I18nManager } from 'react-native';
