@@ -1,4 +1,3 @@
-// TODO:  Change backgtound of item
 import React from 'react'
 import {
     View,
@@ -33,7 +32,7 @@ export const Drawer = ({ props }) => {
         Alert.alert(t('app.changeLangAlertTitle'), t('app.changeLangMessage'), [
             {
                 style: 'cancel',
-                text: t('app.changeLangCancel')
+                text: t('app.cancel')
             },
             {
                 text: t('app.changeLangConfirm'),
@@ -65,18 +64,19 @@ export const Drawer = ({ props }) => {
         Alert.alert(t('app.logoutAlertTitle'), t('app.logoutMessage'), [
             {
                 style: 'cancel',
-                text: t('app.changeLangCancel')
+                text: t('app.cancel')
             },
             {
                 text: t('app.changeLangConfirm'),
                 onPress: () => {
-                    dispatch(logout());
-                    props.navigation.dispatch(
-                        CommonActions.reset({
-                            index: 1,
-                            routes: [{ name: 'Auth' }]
-                        })
-                    )
+                    dispatch(logout(() =>
+                        props.navigation.dispatch(
+                            CommonActions.reset({
+                                index: 1,
+                                routes: [{ name: 'Auth' }]
+                            })
+                        ))
+                    );
                 }
             }
         ],
@@ -89,9 +89,6 @@ export const Drawer = ({ props }) => {
     return (
         <View style={styles.container}>
             <DrawerContentScrollView {...props}>
-                {Object.keys(user).length === 0 ? (
-                    <></>
-                ) : (<></>)}
                 <View>
                     <DrawerItemList state={state} {...rest} />
                 </View>
@@ -113,9 +110,7 @@ export const Drawer = ({ props }) => {
                     </View>
                 }
             />
-            {Object.keys(user).length === 0 ? (
-                <></>
-            ) : (
+            {!Object.keys(user || {}).length ? null : (
                 <DrawerItem
                     onPress={onLogoutPressed}
                     label={() =>

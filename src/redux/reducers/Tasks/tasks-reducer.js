@@ -1,91 +1,57 @@
-import { tasksState } from "./tasks-state";
-import {
-    TASKS_RESET,
 
-    ADD_TASK,
-    ADD_TASK_SUCCESS,
-    ADD_TASK_FAILED,
+export const PROJECT_TASKS_SUCCESS = 'PROJECT_TASKS_SUCCESS';
+export const EDIT_TASK_SUCCESS = 'EDIT_TASK_SUCCESS';
+export const RESET_PROJECT_TASKS = 'RESET_PROJECT_TASKS';
+// ADMIN
+// export const ADD_TASK_SUCCESS = "add task - success";
+// export const DELETE_TASK_SUCCESS = "delete task - success";
 
-    DELETE_TASK,
-    DELETE_TASK_SUCCESS,
-    DELETE_TASK_FAILED,
-
-    CHECK_TASK,
-    CHECK_TASK_SUCCESS,
-    CHECK_TASK_FAILED,
-} from "./tasks-types";
+const tasksState = {
+    projectTasks: [],
+    projectCheckedTasks: [],
+    task: {}
+}
 
 const tasksReducer = (state = tasksState, action) => {
-    switch(action.type) {
-        case TASKS_RESET: {
+    switch (action.type) {
+        case RESET_PROJECT_TASKS: {
             return {
                 ...state,
-                task: {},
-                addTaskError: '',
-                deleteTaskError: '',
-                checkTaskError: ''
-            }
-        }
-        case ADD_TASK: {
-            return {
-                ...state,
-                addTaskLoading: true
-            }
-        }
-        case ADD_TASK_SUCCESS: {
-            return {
-                ...state,
-                addTaskLoading: false,
-                task: action.data?.data?.task
-            }
-        }
-        case ADD_TASK_FAILED: {
-            return { 
-                ...state,
-                addTaskLoading: false,
-                addTaskError: action?.addTaskError
+                projectTasks: [],
+                projectCheckedTasks: []
             }
         }
 
-        case DELETE_TASK: {
+        case PROJECT_TASKS_SUCCESS: {
             return {
                 ...state,
-                fetchingProjectsLoading: true,
-            }
-        }
-        case DELETE_TASK_SUCCESS: {
-            return {
-                ...state,
-                fetchingProjectsLoading: false,
-            }
-        }
-        case DELETE_TASK_FAILED: {
-            return {
-                ...state,
-                fetchingProjectsLoading: false,
-                deleteTaskError: action.deleteTaskError
+                // projectTasks: action.payload.tasks
+                projectTasks: action.payload.tasks.filter((task) => !task?.checked),
+                projectCheckedTasks: action.payload.tasks.filter((task) => task?.checked),
             }
         }
 
-        case CHECK_TASK: {
+        case EDIT_TASK_SUCCESS: {
             return {
                 ...state,
-                fetchingProjectsLoading: true,
+                task: action?.payload
             }
         }
-        case CHECK_TASK_SUCCESS: {
-            return {
-                ...state,
-                fetchingProjectsLoading: false,
-            }
-        }
-        case CHECK_TASK_FAILED: {
-            return {
-                ...state,
-                fetchingProjectsLoading: false,
-                checkTaskError: action.checkTaskError
-            }
-        }
+
+        // ADMIN
+        // case ADD_TASK_SUCCESS: {
+        //     return {
+        //         ...state,
+        //         addTaskLoading: false,
+        //         task: action.data?.data?.task
+        //     }
+        // }
+        // case DELETE_TASK_SUCCESS: {
+        //     return {
+        //         ...state,
+        //         fetchingProjectsLoading: false,
+        //     }
+        // }
 
         default: {
             return {

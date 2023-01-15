@@ -11,7 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { t } from '../../../i18n';
 import { showMessage } from 'react-native-flash-message';
-import { addNewTask, resetTasksState } from '../../../redux/reducers/Tasks/tasks-actions';
+import { addNewTask } from '../../../redux/reducers/Tasks/tasks-actions';
 import Colors from '../../../utils/Colors';
 
 export const AddTask = ({ project, _scrollRef }) => {
@@ -51,7 +51,6 @@ export const AddTask = ({ project, _scrollRef }) => {
             setAutoFocus(true)
             // _scrollRef?.current?.scrollToEnd({ animated: true });
         }
-        dispatch(resetTasksState())
     }, [addTaskLoading])
 
     const onAddButtonPressed = () => {

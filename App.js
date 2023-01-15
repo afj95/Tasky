@@ -6,7 +6,6 @@ import { Provider as ReduxProvider } from "react-redux";
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from "./src/redux";
 import Loader from "./src/components/Loaders/Loader";
-import Colors from './src/utils/Colors';
 import { StatusBar } from 'expo-status-bar';
 import useCachedResources from './src/hooks/useCachedResources';
 
@@ -22,7 +21,7 @@ export default function App() {
         <ReduxProvider store={store}>
           <PersistGate loading={<Loader />} persistor={persistor}>
             <MainNavigator />
-            <StatusBar style={'auto'} />
+            <StatusBar style={'light'} />
           </PersistGate>
         </ReduxProvider>
       </SafeAreaProvider>

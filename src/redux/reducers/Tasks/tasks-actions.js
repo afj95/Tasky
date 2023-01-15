@@ -1,88 +1,169 @@
-import { addTaskReq, checkTaskReq, deleteTaskReq, unCheckTaskReq } from '../../../services';
-import { fetchingOneProject } from '../Projects/projects-actions';
+import { request } from '../../../tools';
+import { setLoading, stopLoading } from '../Global/global-actions';
 import {
-    TASKS_RESET,
+    EDIT_TASK_SUCCESS,
+    PROJECT_TASKS_SUCCESS,
+    RESET_PROJECT_TASKS
 
-    ADD_TASK,
-    ADD_TASK_SUCCESS,
-    ADD_TASK_FAILED,
+    // ADMIN
+    // ADD_TASK_SUCCESS,
+    // DELETE_TASK_SUCCESS,
+} from './tasks-reducer'
 
-    DELETE_TASK,
-    DELETE_TASK_SUCCESS,
-    DELETE_TASK_FAILED,
+export const restProjectTasks = () => ({
+    type: RESET_PROJECT_TASKS,
+})
 
-    CHECK_TASK,
-    CHECK_TASK_SUCCESS,
-    CHECK_TASK_FAILED,
-} from './tasks-types'
 
-const resetTasksState = () => {
-    return { type: TASKS_RESET }
-}
-
-const addNewTask = (project_id, task) => {
+export const getProjectTasks = (project_id, stopLoading) => {
     return async dispatch => {
         try {
-            dispatch({ type: ADD_TASK })
+            dispatch(setLoading({ 'project_tasks': true }))
 
-            const addTaskRes = await addTaskReq(project_id, task);
+            const projectTasksRes = await request({
+                url: `projects/${project_id}/tasks`,
+                method: 'GET'
+            })
 
-            dispatch(fetchingOneProject(project_id))
-            dispatch({ type: ADD_TASK_SUCCESS, task: addTaskRes })
+            await dispatch({
+                type: PROJECT_TASKS_SUCCESS,
+                payload: { tasks: projectTasksRes?.data?.data }
+            })
+            stopLoading()
+
         } catch (error) {
-            dispatch({ type: ADD_TASK_FAILED, addTaskError: error })
+            dispatch(stopLoading({ failed: true, error: { 'project_tasks': error.message ? error.message : error } }))
         }
     }
 }
 
-const deleteTask = (taskId, project_id) => {
+export const checkTask = (task_id) => {
     return async dispatch => {
         try {
-            dispatch({ type: DELETE_TASK })
+            dispatch(setLoading({ 'project_tasks': true }))
 
-            const deleteTaskRes = await deleteTaskReq(taskId);
+            const checkTaskRes = await request({
+                url: `tasks/${task_id}/check`,
+                method: 'PUT'
+            })
 
-            dispatch(fetchingOneProject(project_id))
-            dispatch({ type: DELETE_TASK_SUCCESS })
+            dispatch(stopLoading());
         } catch (error) {
-            dispatch({ type: DELETE_TASK_FAILED, deleteTaskError: error })
+            dispatch(stopLoading({ failed: true, error: { 'project_tasks': error.message ? error.message : error } }))
         }
     }
 }
 
-const checkTask = (taskId) => {
+export const unCheckTask = (task_id) => {
     return async dispatch => {
         try {
-            dispatch({ type: CHECK_TASK })
+            dispatch(setLoading({ 'project_tasks': true }))
 
-            const checkTaskRes = await checkTaskReq(taskId);
+            const checkTaskRes = await request({
+                url: `tasks/${task_id}/uncheck`,
+                method: 'PUT'
+            })
 
-            dispatch({ type: CHECK_TASK_SUCCESS })
+            dispatch(stopLoading());
         } catch (error) {
-            dispatch({ type: CHECK_TASK_FAILED, checkTaskError: error })
+            dispatch(stopLoading({ failed: true, error: { 'project_tasks': error.message ? error.message : error } }))
         }
     }
 }
 
-const unCheckTask = (taskId) => {
+export const editTask = (task, params) => {
     return async dispatch => {
         try {
-            dispatch({ type: CHECK_TASK })
+            dispatch(setLoading({ 'edit_task': true }))
 
-            const checkTaskRes = await unCheckTaskReq(taskId);
+            const editTaskRes = await request({
+                url: `tasks/${task.id}`,
+                method: 'PUT',
+                params: {
+                    ...task,
+                    ...params
+                }
+            })
 
-            dispatch({ type: CHECK_TASK_SUCCESS })
+            dispatch(stopLoading());
+            dispatch({
+                type: EDIT_TASK_SUCCESS,
+                payload: editTaskRes?.data?.data
+            })
         } catch (error) {
-            dispatch({ type: CHECK_TASK_FAILED, checkTaskError: error })
+            dispatch(stopLoading({ failed: true, error: { 'edit_task': error.message ? error.message : error } }))
         }
     }
 }
 
-export {
-    resetTasksState,
+// ============================================================================================================
+// ============================================================================================================
 
-    addNewTask,
-    deleteTask,
-    checkTask,
-    unCheckTask
-}
+// ADMIN
+// const addNewTask = (project_id, task) => {
+//     return async dispatch => {
+//         try {
+//             dispatch({ type: ADD_TASK })
+
+//             const addTaskRes = await request({
+//                 url: 'tasks',
+//                 method: 'POST',
+//                 params: {
+//                     task,
+//                     project_id
+//                 }
+//             })
+
+//             dispatch(fetchingOneProject(project_id))
+//             dispatch({ type: ADD_TASK_SUCCESS, task: addTaskRes })
+//         } catch (error) {
+//             dispatch({ type: ADD_TASK_FAILED, addTaskError: error })
+//         }
+//     }
+// }
+
+// const deleteTask = (taskId, project_id) => {
+//     return async dispatch => {
+//         try {
+//             dispatch({ type: DELETE_TASK })
+
+//             const deleteTaskRes = await request({
+//                 url: 'tasks/del',
+//                 method: 'DELETE',
+//                 params: {
+//                     taskId
+//                 }
+//             })
+
+//             dispatch(fetchingOneProject(project_id))
+//             dispatch({ type: DELETE_TASK_SUCCESS })
+//         } catch (error) {
+//             dispatch({ type: DELETE_TASK_FAILED, deleteTaskError: error })
+//         }
+//     }
+// }
+
+// ============================================================================================================
+// ============================================================================================================
+
+// Later
+// export const getTask = (task_id) => {
+//     return async (dispatch) => {
+//         try {
+//             dispatch(setLoading({ 'project_tasks': true }))
+
+//             const getOneTaskRes = await request({
+//                 url: `tasks/${task_id}`,
+//                 method: 'GET'
+//             })
+
+//             dispatch(stopLoading());
+//             dispatch({
+//                 type: 'GET_ONE_TASK_SUCCESS',
+//                 payload: { editedTask: getOneTaskRes?.data?.data }
+//             })
+//         } catch (error) {
+//             dispatch(stopLoading({ failed: true, error: { 'project_tasks': error.message ? error.message : error } }))
+//         }
+//     }
+// }

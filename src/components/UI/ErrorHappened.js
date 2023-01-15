@@ -9,7 +9,7 @@ import MyText from './MyText';
 export default ErrorHappened = () => {
     return (
         <View style={styles.container}>
-            <MyText>errorHappened</MyText>
+            <MyText style={styles.text}>errorHappened</MyText>
         </View>
     )
 }
@@ -19,5 +19,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    text: {
+        fontFamily: 'bold',
+        fontSize: 16,
+        color: 'red'
     }
 })

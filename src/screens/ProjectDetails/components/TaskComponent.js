@@ -1,82 +1,123 @@
-import { Fontisto, Ionicons } from '@expo/vector-icons';
-import React, { useState, useEffect } from 'react'
-import {
-    ActivityIndicator,
-    CheckBox,
-    StyleSheet,
-    TouchableOpacity,
-    View
-} from 'react-native';
-import { showMessage } from 'react-native-flash-message';
+import { Fontisto } from '@expo/vector-icons';
+import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../../components/UI/MyText';
-import { fetchingOneProject } from '../../../redux/reducers/Projects/projects-actions';
-import { deleteTask, checkTask as checkTaskAction, resetTasksState, unCheckTask } from '../../../redux/reducers/Tasks/tasks-actions';
+import { checkTask as checkTaskAction, unCheckTask } from '../../../redux/reducers/Tasks/tasks-actions';
 import Colors from '../../../utils/Colors';
+import moment from 'moment';
+import '../../../utils/ar-sa-mine';
+import 'moment/locale/en-gb';
+import { showMessage } from '../../../tools/showMessage';
+import { clearErrors, stopLoading } from '../../../redux/reducers/Global/global-actions';
+import {
+    ActivityIndicator,
+    I18nManager,
+    StyleSheet,
 
-export const TaskComponent = ({ project, index, task, onPress }) => {
+    View
+} from 'react-native';
+import { TouchableOpacity } from '../../../components/UI/TouchableOpacity';
+import { TaskDetailsModal } from './TaskDetailsModal';
+
+export const TaskComponent = ({ project, task, onRefresh }) => {
+    const _ref = useRef(null);
     const dispatch = useDispatch();
 
-    const user = useSelector((state) => state?.authReducer?.user)
-    const deleteTaskError = useSelector((state) => state?.tasksReducer?.deleteTaskError)
-    const checkTaskError = useSelector((state) => state?.tasksReducer?.checkTaskError)
-    const fetchingProjectsLoading = useSelector((state) => state?.projectsReducer?.fetchingProjectsLoading)
+    const errors = useSelector((state) => state?.globalReducer?.errors)
+    // const user = useSelector((state) => state?.authReducer?.user)
 
-    const [checked, setChecked] = useState(false);
-    const [deleted, setDeleted] = useState(false);
+    const [checkLoading, setCheckLoading] = useState(false);
+    // const [deleteLoading, setDeleteLoading] = useState(false);
+    const [detailsModal, setDetailsModal] = useState(false);
 
     useEffect(() => {
-        if (deleteTaskError) {
-            showMessage({
-                message: t('app.errorHappened'),
-                type: 'danger',
-                duration: 1500,
-            })
-        } else if (checkTaskError) {
-            showMessage({
-                message: t('app.errorHappened'),
-                type: 'danger',
-                duration: 1500,
-            })
-        }
-        dispatch(resetTasksState())
-    }, [fetchingProjectsLoading])
+        if (!_ref.current) {
+            moment.updateLocale('ar-sa-mine', {
+                parentLocale: 'ar-sa',
+                preparse: function (string) {
+                    return string;
+                },
+                postformat: function (string) {
+                    return string;
+                },
+                relativeTime: {
+                    future: 'بعد %s',
+                    past: 'منذ %s',
+                    s: 'ثوان',
+                    ss: '%d ثانية',
+                    m: 'دقيقة',
+                    mm: '%d دقائق',
+                    h: 'ساعة',
+                    hh: '%d ساعات',
+                    d: 'يوم',
+                    dd: '%d أيام',
+                    M: 'شهر',
+                    MM: '%d أشهر',
+                    y: 'سنة',
+                    yy: '%d سنوات',
+                },
+            });
 
-    const deleteTaskPressed = async () => {
-        setDeleted(true)
-        await dispatch(deleteTask(task._id, project._id))
-        setDeleted(false)
-    }
+            I18nManager.isRTL ? moment.locale('ar') : moment.locale('en')
+        }
+    }, [])
+
+    useEffect(() => {
+        if (!_ref.current) {
+            _ref.current = true;
+        }
+    }, [])
+
+    useEffect(() => {
+        if (errors?.project_tasks) {
+            showMessage({
+                message: errors?.project_tasks + '',
+                type: 'danger'
+            })
+            dispatch(clearErrors())
+        }
+    }, [errors?.project_tasks])
+
+    // ADMIN
+    // const deleteTaskPressed = async () => {
+    //     setDeleteLoading(true)
+    //     await dispatch(deleteTask(task._id, project?.id))
+    //     setDeleteLoading(false)
+    // }
 
     const checkTask = async () => {
-        setChecked(true)
+        // TODO:  Change to local then send it to API
+        setCheckLoading(true)
         if (task?.checked) {
-            await dispatch(unCheckTask(task._id))
+            dispatch(unCheckTask(task.id))
         } else {
-            await dispatch(checkTaskAction(task._id))
+            dispatch(checkTaskAction(task?.id))
         }
-        await dispatch(fetchingOneProject(project._id))
-        setChecked(false)
+        await onRefresh()
+        setCheckLoading(false)
     }
+
+    const openTaskDetailsModal = () => setDetailsModal(true);
+    const closeDetailsModal = () => setDetailsModal(false);
 
     return (
         <TouchableOpacity
-            disabled={!onPress}
-            style={styles.taskContainer}
-            activeOpacity={0.6}
-            onPress={onPress}>
-            {/* onPress={() => openTaskInformationModal(task)} */}
-            <MyText style={styles.taskText(task?.checked)} numberOfLines={3} text={`${task?.task}`} />
+            style={styles.taskContainer(task?.priority)}
+            onPress={openTaskDetailsModal}>
+            <View>
+                <MyText style={styles.taskText(task?.checked)} numberOfLines={3} text={`${task?.title}`} />
+                <MyText style={styles.taskDate} text={moment(task?.date).fromNow()} />
+            </View>
             <View style={styles.checkContainer}>
                 {/* delete task - only if admin */}
-                {deleted ? <ActivityIndicator size={'small'} color={Colors.primary} />
+                {/* {deleteLoading ? <ActivityIndicator size={'small'} color={Colors.primary} />
                     :
                     user?.role === 'admin' && project?.status !== 'finished' && !project?.deleted ?
                         <Ionicons name={'trash-bin'} size={20} color={Colors.red} onPress={deleteTaskPressed} />
                         : <View />
-                }
-                {checked ? <ActivityIndicator size={'small'} color={Colors.primary} /> :
-                    project?.status === 'finished' || project?.deleted ? null :
+                } */}
+                {checkLoading ? <ActivityIndicator size={'small'} color={Colors.primary} /> :
+                    project?.status === 'finished' || project?.deleted_at ? null :
                         <Fontisto
                             name={task.checked ? 'checkbox-active' : 'checkbox-passive'}
                             size={20}
@@ -85,17 +126,22 @@ export const TaskComponent = ({ project, index, task, onPress }) => {
                         />
                 }
             </View>
+            <TaskDetailsModal
+                task={task}
+                visible={detailsModal}
+                closeModal={closeDetailsModal}
+                checkLoading={checkLoading}
+                checkTask={checkTask}
+                project={project}
+            />
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
-    taskContainer: {
+    taskContainer: priority => ({
         backgroundColor: Colors.white,
         alignItems: 'center',
-        borderWidth: 0.5,
-        borderRadius: 4,
-        borderColor: Colors.secondary,
         paddingEnd: 20,
         paddingStart: 10,
         fontSize: 13,
@@ -103,8 +149,10 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         marginVertical: 2,
         justifyContent: 'space-between',
-        flexDirection: 'row'
-    },
+        flexDirection: 'row',
+        borderStartColor: priority === 'high' ? Colors.red : priority === 'mid' ? 'yellow' : 'green',
+        borderStartWidth: 5,
+    }),
     taskText: (checked) => ({
         textDecorationLine: checked ? 'line-through' : 'none',
         textDecorationColor: Colors.text,
@@ -114,11 +162,15 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         fontSize: 15
     }),
+    taskDate: {
+        fontSize: 12
+    },
     checkContainer: {
-        width: 80,
+        alignSelf: 'center',
+        width: 50,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'flex-end'
     },
     checkbox: {
         alignSelf: "center",

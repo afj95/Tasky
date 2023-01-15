@@ -1,234 +1,234 @@
+import { request } from "../../../tools";
+import { setLoading, stopLoading } from "../Global/global-actions";
+import { getProjectTasks } from "../Tasks/tasks-actions";
 import {
-    addProjectRequest,
-    deleteProjectRequest,
-    fetchingProjectsReq,
-    fetchingOneProjectReq,
-    finishProjectRequest,
-    getProjectsDetailsReq,
-    getLatestProjectsreq,
-    getEmployeesDetailsReq,
-    getChartsDataReq
-} from "../../../services";
-import { setError, setLoading, stopLoading } from "../Global/global-actions";
-import {
-    RESET_PROJECTS_ERRORS,
-
-    FETCHING_PROJECTS,
-    FETCHING_PROJECTS_FAILED,
     FETCHING_PROJECTS_SUCCESS,
 
-    FETCHING_PROJECT,
     FETCHING_PROJECT_SUCCESS,
-    FETCHING_PROJECT_FAILED,
+    RESET_PROJECT
 
-    ADD_PROJECT_SUCCESS,
-    ADD_PROJECT_FAILED,
+    // ADMIN
+    // ADD_PROJECT_SUCCESS,
+    // FINISH_PROJECT_SUCCESS,
+    // DELETE_PROJECT_SUCCESS,
 
-    PROJECT_ACTIONS,
-
-    FINISH_PROJECT_SUCCESS,
-    FINISH_PROJECT_FAILED,
-
-    DELETE_PROJECT_SUCCESS,
-    DELETE_PROJECT_FAILED,
-
-    DASHBOARD_PROJECTS_SUCCESS,
-    DASHBOARD_LATESTS_SUCCESS,
-    DASHBOARD_EMPLOYEES_SUCCESS,
-    DASHBOARD_CHARTS_SUCCESS
+    // Dashboard
+    // DASHBOARD_PROJECTS_SUCCESS,
+    // DASHBOARD_LATESTS_SUCCESS,
+    // DASHBOARD_EMPLOYEES_SUCCESS,
+    // DASHBOARD_CHARTS_SUCCESS
 } from "./projects-types"
 
-const resetProjectsErrors = () => {
-    return { type: RESET_PROJECTS_ERRORS }
-}
+export const resetProject = () => ({
+    type: RESET_PROJECT
+})
 
-const fetchingProjects = (status = '', deleted = false) => {
+export const fetchProjects = (status = '', deleted = false, loadMore, page = 1, perPage = 10) => {
     return async (dispatch) => {
         try {
-            dispatch({ type: FETCHING_PROJECTS });
+            dispatch(setLoading({ 'projects': true }))
 
-            const fetchingProjectsRes = await fetchingProjectsReq(status, deleted);
+            const fetchingProjectsRes = await request({
+                url: `projects?status=${status}&deleted=${deleted}&page=${page}&perPage=${perPage}`,
+                method: 'GET',
+            })
 
+            dispatch(stopLoading())
             dispatch({
                 type: FETCHING_PROJECTS_SUCCESS,
-                projects: fetchingProjectsRes?.data?.data?.projects
+                payload: {
+                    loadMore,
+                    projects: fetchingProjectsRes?.data
+                }
             })
 
         } catch (error) {
-            dispatch({ type: FETCHING_PROJECTS_FAILED, error: error })
+            dispatch(stopLoading({ failed: true, error: { 'projects': error } }))
         }
     }
 }
 
-const fetchingOneProject = (project_id) => {
+export const fetchOneProject = (project_id) => {
     return async (dispatch) => {
         try {
-            dispatch({ type: FETCHING_PROJECT });
+            dispatch(setLoading({ 'project': true }))
 
-            const fetchingProjectRes = await fetchingOneProjectReq(project_id);
+            const fetchingProjectRes = await request({
+                url: `projects/${project_id}`,
+                method: 'GET',
+            })
 
-            dispatch({
+            await dispatch({
                 type: FETCHING_PROJECT_SUCCESS,
-                project: fetchingProjectRes?.data?.data?.project
+                payload: { project: fetchingProjectRes?.data?.data }
             })
 
+            await dispatch(getProjectTasks(project_id, () => dispatch(stopLoading())))
+
         } catch (error) {
-            dispatch({ type: FETCHING_PROJECT_FAILED, error: error })
+            dispatch(stopLoading({ failed: true, error: { 'project': error } }))
         }
     }
 }
 
-const addNewProject = (project) => {
-    return async (dispatch) => {
-        try {
-            dispatch({ type: FETCHING_PROJECTS });
+// ============================================================================================================
+// ============================================================================================================
 
-            const addProjectResponse = await addProjectRequest(project);
+// ADMIN routes
 
-            dispatch({
-                type: ADD_PROJECT_SUCCESS,
-                addProjectResponse: addProjectResponse?.status === 201 || addProjectResponse?.status === 200
-            })
-        } catch (error) {
-            dispatch({ type: ADD_PROJECT_FAILED, addProjectResponse: false });
-        }
-    }
-}
+// export const addNewProject = (project) => {
+//     return async (dispatch) => {
+//         try {
+//             dispatch({ type: FETCHING_PROJECTS });
 
-const editProject = (projectId) => {
-    return async (dispatch) => {
-        try {
-            dispatch({})
+//             const addProjectResponse = await request({
+//                 url: 'projects',
+//                 method: 'POST',
+//                 params: project
+//             })
 
-            const editProjectResponse = await editProjectRequest(projectId);
+//             dispatch({
+//                 type: ADD_PROJECT_SUCCESS,
+//                 addProjectResponse: addProjectResponse?.status === 201 || addProjectResponse?.status === 200
+//             })
+//         } catch (error) {
+//             dispatch({ type: ADD_PROJECT_FAILED, addProjectResponse: false });
+//         }
+//     }
+// }
 
-            dispatch({})
-        } catch (error) {
-            dispatch({})
-        }
-    }
-}
+// export const editProject = (projectId) => {
+//     return async (dispatch) => {
+//         try {} catch (error) {}
+//     }
+// }
 
-const finishProject = (projectId) => {
-    return async (dispatch) => {
-        try {
-            dispatch({ type: PROJECT_ACTIONS })
+// export const finishProject = (projectId) => {
+//     return async (dispatch) => {
+//         try {
+//             dispatch({ type: PROJECT_ACTIONS })
 
-            const finishProjectResponse = await finishProjectRequest(projectId);
+//             const finishProjectResponse = await request({
+//                 url: `projects/finish?project_id=${projectId}`,
+//                 method: 'PUT'
+//             })
 
-            dispatch({ type: FINISH_PROJECT_SUCCESS, finishProjectSuccess: finishProjectResponse });
-        } catch (error) {
-            dispatch({ type: FINISH_PROJECT_FAILED, finishProjectFailed: error });
-        }
-    }
-}
+//             dispatch({ type: FINISH_PROJECT_SUCCESS, finishProjectSuccess: finishProjectResponse });
+//         } catch (error) {
+//             dispatch({ type: FINISH_PROJECT_FAILED, finishProjectFailed: error });
+//         }
+//     }
+// }
 
-const deleteProject = (projectId) => {
-    return async (dispatch) => {
-        try {
-            dispatch({ type: PROJECT_ACTIONS })
+// export const deleteProject = (projectId) => {
+//     return async (dispatch) => {
+//         try {
+//             dispatch({ type: PROJECT_ACTIONS })
 
-            const deleteProjectResponse = await deleteProjectRequest(projectId);
+//             const deleteProjectResponse = await request({
+//                 url: `projects/del?project_id=${projectId}`,
+//                 method: 'PUT'
+//             })
 
-            dispatch({ type: DELETE_PROJECT_SUCCESS, deleteProjectSuccess: deleteProjectResponse });
-        } catch (error) {
-            dispatch({ type: DELETE_PROJECT_FAILED, deleteProjectFailed: error });
-        }
-    }
-}
+//             dispatch({ type: DELETE_PROJECT_SUCCESS, deleteProjectSuccess: deleteProjectResponse });
+//         } catch (error) {
+//             dispatch({ type: DELETE_PROJECT_FAILED, deleteProjectFailed: error });
+//         }
+//     }
+// }
+
+// ============================================================================================================
+// ============================================================================================================
 
 // Dashboard routes
 
-const getProjectsDetails = () => {
-    return async (dispatch) => {
-        try {
-            dispatch(setLoading({ 'dashboard': true }))
+// export const getProjectsDetails = () => {
+//     return async (dispatch) => {
+//         try {
+//             dispatch(setLoading({ 'dashboard': true }))
 
-            const getProjectsDetailsRes = await getProjectsDetailsReq();
+//             const getProjectsDetailsRes = await request({
+//                 url: `projects/dash/projects`,
+//                 method: 'GET'
+//             })
 
-            dispatch(stopLoading())
-            dispatch({ type: DASHBOARD_PROJECTS_SUCCESS, payload: getProjectsDetailsRes?.data?.data });
-        } catch (error) {
-            dispatch(stopLoading())
-            dispatch(setError({ 'dashboard': { message: error?.message } }))
-            dispatch({ type: DASHBOARD_PROJECTS_SUCCESS, payload: {} });
-        }
-    }
-}
+//             dispatch(stopLoading())
+//             dispatch({ type: DASHBOARD_PROJECTS_SUCCESS, payload: getProjectsDetailsRes?.data?.data });
+//         } catch (error) {
+//             dispatch(stopLoading())
+//             dispatch(setError({ 'dashboard': { message: error?.message } }))
+//             dispatch({ type: DASHBOARD_PROJECTS_SUCCESS, payload: {} });
+//         }
+//     }
+// }
 
-const getEmployeesDetails = () => {
-    return async (dispatch) => {
-        try {
-            dispatch(setLoading({ 'dashboard': true }))
+// export const getEmployeesDetails = () => {
+//     return async (dispatch) => {
+//         try {
+//             dispatch(setLoading({ 'dashboard': true }))
 
-            const getEmployeesDetailsRes = await getEmployeesDetailsReq();
+//             const getEmployeesDetailsRes = await request({
+//                 url: `projects/dash/employees`,
+//                 method: 'GET'
+//             })
 
-            dispatch(stopLoading())
-            dispatch({ type: DASHBOARD_EMPLOYEES_SUCCESS, payload: getEmployeesDetailsRes?.data?.data });
-        } catch (error) {
-            dispatch(stopLoading())
-            dispatch(setError({ 'dashboard': { message: error?.message } }))
-            dispatch({ type: DASHBOARD_EMPLOYEES_SUCCESS, payload: {} });
-        }
-    }
-}
+//             dispatch(stopLoading())
+//             dispatch({ type: DASHBOARD_EMPLOYEES_SUCCESS, payload: getEmployeesDetailsRes?.data?.data });
+//         } catch (error) {
+//             dispatch(stopLoading())
+//             dispatch(setError({ 'dashboard': { message: error?.message } }))
+//             dispatch({ type: DASHBOARD_EMPLOYEES_SUCCESS, payload: {} });
+//         }
+//     }
+// }
 
-const getChartsData = () => {
-    return async (dispatch) => {
-        try {
-            dispatch(setLoading({ 'dashboard': true }))
+// export const getChartsData = () => {
+//     return async (dispatch) => {
+//         try {
+//             dispatch(setLoading({ 'dashboard': true }))
 
-            const getChartsDataRes = await getChartsDataReq()
+//             const getChartsDataRes = await request({
+//                 url: `projects/dash/tasks`,
+//                 method: 'GET'
+//             })
 
-            dispatch(stopLoading())
-            dispatch({ type: DASHBOARD_CHARTS_SUCCESS, payload: getChartsDataRes?.data?.data }); // <- array [num, num]
-        } catch (error) {
-            dispatch(stopLoading())
-            dispatch(setError({ 'dashboard': { message: error?.message } }))
-            dispatch({ type: DASHBOARD_CHARTS_SUCCESS, payload: {} });
-        }
-    }
-}
+//             dispatch(stopLoading())
+//             dispatch({ type: DASHBOARD_CHARTS_SUCCESS, payload: getChartsDataRes?.data?.data }); // <- array [num, num]
+//         } catch (error) {
+//             dispatch(stopLoading())
+//             dispatch(setError({ 'dashboard': { message: error?.message } }))
+//             dispatch({ type: DASHBOARD_CHARTS_SUCCESS, payload: {} });
+//         }
+//     }
+// }
 
-const getLatestProjects = () => {
-    return async (dispatch) => {
-        try {
-            dispatch(setLoading({ 'dashboard': true }))
+// export const getLatestProjects = () => {
+//     return async (dispatch) => {
+//         try {
+//             dispatch(setLoading({ 'dashboard': true }))
 
-            const getLatestProjectsRes = await getLatestProjectsreq();
+//             const getLatestProjectsRes = await request({
+//                 url: `projects/dash/latest`,
+//                 method: 'GET'
+//             });
 
-            dispatch(stopLoading())
-            dispatch({ type: DASHBOARD_LATESTS_SUCCESS, payload: getLatestProjectsRes?.data?.data });
-        } catch (error) {
-            dispatch(stopLoading())
-            dispatch(setError({ 'dashboard': { latest: true } }))
-            dispatch({ type: DASHBOARD_LATESTS_SUCCESS, payload: [] });
-        }
-    }
-}
+//             dispatch(stopLoading())
+//             dispatch({ type: DASHBOARD_LATESTS_SUCCESS, payload: getLatestProjectsRes?.data?.data });
+//         } catch (error) {
+//             dispatch(stopLoading())
+//             dispatch(setError({ 'dashboard': { latest: true } }))
+//             dispatch({ type: DASHBOARD_LATESTS_SUCCESS, payload: [] });
+//         }
+//     }
+// }
 
-const getDashboardData = () => {
-    return async dispatch => {
-        await Promise.all([
-            dispatch(getProjectsDetails()),
-            dispatch(getEmployeesDetails()),
-            dispatch(getLatestProjects()),
-            dispatch(getChartsData()),
-        ])
-    }
-}
-
-export {
-    resetProjectsErrors,
-    fetchingProjects,
-    addNewProject,
-    finishProject,
-    deleteProject,
-    fetchingOneProject,
-    // Dashboard routes
-    getDashboardData,
-    getEmployeesDetails,
-    getLatestProjects,
-    getChartsData,
-    getProjectsDetails,
-}
+// export const getDashboardData = () => {
+//     return async dispatch => {
+//         await Promise.all([
+//             dispatch(getProjectsDetails()),
+//             dispatch(getEmployeesDetails()),
+//             dispatch(getLatestProjects()),
+//             dispatch(getChartsData()),
+//         ])
+//     }
+// }

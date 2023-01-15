@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import {
     View,
     StyleSheet,
-    ActivityIndicator,
-    I18nManager
+    ActivityIndicator
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TextInput } from 'react-native-paper';
@@ -11,15 +10,12 @@ import { AntDesign, Feather } from '@expo/vector-icons';
 import MyText from '../../../../components/UI/MyText';
 import { t } from '../../../../i18n';
 import { useSelector } from 'react-redux';
-import { navigate } from '../../../../navigation/RootNavigation';
 import Colors from '../../../../utils/Colors';
 
 export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBlur, handleSubmit } }) => {
 
-    const authLoading = useSelector((state) => state?.authReducer?.authLoading);
+    const loadings = useSelector((state) => state?.globalReducer?.loadings)
     const [showPass, setShowPass] = useState(false);
-
-    // const onRegisterTextPressed = () => navigate('Register', {})
 
     const inputTheme = {
         colors: {
@@ -34,22 +30,22 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
         <View>
             <View style={styles.textContainer}>
                 <AntDesign name={'user'} size={15} style={{ marginEnd: 5 }} color={Colors.appWhite} />
-                <MyText style={styles.label}>phone</MyText>
+                <MyText style={styles.label}>email</MyText>
             </View>
             <TextInput
                 style={styles.input}
-                placeholder={'05XXXXXXXX'}
+                placeholder={t('app.email')}
                 placeholderTextColor={Colors.secondary}
                 mode={'flat'}
                 fontFamily={'light'}
-                onChangeText={handleChange('username')}
-                value={values?.username}
-                error={errors?.username}
-                onBlur={handleBlur('username')}
-                keyboardType="decimal-pad"
+                onChangeText={handleChange('email')}
+                value={values?.email}
+                error={errors?.email}
+                onBlur={handleBlur('email')}
+                keyboardType={"email-address"}
                 theme={inputTheme}
             />
-            {errors?.username ? <ErrorText error={errors?.username} /> : null}
+            {errors?.email ? <ErrorText error={errors?.email} /> : null}
 
             <View style={[styles.textContainer, { marginTop: 30 }]}>
                 <Feather name={'lock'} size={15} style={{ marginEnd: 5 }} color={Colors.appWhite} />
@@ -80,21 +76,15 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
 
             <TouchableOpacity
                 style={styles.loginButton}
-                disabled={authLoading}
+                disabled={loadings?.login}
                 activeOpacity={0.8}
                 onPress={handleSubmit}>
-                {authLoading ?
+                {loadings?.login ?
                     <ActivityIndicator size={'large'} color={'white'} />
                     :
                     <MyText style={styles.loginText}>login</MyText>
                 }
             </TouchableOpacity>
-            {/* <View style={styles.newHere}>
-                <MyText>newHere</MyText>
-                <TouchableOpacity onPress={onRegisterTextPressed}>
-                    <MyText style={styles.signupText}>signup</MyText>
-                </TouchableOpacity>
-            </View> */}
         </View>
     )
 }
@@ -115,13 +105,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 50,
-        // shadow
-        elevation: 5,
-        shadowColor: '#888888',
-        shadowOffset: { width: 0, height: 5 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
+        marginTop: 50
     },
     loginText: {
         color: Colors.appWhite,

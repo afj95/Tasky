@@ -5,31 +5,23 @@ import {
     View,
     I18nManager
 } from 'react-native';
-import { Entypo, Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { navigate } from '../../../navigation/RootNavigation';
 // components
 import MyText from "../../../components/UI/MyText";
 import Colors from '../../../utils/Colors';
-import { useNavigation } from '@react-navigation/native';
 
 const { height } = Dimensions.get("screen");
 
 export const Header = ({ user, text }) => {
-    const navigation = useNavigation();
 
     const _onAddProjectPressed = () => navigate('AddProject', {})
 
     return (
         <View style={styles.subHeader}>
-            <Entypo
-                name={'list'}
-                color={Colors.appWhite}
-                size={30}
-                style={styles.drawerIcon}
-                onPress={navigation.toggleDrawer}
-            />
+            <View />
             <MyText style={styles.title}>{text}</MyText>
-            {user.role === 'admin' ? <View style={styles.addProjectView}>
+            {user && user.role === 'admin' ? <View style={styles.addProjectView}>
                 <Ionicons
                     name={'md-add-circle'}
                     size={22}
@@ -53,12 +45,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomEndRadius: 10,
         borderBottomStartRadius: 10,
-        // shadow
-        shadowColor: '#999999',
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 4,
     },
     title: {
         fontSize: 20,
