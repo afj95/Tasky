@@ -1,4 +1,4 @@
-import { ERROR, LOADING, STOP } from "./global-reducer"
+import { CLEAR, ERROR, LOADING, STOP } from "./global-reducer"
 
 export const setLoading = (payload) => ({
      type: LOADING,
@@ -10,6 +10,11 @@ export const setError = (payload) => ({
      payload
 })
 
-export const stopLoading = () => ({
-     type: STOP
+export const stopLoading = (payload) => ({
+     type: STOP,
+     payload: payload || { failed: false, error: null }
+})
+
+export const clearErrors = () => ({
+     type: CLEAR
 })

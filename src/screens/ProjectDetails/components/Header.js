@@ -12,6 +12,7 @@ import { goBack, navigate } from '../../../navigation/RootNavigation';
 import MyText from "../../../components/UI/MyText";
 import Colors from '../../../utils/Colors';
 import { Appbar as RNAppbar } from 'react-native-paper';
+import { mainStyles } from '../../../constants';
 
 const { height } = Dimensions.get("screen");
 
@@ -49,12 +50,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomEndRadius: 10,
         borderBottomStartRadius: 10,
-        // shadow
-        shadowColor: '#999999',
-        shadowOffset: { width: 1, height: 1 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 4,
     },
     addProjectView: {
         alignItems: 'center',

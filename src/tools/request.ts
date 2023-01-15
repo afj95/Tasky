@@ -2,27 +2,31 @@ import axios, { Method } from "axios";
 import { I18nManager } from "react-native";
 import { API_URL } from "../constants";
 import { store } from "../redux";
+import { stopLoading } from "../redux/reducers/Global/global-actions";
 
-type RequesProps = {
+type RequestProps = {
     url: string;
     method: Method;
     params?: any;
 }
 
-export const request = async ({ url, method, params }: RequesProps) => {
-    try {
-        const fullURL = `${API_URL}${url}`;
-        const user = store.getState().authReducer.user;
-        return new Promise((resolve, reject) => {
-            let timeout = false;
+export const request = async ({ url, method, params }: RequestProps) => {
+    const fullURL = `${API_URL}${url}`;
+    const user = store.getState().authReducer.user;
+
+    let timeout = false;
+    return new Promise((resolve, reject) => {
+        try {
             setTimeout(() => {
                 timeout = true;
-            }, 10000);
+                reject(new Error('Tiemout, Server is not responding'))
+            }, 15000);
 
             let modfiedHeaders = {
                 Authorization: `Bearer ${user?.token}`,
-                // "Content-Type": "application/json",
-                "Accept-Language": I18nManager.isRTL ? 'ar' : 'en'
+                "Accept-Language": I18nManager.isRTL ? 'ar' : 'en',
+                "Accept": "application/json",
+                "Content-Type": "application/json"
             };
 
             if (__DEV__) {
@@ -42,26 +46,34 @@ export const request = async ({ url, method, params }: RequesProps) => {
             })
                 .then((res) => {
                     if (timeout) {
-                        throw { response: { status: 500 } };
+                        throw new Error('Error')
                     }
 
                     resolve(res);
                 })
                 .catch((error) => {
+                    if (__DEV__) {
+                        console.log({
+                            'url': url,
+                            'request error - error?.response?.data ': error?.response?.data
+                        });
+
+                    }
                     /*
-                     * returning the error status code 
-                     * and the message came from the API.
+                     * returning the message came from the API.
+                     * { success: true/false, message: '...' }
                     */
-                    reject({
-                        message: error?.response?.data?.message
-                    })
-                    // reject({
-                    //     status: error?.response?.status,
-                    //     message: error.response.data.message
-                    // })
+                    reject({ message: error?.response?.data?.message })
                 });
-        });
-    } catch (error) {
-        console.warn(error);
-    }
+        } catch (error) {
+            if (__DEV__) {
+                console.log({
+                    'url': url,
+                    'request try/catch error - error?.response?.data ': error?.response?.data
+                });
+            }
+            store.dispatch(stopLoading({ 'general': error }))
+            reject({ message: error })
+        }
+    })
 };

@@ -1,23 +1,17 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 // Navigation
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Drawer as DrawerComponent } from './Drawer';
+// import { createDrawerNavigator } from '@react-navigation/drawer';
+// import { Drawer as DrawerComponent } from './Drawer';
 import {
   LoginScreen,
   RegisterScreen,
-  HomeScreen,
   AddProjectScreen,
-  ProjectDetails,
-  EmployeesScreen,
-  AddEmployeeScreen,
-  EditEmployeeScreen,
-  DashboardScreen
+  ProjectDetails
 } from '../screens';
 import { useSelector } from 'react-redux';
-import MyText from '../components/UI/MyText';
-import Colors from '../utils/Colors';
+import { adminScreens, supervisorScreens } from './Screens';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const AuthStack = createStackNavigator();
 export const AuthStackScreens = () => (
@@ -27,52 +21,88 @@ export const AuthStackScreens = () => (
   </AuthStack.Navigator>
 )
 
-const Drawer = createDrawerNavigator();
-const DrawerScreens = () => {
+// const Drawer = createDrawerNavigator();
+// const DrawerScreens = () => {
+//   const user = useSelector(state => state.authReducer.user);
+//   return (
+//     <Drawer.Navigator
+//       initialRouteName={user?.role === 'admin' ? 'DashboardScreen' : 'HomeScreen'}
+//       drawerContent={props => <DrawerComponent props={props} />}
+//       screenOptions={{ headerShown: false }}>
+//       {user?.role === 'admin' ?
+//         adminScreens.map((screen, index) => {
+//           const { name, component, options } = screen;
+//           return (
+//             <Drawer.Screen
+//               key={index}
+//               name={name}
+//               component={component}
+//               options={{ ...screensOptions, ...options }}
+//             />
+//           )
+//         })
+//         :
+//         supervisorScreens.map((screen, index) => {
+//           const { name, component, options } = screen;
+//           return (
+//             <Drawer.Screen
+//               key={index}
+//               name={name}
+//               component={component}
+//               options={{ ...screensOptions, ...options }}
+//             />
+//           )
+//         })
+//       }
+//     </Drawer.Navigator>
+//   )
+// }
+
+const Tab = createBottomTabNavigator();
+const MyTabs = () => {
   const user = useSelector(state => state.authReducer.user);
 
   return (
-    <Drawer.Navigator
-      initialRouteName={'DashboardScreen'}
-      drawerContent={props => <DrawerComponent props={props} />}
-      screenOptions={{ headerShown: false }}>
+    <Tab.Navigator
+      initialRouteName={user?.role === 'admin' ? 'DashboardScreen' : 'HomeScreen'}
+      screenOptions={{ headerShown: false, tabBarStyle: { height: 50 } }}>
       {user?.role === 'admin' ?
-        <Drawer.Screen
-          name={'DashboardScreen'}
-          component={DashboardScreen}
-          options={{
-            title: () => (
-              <MyText style={styles.title}>dashboardScreen</MyText>
-            )
-          }} /> : null}
-      <Drawer.Screen
-        name={'HomeScreen'}
-        component={HomeScreen}
-        options={{
-          title: () => (
-            <MyText style={styles.title}>projects</MyText>
+        adminScreens.map((screen, index) => {
+          const { name, component, options } = screen;
+          return (
+            <Tab.Screen
+              key={index}
+              name={name}
+              component={component}
+              options={options}
+            />
           )
-        }} />
-      {user?.role === 'admin' ?
-        <Drawer.Screen
-          name={'EmployeesScreen'}
-          component={EmployeesScreen}
-          options={{
-            title: () => (
-              <MyText style={styles.title}>employees</MyText>
-            )
-          }}
-        /> : null}
-    </Drawer.Navigator>
-  )
+        })
+        :
+        supervisorScreens.map((screen, index) => {
+          const { name, component, options } = screen;
+          return (
+            <Tab.Screen
+              key={index}
+              name={name}
+              component={component}
+              options={options}
+            />
+          )
+        })
+      }
+    </Tab.Navigator>
+  );
 }
+
 
 const MainStack = createStackNavigator();
 export const MainStackScreens = () => (
   <MainStack.Navigator>
+
+    {/* ADMIN */}
     <MainStack.Group screenOptions={{ headerShown: false }}>
-      <MainStack.Screen name="Dashboard" component={DrawerScreens} />
-      {/* <MainStack.Screen name="HomeScreenStack" component={HomeScreen} /> */}
+      <MainStack.Screen name="Dashboard" component={MyTabs} />
       <MainStack.Screen name="AddProject" component={AddProjectScreen} />
     </MainStack.Group>
 
@@ -80,18 +110,10 @@ export const MainStackScreens = () => (
       <MainStack.Screen name={'ProjectDetailsScreen'} component={ProjectDetails} />
     </MainStack.Group>
 
-    <MainStack.Group screenOptions={{ headerShown: false }}>
-      {/* <MainStack.Screen name={'EmployeesScreenStack'} component={EmployeesScreen} /> */}
+    {/* <MainStack.Group screenOptions={{ headerShown: false }}>
+      <MainStack.Screen name={'EmployeesScreenStack'} component={EmployeesScreen} />
       <MainStack.Screen name={'AddEmployeeScreen'} component={AddEmployeeScreen} />
       <MainStack.Screen name={'EditEmployeeScreen'} component={EditEmployeeScreen} />
-    </MainStack.Group>
+    </MainStack.Group> */}
   </MainStack.Navigator>
 )
-
-
-const styles = StyleSheet.create({
-  title: {
-    color: Colors.primary,
-    fontFamily: 'bold'
-  }
-})

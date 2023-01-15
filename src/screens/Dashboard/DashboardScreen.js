@@ -69,7 +69,7 @@ export const DashboardScreen = ({ navigation }) => {
     const chartData = {
         labels: ['', ''],
         colors: [Colors.primary, Colors.secondary],
-        data: dashboardCharts, // <- [num, num]
+        data: dashboardCharts ? dashboardCharts : [0, 0], // <- [num, num]
     }
 
     const onRefresh = () => dispatch(getDashboardData())
@@ -120,7 +120,7 @@ export const DashboardScreen = ({ navigation }) => {
                             <View style={styles.unCheckedCircle} />
                             <MyText style={styles.circleText}>unChecked</MyText>
                         </View>
-                        {chartData && dashboardCharts ?
+                        {chartData && dashboardCharts && dashboardEmployees?.all ?
                             <ProgressChart
                                 style={styles.chart}
                                 data={chartData}

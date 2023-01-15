@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform, TouchableOpacity, Alert, I18nManager, StatusBar } from 'react-native';
 import { Formik } from 'formik';
 import { LoginForm } from './components';
 import MyText from '../../../components/UI/MyText';
 import { ScrollView } from 'react-native-gesture-handler';
 import { CommonActions } from '@react-navigation/native';
-import { login, resetAuth } from '../../../redux/reducers/Auth/auth-actions';
+import { login } from '../../../redux/reducers/Auth/auth-actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { showMessage } from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { t } from '../../../i18n';
 import { FontAwesome } from '@expo/vector-icons';
@@ -15,27 +13,36 @@ import i18n from 'i18n-js';
 import { reloadAsync } from 'expo-updates';
 import Colors from '../../../utils/Colors';
 import { mainStyles } from '../../../constants';
+import { clearErrors } from '../../../redux/reducers/Global/global-actions';
+import { showMessage } from '../../../tools/showMessage';
+import {
+    View,
+    StyleSheet,
+    KeyboardAvoidingView,
+    Platform,
+    TouchableOpacity,
+    Alert,
+    I18nManager,
+    StatusBar
+} from 'react-native';
 
 export const LoginScreen = ({ navigation }) => {
     const dispatch = useDispatch();
 
-    const authStatus = useSelector((state) => state?.authReducer?.authStatus)
+    const errors = useSelector((state) => state?.globalReducer?.errors)
     const user = useSelector((state) => state?.authReducer?.user)
 
     useEffect(() => {
-        dispatch(resetAuth())
-    }, [])
-
-    useEffect(() => {
-        switch (authStatus.status) {
-            case 200:
+        if (Object.keys(user || {}).length) {
+            if (user?.role === 'admin') {
                 showMessage({
-                    message: t('app.loggedinSuccessfully'),
-                    titleStyle: { textAlign: 'left' },
-                    type: 'success',
-                    duration: 3000,
-                    style: { paddingTop: 33, borderBottomStartRadius: 8, borderBottomEndRadius: 8 }
+                    message: 'You are an admin!',
+                    description: 'Admin screens not ready yet!',
+                    type: 'info',
+                    duration: 5000,
+                    autoHide: false
                 })
+            } else {
                 AsyncStorage.setItem('token', user?.token).then(() => {
                     navigation.dispatch(
                         CommonActions.reset({
@@ -43,73 +50,44 @@ export const LoginScreen = ({ navigation }) => {
                             routes: [{ name: 'Home' }]
                         })
                     )
-                }).catch(e => {
-                    showMessage({
-                        message: t('app.serverError'),
-                        titleStyle: { textAlign: 'left' },
-                        type: 'danger',
-                        duration: 3000,
-                        style: { paddingTop: 33, borderBottomStartRadius: 8, borderBottomEndRadius: 8 }
-                    })
-                })
-                break;
-            case 403:
-                showMessage({
-                    message: authStatus.message,
-                    titleStyle: { textAlign: 'left' },
-                    type: 'danger',
-                    duration: 3000,
-                    style: { paddingTop: 33, borderBottomStartRadius: 8, borderBottomEndRadius: 8 }
-                })
-                break;
-            case 404:
-                showMessage({
-                    message: authStatus.message,
-                    titleStyle: { textAlign: 'left' },
-                    type: 'danger',
-                    duration: 3000,
-                    style: { paddingTop: 33, borderBottomStartRadius: 8, borderBottomEndRadius: 8 }
-                })
-                break;
-            case 500:
-                showMessage({
-                    message: t('app.serverError'),
-                    titleStyle: { textAlign: 'left' },
-                    type: 'danger',
-                    duration: 3000,
-                    style: { paddingTop: 33, borderBottomStartRadius: 8, borderBottomEndRadius: 8 }
-                })
-                break;
+                }).catch(e => { })
+            }
         }
-        dispatch(resetAuth());
-    }, [authStatus, user])
+
+        if (errors?.login) {
+            showMessage({
+                message: errors?.login?.message ? errors?.login?.message : errors?.login + '',
+                type: 'danger',
+            })
+            dispatch(clearErrors());
+        }
+    }, [errors, user])
 
     const initialValues = {
-        username: '',
+        email: '',
         password: '',
+    }
+    const devInitialValues = {
+        email: 'ahmad@gmail.com',
+        password: '12341234',
     }
 
     const onSubmit = (values) => {
-        dispatch(login(values.username, values.password))
+        dispatch(login(values.email, values.password))
     }
 
     const validate = (values) => {
         const errors = {}
-        if (!values.username) {
-            errors.username = 'required';
-        } else if (isNaN(values.username)) {
-            errors.username = 'phoneNumbersOnlyNums'
-        } else if (values.username.charAt(0) !== '0') {
-            errors.username = 'phonneNumstart'
-        } else if (values.username.length < 10) {
-            errors.username = 'phoneNumlength'
+        if (!values.email) {
+            errors.email = 'required';
         }
         // Checking password
         if (!values.password) {
             errors.password = 'required';
-        } else if (values.password.length < 8) {
-            errors.password = 'passwordLength';
         }
+        // else if (values.password.length < 8) {
+        //     errors.password = 'passwordLength';
+        // }
         return errors;
     };
 
@@ -117,7 +95,7 @@ export const LoginScreen = ({ navigation }) => {
         Alert.alert(t('app.changeLangAlertTitle'), t('app.changeLangMessage'), [
             {
                 style: 'cancel',
-                text: t('app.changeLangCancel')
+                text: t('app.cancel')
             },
             {
                 text: t('app.changeLangConfirm'),
@@ -170,13 +148,13 @@ export const LoginScreen = ({ navigation }) => {
                     </View>
                     <Formik
                         /*
-                            * 'validate' better the 'validationSchema'
+                            * 'validate' better than 'validationSchema'
                             * cuz validation in schema can't sort which 
                             * validate fun will start first.
                         */
                         validate={validate}
                         onSubmit={onSubmit}
-                        initialValues={initialValues}>
+                        initialValues={__DEV__ ? devInitialValues : initialValues}>
                         {(props) => <LoginForm loginProps={props} />}
                     </Formik>
                 </View>

@@ -9,7 +9,7 @@ import {
 import { AntDesign } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../../components/UI/MyText';
-import { deleteProject, fetchingOneProject, fetchingProjects, finishProject, resetProjectsErrors } from '../../../redux/reducers/Projects/projects-actions';
+import { deleteProject, fetchingOneProject, fetchingProjects, finishProject } from '../../../redux/reducers/Projects/projects-actions';
 import Colors from '../../../utils/Colors';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 
@@ -53,7 +53,6 @@ export const ProjectActionsModal = ({ visible, closeModal, project }) => {
                 duration: 1500,
             })
         }
-        dispatch(resetProjectsErrors());
     }, [projectActionsLoading])
 
     const onFinishProjectPressed = () => {

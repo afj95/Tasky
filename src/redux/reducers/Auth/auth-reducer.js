@@ -1,49 +1,32 @@
-import { authState } from './auth-state';
-import {
-    RESET_AUTH,
-    AUTH_LOADING,
-    AUTH_SUCCESS,
-    AUTH_FAILED,
-    LOGOUT,
-} from './auth-types';
+export const AUTH_SUCCESS = "AUTH_SUCCESS";
+export const LOGOUT = "LOGOUT";
+export const FETCH_PROFILE_SUCCESS = 'FETCH_PROFILE_SUCCESS'
+
+const authState = {
+    user: {},
+};
 
 const authReducer = (state = authState, action) => {
-    switch(action.type) {
-        case RESET_AUTH: {
-            return {
-                ...state,
-                authLoading: '',
-                authStatus: '',
-                resetPasswordStatus: ''
-            }
-        }
-        case AUTH_LOADING: {
-            return {
-                ...state,
-                authLoading: true,
-            };
-        }
+    const payload = action.payload
+    switch (action.type) {
         case AUTH_SUCCESS: {
             return {
                 ...state,
-                authLoading: false,
-                user: action?.payload.user,
-                authStatus: action?.payload.authStatus,
+                user: payload.user,
             };
-        }
-        case AUTH_FAILED: {
-            return {
-                ...state,
-                authLoading: false,
-                authStatus: action?.authStatus
-            }
         }
         case LOGOUT: {
             return {
                 ...state,
-                user: '',
-                authLoading: '',
-                authStatus: '',
+                user: {}
+            }
+        }
+
+        case FETCH_PROFILE_SUCCESS: {
+            let newUser = { ...state.user, ...payload }
+            return {
+                ...state,
+                user: newUser
             }
         }
 

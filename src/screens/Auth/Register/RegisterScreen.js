@@ -9,7 +9,7 @@ import { Formik } from 'formik';
 import { RegisterForm } from './components';
 import MyText from '../../../components/UI/MyText';
 import { ScrollView } from 'react-native-gesture-handler';
-import { resetAuth, register } from '../../../redux/reducers/Auth/auth-actions';
+import { register } from '../../../redux/reducers/Auth/auth-actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from 'react-native-flash-message';
 import { t } from '../../../i18n';
@@ -49,7 +49,6 @@ export const RegisterScreen = () => {
                 })
                 break;
         }
-        dispatch(resetAuth());
     }, [authStatus, user])
 
     const initialValues = {

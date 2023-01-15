@@ -1,167 +1,114 @@
-import { projectsState } from "./projects-state";
 import {
-    RESET_PROJECTS_ERRORS,
-
-    FETCHING_PROJECTS,
-    FETCHING_PROJECTS_FAILED,
     FETCHING_PROJECTS_SUCCESS,
 
-    FETCHING_PROJECT,
     FETCHING_PROJECT_SUCCESS,
-    FETCHING_PROJECT_FAILED,
+    RESET_PROJECT,
 
-    ADD_PROJECT_SUCCESS,
-    ADD_PROJECT_FAILED,
+    // ADMIN
+    // ADD_PROJECT_SUCCESS,
+    // FINISH_PROJECT_SUCCESS,
+    // DELETE_PROJECT_SUCCESS,
 
-    PROJECT_ACTIONS,
-    FINISH_PROJECT_SUCCESS,
-    FINISH_PROJECT_FAILED,
-
-    DELETE_PROJECT_SUCCESS,
-    DELETE_PROJECT_FAILED,
-
-    DASHBOARD_PROJECTS_SUCCESS,
-    DASHBOARD_LATESTS_SUCCESS,
-    DASHBOARD_EMPLOYEES_SUCCESS,
-    DASHBOARD_CHARTS_SUCCESS
+    // Dashboard
+    // DASHBOARD_PROJECTS_SUCCESS,
+    // DASHBOARD_LATESTS_SUCCESS,
+    // DASHBOARD_EMPLOYEES_SUCCESS,
+    // DASHBOARD_CHARTS_SUCCESS
 } from "./projects-types";
 
+const projectsState = {
+    projects: [],
+    totalProjects: 0,
+    project: {},
+
+    // ADMIN
+    // addProjectResponse: '',
+    // finishProjectSuccess: '',
+    // deleteProjectSuccess: '',
+
+    // Dashboard
+    // dashboardProjects: {},
+    // dashboardEmployees: {},
+    // dashboardCharts: [0, 0],
+    // dashboardLatests: [],
+}
+
 const projectsReducer = (state = projectsState, action) => {
+    const payload = action?.payload;
     switch (action?.type) {
-        case RESET_PROJECTS_ERRORS: {
+        case RESET_PROJECT: {
             return {
                 ...state,
-                fetchingProjectsError: '',
-                addProjectResponse: null,
-                finishProjectSuccess: '',
-                finishProjectFailed: '',
-                deleteProjectSuccess: '',
-                deleteProjectFailed: '',
-                fetchingProjectError: '',
-                project: ''
+                project: {}
             }
         }
 
-        case FETCHING_PROJECTS: {
-            return {
-                ...state,
-                fetchingProjectsLoading: true
-            }
-        }
         case FETCHING_PROJECTS_SUCCESS: {
             return {
                 ...state,
-                fetchingProjectsLoading: false,
-                projects: action?.projects
-            }
-        }
-        case FETCHING_PROJECTS_FAILED: {
-            return {
-                ...state,
-                projects: [],
-                fetchingProjectsLoading: false,
-                // TODO: Not handled
-                fetchingProjectsError: action?.error
+                totalProjects: payload?.projects?.data?.total,
+                projects: payload?.loadMore ? [
+                    ...state.projects,
+                    ...payload?.projects?.data?.data,
+                ] : payload?.projects?.data?.data
             }
         }
 
-        case FETCHING_PROJECT: {
-            return {
-                ...state,
-                fetchingProjectsLoading: true
-            }
-        }
         case FETCHING_PROJECT_SUCCESS: {
             return {
                 ...state,
-                fetchingProjectsLoading: false,
-                project: action?.project
-            }
-        }
-        case FETCHING_PROJECT_FAILED: {
-            return {
-                ...state,
-                project: {},
-                fetchingProjectsLoading: false,
-                fetchingProjectError: action?.error
+                project: payload?.project
             }
         }
 
-        case ADD_PROJECT_SUCCESS: {
-            return {
-                ...state,
-                addProjectResponse: action?.addProjectResponse,
-                fetchingProjectsLoading: false,
-            }
-        }
-        case ADD_PROJECT_FAILED: {
-            return {
-                ...state,
-                addProjectResponse: action?.addProjectResponse,
-                fetchingProjectsLoading: false,
-            }
-        }
+        // ADMIN
+        // case ADD_PROJECT_SUCCESS: {
+        //     return {
+        //         ...state,
+        //         addProjectResponse: action?.addProjectResponse,
+        //         fetchingProjectsLoading: false,
+        //     }
+        // }
+        // case FINISH_PROJECT_SUCCESS: {
+        //     return {
+        //         ...state,
+        //         projectActionsLoading: false,
+        //         finishProjectSuccess: action?.finishProjectSuccess
+        //     }
+        // }
+        // case DELETE_PROJECT_SUCCESS: {
+        //     return {
+        //         ...state,
+        //         projectActionsLoading: false,
+        //         deleteProjectSuccess: action?.deleteProjectSuccess,
+        //     }
+        // }
 
-        case PROJECT_ACTIONS: {
-            return {
-                ...state,
-                projectActionsLoading: true
-            }
-        }
-        case FINISH_PROJECT_SUCCESS: {
-            return {
-                ...state,
-                projectActionsLoading: false,
-                finishProjectSuccess: action?.finishProjectSuccess
-            }
-        }
-        case FINISH_PROJECT_FAILED: {
-            return {
-                ...state,
-                projectActionsLoading: false,
-                finishProjectFailed: action?.finishProjectFailed
-            }
-        }
-
-        case DELETE_PROJECT_SUCCESS: {
-            return {
-                ...state,
-                projectActionsLoading: false,
-                deleteProjectSuccess: action?.deleteProjectSuccess,
-            }
-        }
-        case DELETE_PROJECT_FAILED: {
-            return {
-                ...state,
-                projectActionsLoading: false,
-                deleteProjectFailed: action?.deleteProjectFailed,
-            }
-        }
-
-        case DASHBOARD_PROJECTS_SUCCESS: {
-            return {
-                ...state,
-                dashboardProjects: action?.payload
-            }
-        }
-        case DASHBOARD_EMPLOYEES_SUCCESS: {
-            return {
-                ...state,
-                dashboardEmployees: action?.payload
-            }
-        }
-        case DASHBOARD_CHARTS_SUCCESS: {
-            return {
-                ...state,
-                dashboardCharts: action?.payload
-            }
-        }
-        case DASHBOARD_LATESTS_SUCCESS: {
-            return {
-                ...state,
-                dashboardLatests: action?.payload?.latests
-            }
-        }
+        // Dashboard
+        // case DASHBOARD_PROJECTS_SUCCESS: {
+        //     return {
+        //         ...state,
+        //         dashboardProjects: action?.payload
+        //     }
+        // }
+        // case DASHBOARD_EMPLOYEES_SUCCESS: {
+        //     return {
+        //         ...state,
+        //         dashboardEmployees: action?.payload
+        //     }
+        // }
+        // case DASHBOARD_CHARTS_SUCCESS: {
+        //     return {
+        //         ...state,
+        //         dashboardCharts: action?.payload
+        //     }
+        // }
+        // case DASHBOARD_LATESTS_SUCCESS: {
+        //     return {
+        //         ...state,
+        //         dashboardLatests: action?.payload?.latests
+        //     }
+        // }
 
         default: {
             return {
