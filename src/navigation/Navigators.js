@@ -65,7 +65,7 @@ const MyTabs = () => {
   return (
     <Tab.Navigator
       initialRouteName={user?.role === 'admin' ? 'DashboardScreen' : 'HomeScreen'}
-      screenOptions={{ headerShown: false, tabBarStyle: { height: 50 } }}>
+      screenOptions={{ headerShown: false, tabBarStyle: { height: 50, borderTopWidth: 1 } }}>
       {user?.role === 'admin' ?
         adminScreens.map((screen, index) => {
           const { name, component, options } = screen;
@@ -94,7 +94,6 @@ const MyTabs = () => {
     </Tab.Navigator>
   );
 }
-
 
 const MainStack = createStackNavigator();
 export const MainStackScreens = () => (

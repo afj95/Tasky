@@ -1,17 +1,21 @@
-import axios, { Method } from "axios";
+import axios, { Method, AxiosRequestConfig } from "axios";
 import { I18nManager } from "react-native";
 import { API_URL } from "../constants";
 import { store } from "../redux";
 import { stopLoading } from "../redux/reducers/Global/global-actions";
+import { logout } from "../redux/reducers/Auth/auth-actions";
+import { navigationRef } from '../navigation/RootNavigation';
+import { CommonActions } from "@react-navigation/native";
 
 type RequestProps = {
     url: string;
     method: Method;
     params?: any;
-}
+} | AxiosRequestConfig;
 
 export const request = async ({ url, method, params }: RequestProps) => {
     const fullURL = `${API_URL}${url}`;
+    // @ts-ignore
     const user = store.getState().authReducer.user;
 
     let timeout = false;
@@ -29,7 +33,7 @@ export const request = async ({ url, method, params }: RequestProps) => {
                 "Content-Type": "application/json"
             };
 
-            if (__DEV__) {
+            if (!__DEV__) {
                 console.log("\n\n" + "fullURL ==> ", fullURL);
                 console.log("========================================");
                 console.log("method  ==> ", method);
@@ -57,19 +61,32 @@ export const request = async ({ url, method, params }: RequestProps) => {
                             'url': url,
                             'request error - error?.response?.data ': error?.response?.data
                         });
-
                     }
-                    /*
-                     * returning the message came from the API.
-                     * { success: true/false, message: '...' }
-                    */
-                    reject({ message: error?.response?.data?.message })
+
+                    if (error?.response?.data?.message === 'Unauthenticated.') {
+                        // Logout the user if Unauthenticated.
+                        store.dispatch(logout(() =>
+                            navigationRef.current.dispatch(
+                                CommonActions.reset({
+                                    index: 1,
+                                    routes: [{ name: 'Auth' }]
+                                })
+                            ))
+                        );
+                    } else {
+                        /*
+                         * returning the message came from the API.
+                         * { success: true/false, message: '...' }
+                        */
+                        reject({ message: error?.response?.data?.message })
+                    }
+
                 });
         } catch (error) {
             if (__DEV__) {
                 console.log({
                     'url': url,
-                    'request try/catch error - error?.response?.data ': error?.response?.data
+                    'request try/catch error - error ': error
                 });
             }
             store.dispatch(stopLoading({ 'general': error }))

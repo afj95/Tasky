@@ -13,7 +13,7 @@ import {
   TouchableOpacity,
   Image
 } from "react-native";
-import { showMessage } from '../../tools/showMessage';
+import { showMessage } from '../../tools';
 import { clearErrors } from '../../redux/reducers/Global/global-actions';
 import { ActivityIndicator } from 'react-native-paper';
 
@@ -38,7 +38,7 @@ export const HomeScreen = () => {
   useEffect(() => {
     if (errors?.projects) {
       showMessage({
-        message: errors?.projects + '',
+        message: errors?.projects?.message + '',
         type: 'danger',
       })
     }
@@ -146,7 +146,6 @@ export const HomeScreen = () => {
       </View>
 
       <View style={styles.projectsContainer}>
-        {/* TODO:  Add pagination */}
         <FlatList
           contentContainerStyle={{ paddingBottom: projects?.length ? 50 : 0, flex: projects?.length ? 0 : 1 }}
           style={{ flex: 1 }}

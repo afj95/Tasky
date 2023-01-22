@@ -9,12 +9,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { t } from '../../../i18n';
 import { FontAwesome } from '@expo/vector-icons';
-import i18n from 'i18n-js';
+import { i18n } from '../../../i18n';
 import { reloadAsync } from 'expo-updates';
 import Colors from '../../../utils/Colors';
 import { mainStyles } from '../../../constants';
 import { clearErrors } from '../../../redux/reducers/Global/global-actions';
-import { showMessage } from '../../../tools/showMessage';
+import { showMessage } from '../../../tools';
 import {
     View,
     StyleSheet,

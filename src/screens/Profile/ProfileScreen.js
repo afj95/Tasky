@@ -10,9 +10,9 @@ import {
 } from 'react-native'
 import MyText from '../../components/UI/MyText'
 import Colors from '../../utils/Colors'
-import { TouchableOpacity } from '../../components/UI/TouchableOpacity'
+import TouchableOpacity from '../../components/UI/TouchableOpacity'
 import { useDispatch, useSelector } from 'react-redux'
-import { MaterialIcons } from '@expo/vector-icons'
+import { Ionicons, MaterialIcons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient';
 import { CommonActions } from '@react-navigation/native';
 import { fetchProfile, logout as logoutAction } from '../../redux/reducers/Auth/auth-actions';
@@ -20,7 +20,7 @@ import { t } from '../../i18n'
 import { ProfileModal } from './components'
 import { ActivityIndicator } from 'react-native-paper'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import i18n from 'i18n-js';
+import { i18n } from '../../i18n';
 import { reloadAsync } from 'expo-updates';
 
 export const ProfileScreen = ({ navigation }) => {
@@ -153,13 +153,23 @@ export const ProfileScreen = ({ navigation }) => {
 
      const onRefresh = () => dispatch(fetchProfile())
 
+     const changeImage = () => { }
+
      return (
           <View style={styles.container}>
                <LinearGradient
                     colors={[Colors.primary, 'rgba(255,255,255,0.3)']}
                     style={styles.container}>
                     <View style={styles.lowContainer}>
-                         <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.profileImage} />
+                         {/* TODO: Add change profile image */}
+                         <TouchableOpacity disabled onPressOut={changeImage} style={styles.profileImageContainer}>
+                              {/* <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.profileImage} /> */}
+                              {user.image ?
+                                   <Image source={{ uri: user?.image }} style={styles.profileImage} />
+                                   :
+                                   <Ionicons name={'person'} size={90} color={Colors.appWhite} />
+                              }
+                         </TouchableOpacity>
                          <View style={styles.indicator}>
                               <ActivityIndicator
                                    hidesWhenStopped
@@ -175,6 +185,7 @@ export const ProfileScreen = ({ navigation }) => {
                                    <RefreshControl
                                         refreshing={false}
                                         onRefresh={onRefresh}
+                                        tintColor={Colors.primary}
                                         colors={[Colors.primary, Colors.secondary]}
                                    />
                               }>
@@ -231,13 +242,22 @@ const styles = StyleSheet.create({
           borderTopStartRadius: 18,
           borderTopEndRadius: 18,
      },
-     profileImage: {
-          width: 150, height: 150,
-          borderRadius: 75,
+     profileImageContainer: {
+          width: 120, height: 120,
+          borderRadius: 120 / 2,
           borderWidth: 1,
-          borderColor: Colors.primary,
+          borderColor: 'rgba(50, 98, 115, 0.8)',
           alignSelf: 'center',
-          marginTop: -75
+          marginTop: -75,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'rgba(50, 98, 115, 0.5)'
+     },
+     profileImage: {
+          width: '100%',
+          height: '100%',
+          borderRadius: 120 / 2,
+          resizeMode: 'contain'
      },
      indicator: {
           position: 'absolute',

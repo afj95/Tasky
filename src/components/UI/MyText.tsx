@@ -17,9 +17,10 @@ const MyText = (props: AllProps) => {
     styles.text,
     props.style,
   ]
-  // @ts-ignore
   return (
+    // @ts-ignore
     <View style={{ flexDirection: 'row' }}>
+      {/* @ts-ignore */}
       <Text
         style={textStyle}
         {...props}>

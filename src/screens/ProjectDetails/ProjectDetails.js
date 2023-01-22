@@ -130,10 +130,10 @@ export const ProjectDetails = (props) => {
                                         <TouchableOpacity
                                             disabled={user.phoneNumber === project?.user?.phone_number}
                                             activeOpacity={0.6}
-                                            onPress={onPhoneNumberPressed}
+                                            onPress={user.phone_number !== project?.user?.phone_number ? onPhoneNumberPressed : null}
                                             style={styles.phoneNumberContainer}>
                                             <MyText style={styles.phoneNumber} text={`${project?.user?.phone_number}`} />
-                                            {user.phone_number !== project?.user?.phoneNumber ? <Feather name={'external-link'} size={15} color={Colors.black} /> : null}
+                                            {user.phone_number !== project?.user?.phone_number ? <Feather name={'external-link'} size={15} color={Colors.black} /> : null}
                                         </TouchableOpacity>
                                     </View> : null}
                                 {project?.description ? <View style={styles.descriptionContainer}>

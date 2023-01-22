@@ -16,7 +16,7 @@ import MyText from '../components/UI/MyText';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from '../i18n';
-import i18n from 'i18n-js';
+import { i18n } from '../i18n';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { reloadAsync } from 'expo-updates';
 import { logout } from '../redux/reducers/Auth/auth-actions';

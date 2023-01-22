@@ -2,12 +2,12 @@ import { Fontisto } from '@expo/vector-icons';
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../../components/UI/MyText';
-import { checkTask as checkTaskAction, unCheckTask } from '../../../redux/reducers/Tasks/tasks-actions';
+import { checkTask as checkTaskAction } from '../../../redux/reducers/Tasks/tasks-actions';
 import Colors from '../../../utils/Colors';
 import moment from 'moment';
 import '../../../utils/ar-sa-mine';
 import 'moment/locale/en-gb';
-import { showMessage } from '../../../tools/showMessage';
+import { showMessage } from '../../../tools';
 import { clearErrors, stopLoading } from '../../../redux/reducers/Global/global-actions';
 import {
     ActivityIndicator,
@@ -16,7 +16,7 @@ import {
 
     View
 } from 'react-native';
-import { TouchableOpacity } from '../../../components/UI/TouchableOpacity';
+import TouchableOpacity from '../../../components/UI/TouchableOpacity';
 import { TaskDetailsModal } from './TaskDetailsModal';
 
 export const TaskComponent = ({ project, task, onRefresh }) => {
@@ -60,11 +60,11 @@ export const TaskComponent = ({ project, task, onRefresh }) => {
 
             I18nManager.isRTL ? moment.locale('ar') : moment.locale('en')
         }
-    }, [])
-
-    useEffect(() => {
         if (!_ref.current) {
             _ref.current = true;
+        }
+        return () => {
+            _ref.current = false
         }
     }, [])
 
@@ -86,7 +86,7 @@ export const TaskComponent = ({ project, task, onRefresh }) => {
     // }
 
     const checkTask = async () => {
-        // TODO:  Change to local then send it to API
+        // TODO: Change to local then send it to API
         setCheckLoading(true)
         if (task?.checked) {
             dispatch(unCheckTask(task.id))
@@ -97,7 +97,10 @@ export const TaskComponent = ({ project, task, onRefresh }) => {
         setCheckLoading(false)
     }
 
-    const openTaskDetailsModal = () => setDetailsModal(true);
+    const openTaskDetailsModal = () => {
+        setDetailsModal(true);
+        // dispatch(fetchTask(task.id))
+    }
     const closeDetailsModal = () => setDetailsModal(false);
 
     return (

@@ -3,7 +3,7 @@ import {
     StyleSheet,
     View,
 } from 'react-native'
-import { TouchableOpacity } from '../../../components/UI/TouchableOpacity';
+import TouchableOpacity from '../../../components/UI/TouchableOpacity';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Colors from '../../../utils/Colors';
 import MyText from '../../../components/UI/MyText';

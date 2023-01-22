@@ -21,6 +21,7 @@
       "buildNumber": "1"
     },
     "android": {
+      "jsEngine": "hermes",
       "permissions": [],
       "versionCode": 4,
       "adaptiveIcon": {

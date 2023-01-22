@@ -6,12 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../components/Loaders/Loader';
 import { ErrorScreen } from '../screens/ErrorScreen';
-import i18n from 'i18n-js';
+import { i18n } from '../i18n';
 // Navigators
 import { AuthStackScreens, MainStackScreens } from './Navigators';
 import FlashMessage from 'react-native-flash-message';
 import { I18nManager } from 'react-native';
-import { showMessage } from '../tools/showMessage';
+import { showMessage } from '../tools';
 import { clearErrors } from '../redux/reducers/Global/global-actions';
 import { t } from '../i18n';
 
@@ -88,10 +88,7 @@ const MainNavigator = () => {
                     <MainStack.Screen name={'Auth'} component={AuthStackScreens} />
                     <MainStack.Screen name={'Home'} component={MainStackScreens} />
                 </MainStack.Navigator>
-                <FlashMessage
-                    ref={ref => (global["flash"] = ref)}
-                    position="top"
-                />
+                <FlashMessage ref={ref => (global["flash"] = ref)} position="top" />
             </NavigationContainer>
         )
     }

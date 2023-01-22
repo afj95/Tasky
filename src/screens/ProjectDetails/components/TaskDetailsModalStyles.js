@@ -18,14 +18,15 @@ export const styles = StyleSheet.create({
           margin: 0,
           justifyContent: 'flex-end'
      },
-     contentView: {
+     contentView: loading => ({
           width: '100%',
+          height: loading ? '50%' : undefined,
           backgroundColor: Colors.appWhite,
           borderTopEndRadius: 10,
           borderTopStartRadius: 10,
           padding: 10,
           paddingBottom: 15
-     },
+     }),
      header: {
           height: 40,
           borderBottomWidth: 0.5,
@@ -114,7 +115,21 @@ export const styles = StyleSheet.create({
           marginTop: 5,
           justifyContent: 'center',
           backgroundColor: Colors.appWhite,
-          fontFamily: 'bold'
+          fontFamily: 'bold',
+          borderWidth: 0.5,
+          borderColor: Colors.primary,
+          borderRadius: 8,
+          marginStart: 6,
+          overflow: 'hidden'
+     },
+     percentageContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+     },
+     percentageText: {
+          fontSize: 18,
+          color: Colors.primary
      },
      buttonsContainer: {
           flexDirection: 'row',

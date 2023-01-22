@@ -9,7 +9,7 @@ import {
     I18nManager,
     RefreshControl
 } from 'react-native';
-import { TouchableOpacity } from '../../components/UI/TouchableOpacity';
+import TouchableOpacity from '../../components/UI/TouchableOpacity';
 import MyText from '../../components/UI/MyText';
 import { Header, Title, DetailesText, ProjectItem, ListEmptyComponent, EmptyChart } from './components';
 import { mainStyles } from '../../constants';

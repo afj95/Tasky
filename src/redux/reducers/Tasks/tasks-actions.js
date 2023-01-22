@@ -1,7 +1,9 @@
 import { request } from '../../../tools';
 import { setLoading, stopLoading } from '../Global/global-actions';
 import {
+    CLEAR_TASK,
     EDIT_TASK_SUCCESS,
+    FETCH_TASK,
     PROJECT_TASKS_SUCCESS,
     RESET_PROJECT_TASKS
 
@@ -14,6 +16,9 @@ export const restProjectTasks = () => ({
     type: RESET_PROJECT_TASKS,
 })
 
+export const clearTask = () => ({
+    type: CLEAR_TASK
+})
 
 export const getProjectTasks = (project_id, stopLoading) => {
     return async dispatch => {
@@ -89,6 +94,28 @@ export const editTask = (task, params) => {
             dispatch({
                 type: EDIT_TASK_SUCCESS,
                 payload: editTaskRes?.data?.data
+            })
+        } catch (error) {
+            dispatch(stopLoading({ failed: true, error: { 'edit_task': error.message ? error.message : error } }))
+        }
+    }
+}
+
+
+export const fetchTask = (task_id) => {
+    return async dispatch => {
+        try {
+            dispatch(setLoading({ 'edit_task': true }))
+
+            const fetchTaskRes = await request({
+                url: `tasks/${task_id}`,
+                method: 'GET'
+            })
+
+            dispatch(stopLoading());
+            dispatch({
+                type: FETCH_TASK,
+                payload: fetchTaskRes?.data?.data
             })
         } catch (error) {
             dispatch(stopLoading({ failed: true, error: { 'edit_task': error.message ? error.message : error } }))
