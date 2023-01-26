@@ -98,14 +98,20 @@ export default {
         high: "مهمة",
         mid: "متوسط",
         low: "منخفضة",
+        employeesQuantityAdmin: "عدد الموظفين المطلوب",
         employeesQuantity: "عدد الموظفين",
         workProgress: "إنجاز العمل",
+        editTask: "تعديل المهمة",
         updateTask: "تحديث المهمة",
         profile: "ملفي",
         editProfile: "تعديل الحساب",
         about: "عن التطبيق",
         notMatched: "كلمتا المرور غير متطابقتين",
         loadMore: "مشاهدة المزيد",
-        reachedEnd: "انتهى"
+        reachedEnd: "انتهى",
+        materials: "المواد",
+        quantity: "الكمية",
+        addMaterials: "إضافة المواد",
+        addMaterialHelper: "إضافة مادة جديدة"
     }
 }

@@ -7,7 +7,9 @@ import {
   LoginScreen,
   RegisterScreen,
   AddProjectScreen,
-  ProjectDetails
+  ProjectDetails,
+  EditTaskScreen,
+  MaterialsScreen
 } from '../screens';
 import { useSelector } from 'react-redux';
 import { adminScreens, supervisorScreens } from './Screens';
@@ -107,6 +109,8 @@ export const MainStackScreens = () => (
 
     <MainStack.Group screenOptions={{ headerShown: false }}>
       <MainStack.Screen name={'ProjectDetailsScreen'} component={ProjectDetails} />
+      <MainStack.Screen name={'EditTaskScreen'} component={EditTaskScreen} />
+      <MainStack.Screen name={'MaterialsScreen'} component={MaterialsScreen} />
     </MainStack.Group>
 
     {/* <MainStack.Group screenOptions={{ headerShown: false }}>

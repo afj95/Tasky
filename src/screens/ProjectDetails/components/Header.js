@@ -7,12 +7,11 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
-import { goBack, navigate } from '../../../navigation/RootNavigation';
+import { goBack } from '../../../navigation/RootNavigation';
 // components
 import MyText from "../../../components/UI/MyText";
 import Colors from '../../../utils/Colors';
 import { Appbar as RNAppbar } from 'react-native-paper';
-import { mainStyles } from '../../../constants';
 
 const { height } = Dimensions.get("screen");
 

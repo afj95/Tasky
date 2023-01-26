@@ -2,24 +2,24 @@ import { Fontisto } from '@expo/vector-icons';
 import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../../components/UI/MyText';
-import { checkTask as checkTaskAction } from '../../../redux/reducers/Tasks/tasks-actions';
+import { checkTask as checkTaskAction, fetchTask, unCheckTask } from '../../../redux/reducers/Tasks/tasks-actions';
 import Colors from '../../../utils/Colors';
 import moment from 'moment';
 import '../../../utils/ar-sa-mine';
 import 'moment/locale/en-gb';
 import { showMessage } from '../../../tools';
-import { clearErrors, stopLoading } from '../../../redux/reducers/Global/global-actions';
+import { clearErrors } from '../../../redux/reducers/Global/global-actions';
 import {
     ActivityIndicator,
     I18nManager,
     StyleSheet,
-
     View
 } from 'react-native';
 import TouchableOpacity from '../../../components/UI/TouchableOpacity';
 import { TaskDetailsModal } from './TaskDetailsModal';
+import { fetchOneProject } from '../../../redux/reducers/Projects/projects-actions';
 
-export const TaskComponent = ({ project, task, onRefresh }) => {
+export const TaskComponent = ({ task, project_id, onPress }) => {
     const _ref = useRef(null);
     const dispatch = useDispatch();
 
@@ -93,20 +93,18 @@ export const TaskComponent = ({ project, task, onRefresh }) => {
         } else {
             dispatch(checkTaskAction(task?.id))
         }
-        await onRefresh()
+        await dispatch(fetchTask(task.id))
         setCheckLoading(false)
+        dispatch(fetchOneProject(project_id))
     }
 
-    const openTaskDetailsModal = () => {
-        setDetailsModal(true);
-        // dispatch(fetchTask(task.id))
-    }
+    const openTaskDetailsModal = () => setDetailsModal(true);
     const closeDetailsModal = () => setDetailsModal(false);
 
     return (
         <TouchableOpacity
             style={styles.taskContainer(task?.priority)}
-            onPress={openTaskDetailsModal}>
+            onPress={onPress ? openTaskDetailsModal : null}>
             <View>
                 <MyText style={styles.taskText(task?.checked)} numberOfLines={3} text={`${task?.title}`} />
                 <MyText style={styles.taskDate} text={moment(task?.date).fromNow()} />
@@ -120,13 +118,12 @@ export const TaskComponent = ({ project, task, onRefresh }) => {
                         : <View />
                 } */}
                 {checkLoading ? <ActivityIndicator size={'small'} color={Colors.primary} /> :
-                    project?.status === 'finished' || project?.deleted_at ? null :
-                        <Fontisto
-                            name={task.checked ? 'checkbox-active' : 'checkbox-passive'}
-                            size={20}
-                            onPress={checkTask}
-                            color={Colors.primary}
-                        />
+                    <Fontisto
+                        name={task.checked ? 'checkbox-active' : 'checkbox-passive'}
+                        size={20}
+                        onPress={checkTask}
+                        color={Colors.primary}
+                    />
                 }
             </View>
             <TaskDetailsModal
@@ -135,7 +132,7 @@ export const TaskComponent = ({ project, task, onRefresh }) => {
                 closeModal={closeDetailsModal}
                 checkLoading={checkLoading}
                 checkTask={checkTask}
-                project={project}
+                project_id={project_id}
             />
         </TouchableOpacity>
     )

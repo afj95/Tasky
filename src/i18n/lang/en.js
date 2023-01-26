@@ -98,14 +98,20 @@ export default {
         high: "High",
         mid: "Mid",
         low: "Low",
+        employeesQuantityAdmin: "Required Employees Quantity",
         employeesQuantity: "Employees Quantity",
         workProgress: "Work Progress",
+        editTask: "Edit Task",
         updateTask: "Update Task",
         profile: "Profile",
         editProfile: "Edit Profile",
         about: "About",
         notMatched: "Passwords doesn't match!",
         loadMore: "Load More",
-        reachedEnd: "Reached End"
+        reachedEnd: "Reached End",
+        materials: "Materials",
+        quantity: "Quantity",
+        addMaterials: "Add Materials",
+        addMaterialHelper: "Add new material"
     }
 }

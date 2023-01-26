@@ -6,6 +6,8 @@ import { stopLoading } from "../redux/reducers/Global/global-actions";
 import { logout } from "../redux/reducers/Auth/auth-actions";
 import { navigationRef } from '../navigation/RootNavigation';
 import { CommonActions } from "@react-navigation/native";
+import { showMessage } from "./showMessage";
+import { t } from "../i18n";
 
 type RequestProps = {
     url: string;
@@ -30,10 +32,10 @@ export const request = async ({ url, method, params }: RequestProps) => {
                 Authorization: `Bearer ${user?.token}`,
                 "Accept-Language": I18nManager.isRTL ? 'ar' : 'en',
                 "Accept": "application/json",
-                "Content-Type": "application/json"
+                // "Content-Type": "application/json"
             };
 
-            if (!__DEV__) {
+            if (__DEV__) {
                 console.log("\n\n" + "fullURL ==> ", fullURL);
                 console.log("========================================");
                 console.log("method  ==> ", method);
@@ -59,6 +61,7 @@ export const request = async ({ url, method, params }: RequestProps) => {
                     if (__DEV__) {
                         console.log({
                             'url': url,
+                            'error': error,
                             'request error - error?.response?.data ': error?.response?.data
                         });
                     }

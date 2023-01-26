@@ -3,30 +3,32 @@ import {
     ScrollView,
     View,
     StyleSheet,
-    TouchableOpacity,
     Linking,
     RefreshControl,
     ActivityIndicator
 } from 'react-native';
+import TouchableOpacity from '../../components/UI/TouchableOpacity';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { showMessage } from 'react-native-flash-message';
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../components/UI/MyText';
 import { fetchOneProject, fetchProjects, resetProject } from '../../redux/reducers/Projects/projects-actions';
 import Colors from '../../utils/Colors';
-import { TaskComponent, Header, ProjectActionsModal, AddTask } from './components';
+import { TaskComponent, Header, ProjectActionsModal, AddTask, MaterialComponent } from './components';
 import ErrorHappened from '../../components/UI/ErrorHappened';
 import { clearErrors } from '../../redux/reducers/Global/global-actions';
-import { restProjectTasks } from '../../redux/reducers/Tasks/tasks-actions';
+import { addMaterials, restProjectTasks } from '../../redux/reducers/Tasks/tasks-actions';
+import { TextInput } from 'react-native-paper';
+import { navigate } from '../../navigation/RootNavigation';
 
 export const ProjectDetails = (props) => {
     const dispatch = useDispatch();
     const _scroll = useRef(null);
 
+    const { id, status, deleted } = props?.route?.params
+
     const [optionsModal, setOptionsModal] = useState(false);
     const [scrolledToBottom, setScrolledToBottom] = useState(false);
-
-    const { id, status, deleted } = props?.route?.params
 
     const loadings = useSelector((state) => state?.globalReducer?.loadings)
     const errors = useSelector((state) => state?.globalReducer?.errors)
@@ -34,6 +36,8 @@ export const ProjectDetails = (props) => {
     const user = useSelector((state) => state?.authReducer?.user);
     const project = useSelector((state) => state?.projectsReducer?.project);
     const projectTasks = useSelector((state) => state?.tasksReducer?.projectTasks);
+    let projectMaterials = [];
+    projectMaterials = project ? project?.materials : [];
     const projectCheckedTasks = useSelector((state) => state?.tasksReducer?.projectCheckedTasks);
 
     useEffect(() => {
@@ -90,6 +94,8 @@ export const ProjectDetails = (props) => {
 
     const onPhoneNumberPressed = () => Linking.openURL(`tel:${project?.user?.phone_number}`)
 
+    const loadMore = () => navigate('MaterialsScreen', { materials: projectMaterials })
+
     return (
         <View style={styles.container}>
             <Header
@@ -140,6 +146,36 @@ export const ProjectDetails = (props) => {
                                     <MyText style={styles.label}>projectDescription</MyText>
                                     <MyText style={styles.description} text={`${project?.description}`} />
                                 </View> : null}
+                                {projectMaterials?.length ?
+                                    <View style={styles.materialsContainer}>
+                                        <View style={styles.materialsLabelContainer}>
+                                            <MyText style={styles.label}>materials</MyText>
+                                            <ActivityIndicator
+                                                animating={loadings?.project === true}
+                                                hidesWhenStopped
+                                                size={15}
+                                                color={Colors.primary}
+                                            />
+                                            <MyText style={styles.label}>quantity</MyText>
+                                        </View>
+                                        {projectMaterials?.length > 5 ?
+                                            projectMaterials?.slice(0, 5).map((item, index) => <MaterialComponent material={item} key={index} />)
+                                            :
+                                            projectMaterials?.map((item, index) => <MaterialComponent material={item} key={index} />)
+                                        }
+                                        {projectMaterials?.length > 5 ?
+                                            <View style={styles.watchMore}>
+                                                <AntDesign
+                                                    name={'pluscircleo'}
+                                                    size={20}
+                                                    color={Colors.primary}
+                                                    onPress={loadMore}
+                                                />
+                                                <MyText>loadMore</MyText>
+                                            </View> : null}
+                                    </View>
+                                    : null}
+
                                 {projectTasks?.length ?
                                     <View style={styles.tasksContainer}>
                                         <View style={styles.tasksLabelContainer}>
@@ -154,10 +190,10 @@ export const ProjectDetails = (props) => {
                                         {projectTasks?.map((task, index) =>
                                             <TaskComponent
                                                 task={task}
+                                                project_id={id}
+                                                onPress
                                                 key={index}
                                                 index={index}
-                                                project={project}
-                                                onRefresh={onRefresh}
                                             />
                                         )}
                                     </View>
@@ -176,10 +212,10 @@ export const ProjectDetails = (props) => {
                                         {projectCheckedTasks?.map((task, index) =>
                                             <TaskComponent
                                                 task={task}
+                                                project_id={id}
+                                                onPress
                                                 key={index}
                                                 index={index}
-                                                project={project}
-                                                onRefresh={onRefresh}
                                             />
                                         )}
                                     </View>
@@ -205,7 +241,7 @@ export const ProjectDetails = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.appWhite,
+        backgroundColor: Colors.appWhite
     },
     detailsContainer: {
         flex: 1,
@@ -274,6 +310,33 @@ const styles = StyleSheet.create({
         fontFamily: 'bold',
         color: Colors.primary
     },
+    addMaterialContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        marginHorizontal: 10,
+        borderRadius: 8,
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    submitButton: {
+        backgroundColor: Colors.primary,
+        height: 40,
+        width: 140,
+        borderRadius: 8,
+        marginTop: 5,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    submitText: {
+        fontFamily: 'light',
+        color: Colors.appWhite,
+        fontSize: 15
+    },
     tasksContainer: {
         borderTopStartRadius: 10,
         borderTopEndRadius: 10,
@@ -291,9 +354,32 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'row'
     },
+    materialsContainer: {
+        borderTopStartRadius: 10,
+        borderTopEndRadius: 10,
+        marginVertical: 1.5,
+        paddingHorizontal: 10,
+        backgroundColor: Colors.white,
+        width: '95%',
+        alignSelf: 'center',
+        borderBottomEndRadius: 8,
+        borderBottomStartRadius: 8,
+        paddingBottom: 8
+    },
+    materialsLabelContainer: {
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row'
+    },
     label: {
         fontFamily: 'bold',
         color: Colors.text
+    },
+    watchMore: {
+        borderColor: 'red',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 2
     },
     scrollToTopButton: {
         width: 30,
@@ -305,5 +391,30 @@ const styles = StyleSheet.create({
         start: 20,
         justifyContent: 'center',
         alignItems: 'center'
-    }
+    },
+    dynamicFieldsComponent: {
+        paddingTop: 5,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        marginHorizontal: 5
+    },
+    dynamicInputsContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    input: {
+        width: 85,
+        height: 40,
+        marginVertical: 5,
+        justifyContent: 'center',
+        backgroundColor: Colors.appWhite,
+        fontFamily: 'bold',
+        borderWidth: 0.5,
+        borderColor: Colors.primary,
+        borderRadius: 8,
+        marginStart: 6,
+        overflow: 'hidden'
+    },
 })

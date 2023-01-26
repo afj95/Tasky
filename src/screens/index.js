@@ -7,3 +7,5 @@ export * from './AddEmployeeScreen';
 export * from './EditEmployeeScreen';
 export * from './Dashboard';
 export * from './Profile';
+export * from './EditTask';
+export * from './Materials';

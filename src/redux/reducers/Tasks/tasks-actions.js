@@ -1,5 +1,6 @@
 import { request } from '../../../tools';
 import { setLoading, stopLoading } from '../Global/global-actions';
+import { fetchOneProject } from '../Projects/projects-actions';
 import {
     CLEAR_TASK,
     EDIT_TASK_SUCCESS,
@@ -95,6 +96,7 @@ export const editTask = (task, params) => {
                 type: EDIT_TASK_SUCCESS,
                 payload: editTaskRes?.data?.data
             })
+            dispatch(fetchTask(task.id))
         } catch (error) {
             dispatch(stopLoading({ failed: true, error: { 'edit_task': error.message ? error.message : error } }))
         }
@@ -119,6 +121,28 @@ export const fetchTask = (task_id) => {
             })
         } catch (error) {
             dispatch(stopLoading({ failed: true, error: { 'edit_task': error.message ? error.message : error } }))
+        }
+    }
+}
+
+export const addMaterials = (materials, task_id) => {
+    return async dispatch => {
+        try {
+            dispatch(setLoading({ 'add_material': true }))
+
+            const addMaterialsRes = await request({
+                url: `tasks/${task_id}/materials`,
+                method: 'POST',
+                params: {
+                    materials: materials
+                }
+            })
+
+            dispatch(stopLoading())
+            // TODO: Read the task from returned response
+            dispatch(fetchTask(task_id))
+        } catch (error) {
+            dispatch(stopLoading({ failed: true, error: { 'add_material': error.message ? error.message : error } }))
         }
     }
 }
