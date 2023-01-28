@@ -1,5 +1,5 @@
+import React, { useState, useEffect } from 'react'
 import { Fontisto } from '@expo/vector-icons';
-import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../../components/UI/MyText';
 import { checkTask as checkTaskAction, fetchTask, unCheckTask } from '../../../redux/reducers/Tasks/tasks-actions';
@@ -9,18 +9,16 @@ import '../../../utils/ar-sa-mine';
 import 'moment/locale/en-gb';
 import { showMessage } from '../../../tools';
 import { clearErrors } from '../../../redux/reducers/Global/global-actions';
-import {
-    ActivityIndicator,
-    I18nManager,
-    StyleSheet,
-    View
-} from 'react-native';
 import TouchableOpacity from '../../../components/UI/TouchableOpacity';
 import { TaskDetailsModal } from './TaskDetailsModal';
 import { fetchOneProject } from '../../../redux/reducers/Projects/projects-actions';
+import {
+    ActivityIndicator,
+    StyleSheet,
+    View
+} from 'react-native';
 
 export const TaskComponent = ({ task, project_id, onPress }) => {
-    const _ref = useRef(null);
     const dispatch = useDispatch();
 
     const errors = useSelector((state) => state?.globalReducer?.errors)
@@ -29,44 +27,6 @@ export const TaskComponent = ({ task, project_id, onPress }) => {
     const [checkLoading, setCheckLoading] = useState(false);
     // const [deleteLoading, setDeleteLoading] = useState(false);
     const [detailsModal, setDetailsModal] = useState(false);
-
-    useEffect(() => {
-        if (!_ref.current) {
-            moment.updateLocale('ar-sa-mine', {
-                parentLocale: 'ar-sa',
-                preparse: function (string) {
-                    return string;
-                },
-                postformat: function (string) {
-                    return string;
-                },
-                relativeTime: {
-                    future: 'بعد %s',
-                    past: 'منذ %s',
-                    s: 'ثوان',
-                    ss: '%d ثانية',
-                    m: 'دقيقة',
-                    mm: '%d دقائق',
-                    h: 'ساعة',
-                    hh: '%d ساعات',
-                    d: 'يوم',
-                    dd: '%d أيام',
-                    M: 'شهر',
-                    MM: '%d أشهر',
-                    y: 'سنة',
-                    yy: '%d سنوات',
-                },
-            });
-
-            I18nManager.isRTL ? moment.locale('ar') : moment.locale('en')
-        }
-        if (!_ref.current) {
-            _ref.current = true;
-        }
-        return () => {
-            _ref.current = false
-        }
-    }, [])
 
     useEffect(() => {
         if (errors?.project_tasks) {
@@ -93,8 +53,8 @@ export const TaskComponent = ({ task, project_id, onPress }) => {
         } else {
             dispatch(checkTaskAction(task?.id))
         }
-        await dispatch(fetchTask(task.id))
         setCheckLoading(false)
+        dispatch(fetchTask(task.id))
         dispatch(fetchOneProject(project_id))
     }
 
@@ -132,7 +92,6 @@ export const TaskComponent = ({ task, project_id, onPress }) => {
                 closeModal={closeDetailsModal}
                 checkLoading={checkLoading}
                 checkTask={checkTask}
-                project_id={project_id}
             />
         </TouchableOpacity>
     )

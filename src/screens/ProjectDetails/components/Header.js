@@ -15,9 +15,9 @@ import { Appbar as RNAppbar } from 'react-native-paper';
 
 const { height } = Dimensions.get("screen");
 
-export const Header = ({ user, text, showModal, showGoBackButton, fetchingProjectsLoading, onRefresh }) => {
+export const Header = ({ text, showGoBackButton, fetchingProjectsLoading, onRefresh }) => {
 
-    const openOptionsModal = () => showModal();
+    // const openOptionsModal = () => showModal();
 
     return (
         <View style={styles.subHeader}>
@@ -31,9 +31,10 @@ export const Header = ({ user, text, showModal, showGoBackButton, fetchingProjec
                     <MyText style={styles.title} text={text} />
                 </TouchableOpacity>
             }
-            {user.role === 'admin' ? <TouchableOpacity activeOpacity={0.5} onPress={openOptionsModal}>
+            {/* {user.role === 'admin' ? <TouchableOpacity activeOpacity={0.5} onPress={openOptionsModal}>
                 <Entypo name={'dots-three-vertical'} size={25} color={Colors.appWhite} />
-            </TouchableOpacity> : <View />}
+            </TouchableOpacity> : <View />} */}
+            <View />
         </View>
     )
 }

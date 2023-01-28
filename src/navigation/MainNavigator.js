@@ -20,7 +20,8 @@ const MainNavigator = () => {
     const dispatch = useDispatch();
 
     const [initialRouteName, setInitialRouteName] = useState('');
-    const [screenToShow, setScreenToShow] = useState(<Loader />);
+    // const [screenToShow, setScreenToShow] = useState(<Loader />);
+    const [screenToShow, setScreenToShow] = useState(null);
 
     const user = useSelector((state) => state?.authReducer?.user);
     const errors = useSelector((state) => state?.globalReducer?.errors)
@@ -77,7 +78,7 @@ const MainNavigator = () => {
     if (!initialRouteName) {
         setTimeout(() => {
             setScreenToShow(<ErrorScreen />)
-        }, 10000) // After 5 seconds if the initialRouteName not modified it will show error screen
+        }, 10000) // After 10 seconds if the initialRouteName not modified it will show error screen
         return screenToShow
     } else {
         return (

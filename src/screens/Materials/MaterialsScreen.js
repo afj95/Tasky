@@ -54,6 +54,7 @@ export const MaterialsScreen = ({ route: { params: { materials } } }) => {
 const styles = StyleSheet.create({
      container: {
           flex: 1,
+          backgroundColor: Colors.appWhite
      },
      subContainer: {
           flex: 1,

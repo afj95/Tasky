@@ -3,11 +3,12 @@ import { I18nManager } from "react-native";
 import { API_URL } from "../constants";
 import { store } from "../redux";
 import { stopLoading } from "../redux/reducers/Global/global-actions";
-import { logout } from "../redux/reducers/Auth/auth-actions";
 import { navigationRef } from '../navigation/RootNavigation';
 import { CommonActions } from "@react-navigation/native";
 import { showMessage } from "./showMessage";
 import { t } from "../i18n";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LOGOUT } from "../redux/reducers";
 
 type RequestProps = {
     url: string;
@@ -57,7 +58,7 @@ export const request = async ({ url, method, params }: RequestProps) => {
 
                     resolve(res);
                 })
-                .catch((error) => {
+                .catch(async (error) => {
                     if (__DEV__) {
                         console.log({
                             'url': url,
@@ -65,17 +66,25 @@ export const request = async ({ url, method, params }: RequestProps) => {
                             'request error - error?.response?.data ': error?.response?.data
                         });
                     }
+                    if (error.includes('Network')) {
+                        showMessage({
+                            message: t('app.serverError'),
+                            type: 'danger'
+                        })
+                    }
 
                     if (error?.response?.data?.message === 'Unauthenticated.') {
                         // Logout the user if Unauthenticated.
-                        store.dispatch(logout(() =>
-                            navigationRef.current.dispatch(
-                                CommonActions.reset({
-                                    index: 1,
-                                    routes: [{ name: 'Auth' }]
-                                })
-                            ))
-                        );
+                        await AsyncStorage.removeItem('token')
+                            .then(() => store.dispatch({ type: LOGOUT }))
+                            .then(() => {
+                                navigationRef.current.dispatch(
+                                    CommonActions.reset({
+                                        index: 1,
+                                        routes: [{ name: 'Auth' }]
+                                    })
+                                )
+                            })
                     } else {
                         /*
                          * returning the message came from the API.

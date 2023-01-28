@@ -14,11 +14,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../components/UI/MyText';
 import { fetchOneProject, fetchProjects, resetProject } from '../../redux/reducers/Projects/projects-actions';
 import Colors from '../../utils/Colors';
-import { TaskComponent, Header, ProjectActionsModal, AddTask, MaterialComponent } from './components';
+import { TaskComponent, Header, MaterialComponent } from './components';
 import ErrorHappened from '../../components/UI/ErrorHappened';
 import { clearErrors } from '../../redux/reducers/Global/global-actions';
-import { addMaterials, restProjectTasks } from '../../redux/reducers/Tasks/tasks-actions';
-import { TextInput } from 'react-native-paper';
+import { restProjectTasks } from '../../redux/reducers/Tasks/tasks-actions';
 import { navigate } from '../../navigation/RootNavigation';
 
 export const ProjectDetails = (props) => {
@@ -67,13 +66,13 @@ export const ProjectDetails = (props) => {
 
     const onRefresh = () => dispatch(fetchOneProject(id))
 
-    const closeOptionsModal = () => {
-        setOptionsModal(false)
-    }
+    // const closeOptionsModal = () => {
+    //     setOptionsModal(false)
+    // }
 
-    const openOptionsModal = () => {
-        setOptionsModal(!optionsModal);
-    }
+    // const openOptionsModal = () => {
+    //     setOptionsModal(!optionsModal);
+    // }
 
     const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
         const paddingToBottom = 20;
@@ -82,7 +81,7 @@ export const ProjectDetails = (props) => {
     };
 
     const scrollToTop = () => {
-        _scroll.current.scrollTo({ x: 0, y: 0, animated: true });
+        _scroll?.current?.scrollTo({ x: 0, y: 0, animated: true });
         setScrolledToBottom(false)
     }
 
@@ -99,8 +98,8 @@ export const ProjectDetails = (props) => {
     return (
         <View style={styles.container}>
             <Header
-                user={user}
-                showModal={openOptionsModal}
+                // user={user}
+                // showModal={openOptionsModal}
                 showGoBackButton
                 onRefresh={onRefresh}
                 fetchingProjectsLoading={loadings?.project}
@@ -134,12 +133,12 @@ export const ProjectDetails = (props) => {
                                         <MyText style={styles.label}>projectSupervisors</MyText>
                                         <MyText style={styles.supervisor} text={`${project?.user?.name}`} />
                                         <TouchableOpacity
-                                            disabled={user.phoneNumber === project?.user?.phone_number}
+                                            disabled={user?.phoneNumber === project?.user?.phone_number}
                                             activeOpacity={0.6}
-                                            onPress={user.phone_number !== project?.user?.phone_number ? onPhoneNumberPressed : null}
+                                            onPress={user?.phone_number !== project?.user?.phone_number ? onPhoneNumberPressed : null}
                                             style={styles.phoneNumberContainer}>
                                             <MyText style={styles.phoneNumber} text={`${project?.user?.phone_number}`} />
-                                            {user.phone_number !== project?.user?.phone_number ? <Feather name={'external-link'} size={15} color={Colors.black} /> : null}
+                                            {user?.phone_number !== project?.user?.phone_number ? <Feather name={'external-link'} size={15} color={Colors.black} /> : null}
                                         </TouchableOpacity>
                                     </View> : null}
                                 {project?.description ? <View style={styles.descriptionContainer}>
@@ -228,12 +227,13 @@ export const ProjectDetails = (props) => {
                             onPress={scrollToTop}>
                             <AntDesign name={'totop'} size={20} color={Colors.appWhite} onPress={scrollToTop} />
                         </TouchableOpacity> : null}
-                    {user?.role === 'admin' && project?.status !== 'finished' && !project?.deleted ?
+
+                    {/* {user?.role === 'admin' && project?.status !== 'finished' && !project?.deleted ?
                         <AddTask project={project} _scrollRef={_scroll} />
-                        : null}
+                        : null} */}
                 </>
             }
-            <ProjectActionsModal visible={optionsModal} closeModal={closeOptionsModal} project={project} />
+            {/* <ProjectActionsModal visible={optionsModal} closeModal={closeOptionsModal} project={project} /> */}
         </View>
     )
 }

@@ -14,7 +14,7 @@ import { MaterialComponent } from './MaterialComponent';
 import { navigate } from '../../../navigation/RootNavigation';
 import Indicator from '../../../components/UI/Indicator';
 
-export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, checkTask, project_id }) => {
+export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, checkTask }) => {
     const dispatch = useDispatch()
 
     const inputTheme = {
