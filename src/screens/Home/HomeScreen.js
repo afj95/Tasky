@@ -5,7 +5,7 @@ import { fetchProjects } from '../../redux/reducers/Projects/projects-actions';
 import MyText from '../../components/UI/MyText';
 import { navigate } from '../../navigation/RootNavigation';
 import Colors from '../../utils/Colors';
-import { AntDesign, FontAwesome5, Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import {
   View,
   StyleSheet,
@@ -73,10 +73,6 @@ export const HomeScreen = () => {
           <MyText style={styles.projectName} text={item?.name} />
           <MyText style={styles.projectDescription} numberOfLines={2} text={item?.description} />
         </View>
-        {/* <View style={styles.tasksContainer}>
-          <FontAwesome5 name={'tasks'} color={Colors.primary} />
-          <MyText text={item?.tasks?.length} />
-        </View> */}
         {item?.deleted_at ? <View style={styles.deletedIcon} /> : null}
         {item?.status === 'finished' ? <View style={styles.finishedIcon} /> : null}
       </TouchableOpacity>
