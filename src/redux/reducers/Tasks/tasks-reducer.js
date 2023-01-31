@@ -4,6 +4,7 @@ export const EDIT_TASK_SUCCESS = 'EDIT_TASK_SUCCESS';
 export const FETCH_TASK = 'FETCH_TASK';
 export const RESET_PROJECT_TASKS = 'RESET_PROJECT_TASKS';
 export const CLEAR_TASK = 'CLEAR_TASK';
+export const FETCH_TASK_MATERIALS_SUCCESS = 'FETCH_TASK_MATERIALS_SUCCESS';
 // ADMIN
 // export const ADD_TASK_SUCCESS = "add task - success";
 // export const DELETE_TASK_SUCCESS = "delete task - success";
@@ -12,7 +13,8 @@ const tasksState = {
     projectTasks: [],
     projectCheckedTasks: [],
     task: {},
-    currentTask: {}
+    currentTask: {},
+    taskMaterials: []
 }
 
 const tasksReducer = (state = tasksState, action) => {
@@ -52,6 +54,13 @@ const tasksReducer = (state = tasksState, action) => {
             return {
                 ...state,
                 currentTask: action?.payload
+            }
+        }
+
+        case FETCH_TASK_MATERIALS_SUCCESS: {
+            return {
+                ...state,
+                taskMaterials: action?.payload?.data?.data?.data
             }
         }
 

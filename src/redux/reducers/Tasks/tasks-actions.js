@@ -4,6 +4,7 @@ import {
     CLEAR_TASK,
     EDIT_TASK_SUCCESS,
     FETCH_TASK,
+    FETCH_TASK_MATERIALS_SUCCESS,
     PROJECT_TASKS_SUCCESS,
     RESET_PROJECT_TASKS
 
@@ -124,6 +125,23 @@ export const fetchTask = (task_id) => {
     }
 }
 
+export const fetchTaskMaterials = (task_id) => {
+    return async dispatch => {
+        try {
+            dispatch(setLoading({ 'fetch_materials': true }))
+
+            const fetchTaskMaterialsRes = await request({
+                url: `tasks/${task_id}/materials`,
+                method: 'GET'
+            })
+            dispatch(stopLoading())
+            dispatch({ type: FETCH_TASK_MATERIALS_SUCCESS, payload: fetchTaskMaterialsRes })
+        } catch (error) {
+            dispatch(stopLoading({ failed: true, error: { 'fetch_materials': error.message ? error.message : error } }))
+        }
+    }
+}
+
 export const addMaterials = (materials, task_id) => {
     return async dispatch => {
         try {
@@ -132,15 +150,15 @@ export const addMaterials = (materials, task_id) => {
             const addMaterialsRes = await request({
                 url: `tasks/${task_id}/materials`,
                 method: 'POST',
-                params: {
-                    materials: materials
-                }
+                params: materials
             })
 
             dispatch(stopLoading())
             // TODO: Read the task from returned response
             dispatch(fetchTask(task_id))
+            dispatch(fetchTaskMaterials(task_id))
         } catch (error) {
+            console.log('error', error);
             dispatch(stopLoading({ failed: true, error: { 'add_material': error.message ? error.message : error } }))
         }
     }

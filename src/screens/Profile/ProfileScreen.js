@@ -46,19 +46,25 @@ export const ProfileScreen = ({ navigation }) => {
                {
                     text: t('app.changeLangConfirm'),
                     onPress: async () => {
-                         const lang = await AsyncStorage.getItem('lang');
-                         AsyncStorage.setItem('lang', lang === "ar" ? "en" : "ar");
-
-                         if (lang !== "ar") {
-                              i18n.locale = "ar";
+                         try {
+                              if (I18nManager.isRTL) { // if current is arabic
+                                   i18n.locale = 'en';
+                                   I18nManager.forceRTL(false);
+                                   I18nManager.allowRTL(false);
+                                   await AsyncStorage.setItem('lang', 'en')
+                              } else {
+                                   i18n.locale = 'ar';
+                                   I18nManager.forceRTL(true);
+                                   I18nManager.allowRTL(true);
+                                   await AsyncStorage.setItem('lang', 'ar')
+                              }
+                         } catch (error) {
+                              i18n.locale = 'ar';
                               I18nManager.forceRTL(true);
                               I18nManager.allowRTL(true);
-                         } else {
-                              i18n.locale = "en";
-                              I18nManager.forceRTL(false);
-                              I18nManager.allowRTL(false);
+                              await AsyncStorage.setItem('lang', 'ar')
                          }
-                         reloadAsync();
+                         await reloadAsync();
                     }
                }
           ],

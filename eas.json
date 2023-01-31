@@ -6,11 +6,9 @@
       "channel": "development"
     },
     "beta": {
-      "releaseChannel": "beta",
       "channel": "beta"
     },
     "production": {
-      "releaseChannel": "prod",
       "channel": "prod"
     }
   },

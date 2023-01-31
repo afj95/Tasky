@@ -3,13 +3,12 @@ import { View, ActivityIndicator, ScrollView, FlatList } from 'react-native';
 import MyText from '../../../components/UI/MyText';
 import Colors from '../../../utils/Colors';
 import Modal from 'react-native-modal';
-import { AntDesign, Entypo, Fontisto } from '@expo/vector-icons';
-import { TextInput } from 'react-native-paper';
+import { AntDesign, Fontisto } from '@expo/vector-icons';
 import moment from 'moment';
 import TouchableOpacity from '../../../components/UI/TouchableOpacity';
 import { styles } from './TaskDetailsModalStyles';
 import { useDispatch, useSelector } from 'react-redux';
-import { addMaterials, clearTask, fetchTask } from '../../../redux/reducers/Tasks/tasks-actions';
+import { clearTask, fetchTask } from '../../../redux/reducers/Tasks/tasks-actions';
 import { MaterialComponent } from './MaterialComponent';
 import { navigate } from '../../../navigation/RootNavigation';
 import Indicator from '../../../components/UI/Indicator';
@@ -17,16 +16,8 @@ import Indicator from '../../../components/UI/Indicator';
 export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, checkTask }) => {
     const dispatch = useDispatch()
 
-    const inputTheme = {
-        colors: {
-            text: Colors.primary,
-            error: '#B22323',
-            primary: '#595959'
-        },
-        roundness: 8
-    }
 
-    const [materialsFields, setMaterialsFields] = useState([]);
+    // const [materialsFields, setMaterialsFields] = useState([]);
 
     const loadings = useSelector((state) => state?.globalReducer?.loadings)
 
@@ -51,36 +42,36 @@ export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, chec
         closeModal()
     }
 
-    const onExtraFieldPressed = () => {
-        const _materialsFields = [...materialsFields];
-        _materialsFields.push({ title: '', quantity: '' });
-        setMaterialsFields(_materialsFields);
-    }
+    // const onExtraFieldPressed = () => {
+    //     const _materialsFields = [...materialsFields];
+    //     _materialsFields.push({ title: '', quantity: '' });
+    //     setMaterialsFields(_materialsFields);
+    // }
 
-    const deleteInput = (key) => {
-        const _materialsFields = materialsFields.filter((input, index) => index != key)
-        setMaterialsFields(_materialsFields)
-    }
+    // const deleteInput = (key) => {
+    //     const _materialsFields = materialsFields.filter((input, index) => index != key)
+    //     setMaterialsFields(_materialsFields)
+    // }
 
-    const materialInput = (text, key) => {
-        const _inputs = [...materialsFields];
-        _inputs[key].title = text || "";
-        setMaterialsFields(_inputs);
-    }
+    // const materialInput = (text, key) => {
+    //     const _inputs = [...materialsFields];
+    //     _inputs[key].title = text || "";
+    //     setMaterialsFields(_inputs);
+    // }
 
-    const materialQuantityInput = (text, key) => {
-        const _inputs = [...materialsFields];
-        _inputs[key].quantity = text || 0;
-        setMaterialsFields(_inputs);
-    }
+    // const materialQuantityInput = (text, key) => {
+    //     const _inputs = [...materialsFields];
+    //     _inputs[key].quantity = text || 0;
+    //     setMaterialsFields(_inputs);
+    // }
 
-    const addNewMaterials = () => {
-        dispatch(addMaterials(materialsFields, task?.id))
-        setMaterialsFields([]);
-    }
+    // const addNewMaterials = () => {
+    //     dispatch(addMaterials(materialsFields, task?.id))
+    //     setMaterialsFields([]);
+    // }
 
     const loadMore = () => {
-        navigate('MaterialsScreen', { materials: taskMaterials })
+        navigate('MaterialsScreen', { materials: taskMaterials, task })
         closeModal();
     }
 
@@ -128,7 +119,7 @@ export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, chec
                                     }
                                 </View>
                             </View>
-                            {taskMaterials?.length || materialsFields.length ?
+                            {taskMaterials?.length ?
                                 <View style={styles.materialsContainer}>
                                     <View style={styles.materialsLabelContainer}>
                                         <MyText style={styles.label}>materials</MyText>
@@ -145,7 +136,7 @@ export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, chec
                                         :
                                         taskMaterials?.map((item, index) => <MaterialComponent material={item} key={index} />)
                                     }
-                                    <View style={styles.dynamicFieldsComponent}>
+                                    {/* <View style={styles.dynamicFieldsComponent}>
                                         {materialsFields.map((field, index) => {
                                             return (
                                                 <View key={index} style={styles.dynamicInputsContainer}>
@@ -175,7 +166,7 @@ export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, chec
                                                 </View>
                                             )
                                         })}
-                                    </View>
+                                    </View> */}
                                     {taskMaterials.length > 5 ?
                                         <View style={styles.watchMore}>
                                             <AntDesign
@@ -188,7 +179,7 @@ export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, chec
                                         </View> : null}
                                 </View>
                                 : null}
-                            <View style={styles.addMaterialContainer}>
+                            {/* <View style={styles.addMaterialContainer}>
                                 <TouchableOpacity onPress={onExtraFieldPressed}>
                                     <AntDesign
                                         name={'pluscircleo'}
@@ -205,8 +196,11 @@ export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, chec
                                             <TouchableOpacity onPress={addNewMaterials} style={styles.submitButton}>
                                                 <MyText style={styles.submitText}>addMaterials</MyText>
                                             </TouchableOpacity>}
-                                    </View> : null}
-                            </View>
+                                    </View>
+                                    :
+                                    null
+                                }
+                            </View> */}
                             <View style={styles.inputContainer}>
                                 <MyText>employeesQuantity</MyText>
                                 <MyText text={currentTask?.required_employees_quantity + ''} />

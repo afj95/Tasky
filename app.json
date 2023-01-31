@@ -24,7 +24,7 @@
     "android": {
       "jsEngine": "hermes",
       "permissions": [],
-      "versionCode": 6,
+      "versionCode": 9,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -38,6 +38,9 @@
       "eas": {
         "projectId": "e7af56b2-434a-417b-8fd3-e8a13df85ee5"
       }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }

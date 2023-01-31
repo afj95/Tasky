@@ -103,7 +103,7 @@ export default {
         workProgress: "إنجاز العمل",
         editTask: "تعديل المهمة",
         updateTask: "تحديث المهمة",
-        profile: "ملفي",
+        profile: "حسابي",
         editProfile: "تعديل الحساب",
         about: "عن التطبيق",
         notMatched: "كلمتا المرور غير متطابقتين",
