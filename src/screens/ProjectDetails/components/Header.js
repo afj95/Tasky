@@ -7,18 +7,17 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
-import { goBack, navigate } from '../../../navigation/RootNavigation';
+import { goBack } from '../../../navigation/RootNavigation';
 // components
 import MyText from "../../../components/UI/MyText";
 import Colors from '../../../utils/Colors';
 import { Appbar as RNAppbar } from 'react-native-paper';
-import { mainStyles } from '../../../constants';
 
 const { height } = Dimensions.get("screen");
 
-export const Header = ({ user, text, showModal, showGoBackButton, fetchingProjectsLoading, onRefresh }) => {
+export const Header = ({ text, showGoBackButton, fetchingProjectsLoading, onRefresh }) => {
 
-    const openOptionsModal = () => showModal();
+    // const openOptionsModal = () => showModal();
 
     return (
         <View style={styles.subHeader}>
@@ -32,9 +31,10 @@ export const Header = ({ user, text, showModal, showGoBackButton, fetchingProjec
                     <MyText style={styles.title} text={text} />
                 </TouchableOpacity>
             }
-            {user.role === 'admin' ? <TouchableOpacity activeOpacity={0.5} onPress={openOptionsModal}>
+            {/* {user.role === 'admin' ? <TouchableOpacity activeOpacity={0.5} onPress={openOptionsModal}>
                 <Entypo name={'dots-three-vertical'} size={25} color={Colors.appWhite} />
-            </TouchableOpacity> : <View />}
+            </TouchableOpacity> : <View />} */}
+            <View />
         </View>
     )
 }

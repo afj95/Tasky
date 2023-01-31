@@ -18,22 +18,24 @@ export const styles = StyleSheet.create({
           margin: 0,
           justifyContent: 'flex-end'
      },
-     contentView: {
+     contentView: loading => ({
           width: '100%',
+          height: loading ? '50%' : undefined,
           backgroundColor: Colors.appWhite,
           borderTopEndRadius: 10,
           borderTopStartRadius: 10,
           padding: 10,
           paddingBottom: 15
-     },
+     }),
      header: {
           height: 40,
           borderBottomWidth: 0.5,
           borderColor: Colors.primary,
           justifyContent: 'space-between',
-          alignItems: 'center',
+          alignItems: 'baseline',
           flexDirection: 'row',
      },
+     taskId: { marginEnd: 5, color: Colors.primary, fontFamily: 'light' },
      headerText: {
           fontFamily: 'bold',
           color: Colors.primary,
@@ -45,7 +47,8 @@ export const styles = StyleSheet.create({
           flexDirection: 'row-reverse',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: 5
+          padding: 5,
+          borderRadius: 8
      },
      prioritySquare: task => ({
           backgroundColor: alphaColors[task?.priority],
@@ -81,6 +84,7 @@ export const styles = StyleSheet.create({
           alignItems: 'center',
           paddingVertical: 5,
           paddingHorizontal: 5,
+          borderRadius: 8
      },
      taskText: (checked) => ({
           textDecorationLine: checked ? 'line-through' : 'none',
@@ -98,6 +102,70 @@ export const styles = StyleSheet.create({
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'flex-end',
+          borderRadius: 8
+     },
+     materialsContainer: {
+          borderRadius: 8,
+          marginVertical: 1.5,
+          backgroundColor: Colors.white,
+          width: '100%',
+          alignSelf: 'center',
+          paddingBottom: 8,
+          marginTop: 5,
+     },
+     materialsLabelContainer: {
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexDirection: 'row'
+     },
+     label: {
+          fontFamily: 'bold',
+          color: Colors.text
+     },
+     dynamicFieldsComponent: {
+          paddingTop: 5,
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+          marginHorizontal: 5
+     },
+     dynamicInputsContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%',
+     },
+     watchMore: {
+          borderColor: 'red',
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingVertical: 2
+     },
+     addMaterialContainer: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingHorizontal: 10,
+          marginHorizontal: 10,
+          borderRadius: 8,
+     },
+     buttonsContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+     },
+     submitButton: {
+          backgroundColor: Colors.primary,
+          height: 40,
+          width: 140,
+          borderRadius: 8,
+          marginTop: 5,
+          alignItems: 'center',
+          justifyContent: 'center'
+     },
+     submitText: {
+          fontFamily: 'light',
+          color: Colors.appWhite,
+          fontSize: 15
      },
      inputContainer: {
           marginTop: 5,
@@ -107,17 +175,32 @@ export const styles = StyleSheet.create({
           alignItems: 'center',
           paddingVertical: 5,
           paddingHorizontal: 5,
+          borderRadius: 8
      },
      input: {
           width: 85,
           height: 40,
-          marginTop: 5,
+          marginVertical: 5,
           justifyContent: 'center',
           backgroundColor: Colors.appWhite,
-          fontFamily: 'bold'
+          fontFamily: 'bold',
+          borderWidth: 0.5,
+          borderColor: Colors.primary,
+          borderRadius: 8,
+          marginStart: 6,
+          overflow: 'hidden'
+     },
+     percentageContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+     },
+     percentageText: {
+          fontSize: 18,
+          color: Colors.primary
      },
      buttonsContainer: {
-          flexDirection: 'row',
+          flexDirection: 'row-reverse',
           alignItems: 'center',
           justifyContent: 'space-between'
      },

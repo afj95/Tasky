@@ -6,12 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../components/Loaders/Loader';
 import { ErrorScreen } from '../screens/ErrorScreen';
-import i18n from 'i18n-js';
+import { i18n } from '../i18n';
 // Navigators
 import { AuthStackScreens, MainStackScreens } from './Navigators';
 import FlashMessage from 'react-native-flash-message';
 import { I18nManager } from 'react-native';
-import { showMessage } from '../tools/showMessage';
+import { showMessage } from '../tools';
 import { clearErrors } from '../redux/reducers/Global/global-actions';
 import { t } from '../i18n';
 
@@ -20,46 +20,48 @@ const MainNavigator = () => {
     const dispatch = useDispatch();
 
     const [initialRouteName, setInitialRouteName] = useState('');
-    const [screenToShow, setScreenToShow] = useState(<Loader />);
+    const [hasError, setHasError] = useState(false);
 
     const user = useSelector((state) => state?.authReducer?.user);
     const errors = useSelector((state) => state?.globalReducer?.errors)
 
     useEffect(() => {
-        if (errors?.general) {
+        if (errors && errors?.general) {
             showMessage({
                 message: t('app.serverError') + '',
                 type: 'danger'
             })
         }
         dispatch(clearErrors());
-    }, [errors?.general])
+    }, [errors])
 
     useEffect(() => {
-        (async () => {
-            await AsyncStorage.getItem('lang', (error, lang) => {
-                if (error) {
+        const getLange = async () => {
+            try {
+                const lang = await AsyncStorage.getItem('lang')
+                if (lang !== null) {
+                    i18n.locale = lang;
+                    I18nManager.forceRTL(lang === 'ar');
+                    I18nManager.allowRTL(lang === 'ar');
+                } else {
                     i18n.locale = "ar";
                     I18nManager.forceRTL(true);
                     I18nManager.allowRTL(true);
                 }
-                if (lang) {
-                    i18n.locale = lang;
-                    I18nManager.forceRTL(lang === 'ar');
-                    I18nManager.allowRTL(lang === 'ar');
-                }
-            })
-        })()
+            } catch (error) {
+                i18n.locale = "ar";
+                I18nManager.forceRTL(true);
+                I18nManager.allowRTL(true);
+            }
+        }
+        getLange();
     }, [])
 
     useEffect(() => {
-        (async () => {
-            // Checking the token
-            await AsyncStorage.getItem('token', (error, token) => {
-                if (error) {
-                    setInitialRouteName('Auth')
-                } else if (token) {
-                    // In case of there is a token
+        const getToken = async () => {
+            try {
+                const token = await AsyncStorage.getItem('token');
+                if (token !== null) {
                     if (Object.keys(user || {}).length) {
                         // Checking if the user saved in redux
                         setInitialRouteName('Home')
@@ -67,18 +69,22 @@ const MainNavigator = () => {
                         setInitialRouteName('Auth')
                     }
                 } else {
-                    // In case of no token founded
                     setInitialRouteName('Auth')
                 }
-            })
-        })()
+            } catch (error) {
+                setInitialRouteName('Auth')
+            }
+        }
+        getToken();
     }, [initialRouteName])
 
     if (!initialRouteName) {
-        setTimeout(() => {
-            setScreenToShow(<ErrorScreen />)
-        }, 10000) // After 5 seconds if the initialRouteName not modified it will show error screen
-        return screenToShow
+        setTimeout(() => setHasError(true), 10000) // After 10 seconds if the initialRouteName not modified it will show error screen
+        if (hasError) {
+            return <ErrorScreen />
+        } else {
+            return <Loader />
+        }
     } else {
         return (
             <NavigationContainer ref={navigationRef}>
@@ -88,10 +94,7 @@ const MainNavigator = () => {
                     <MainStack.Screen name={'Auth'} component={AuthStackScreens} />
                     <MainStack.Screen name={'Home'} component={MainStackScreens} />
                 </MainStack.Navigator>
-                <FlashMessage
-                    ref={ref => (global["flash"] = ref)}
-                    position="top"
-                />
+                <FlashMessage ref={ref => (global["flash"] = ref)} position="top" />
             </NavigationContainer>
         )
     }

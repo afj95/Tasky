@@ -9,12 +9,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { t } from '../../../i18n';
 import { FontAwesome } from '@expo/vector-icons';
-import i18n from 'i18n-js';
+import { i18n } from '../../../i18n';
 import { reloadAsync } from 'expo-updates';
 import Colors from '../../../utils/Colors';
 import { mainStyles } from '../../../constants';
 import { clearErrors } from '../../../redux/reducers/Global/global-actions';
-import { showMessage } from '../../../tools/showMessage';
+import { showMessage } from '../../../tools';
 import {
     View,
     StyleSheet,
@@ -99,14 +99,9 @@ export const LoginScreen = ({ navigation }) => {
             },
             {
                 text: t('app.changeLangConfirm'),
-                onPress: () => {
-                    AsyncStorage.getItem('lang', async (error, lang) => {
-                        if (error) {
-                            i18n.locale = "ar";
-                            I18nManager.forceRTL(true);
-                            I18nManager.allowRTL(true);
-                        }
-                        if (lang === 'ar') {
+                onPress: async () => {
+                    try {
+                        if (I18nManager.isRTL) { // if current is arabic
                             i18n.locale = 'en';
                             I18nManager.forceRTL(false);
                             I18nManager.allowRTL(false);
@@ -117,8 +112,13 @@ export const LoginScreen = ({ navigation }) => {
                             I18nManager.allowRTL(true);
                             await AsyncStorage.setItem('lang', 'ar')
                         }
-                        reloadAsync();
-                    })
+                    } catch (error) {
+                        i18n.locale = 'ar';
+                        I18nManager.forceRTL(true);
+                        I18nManager.allowRTL(true);
+                        await AsyncStorage.setItem('lang', 'ar')
+                    }
+                    await reloadAsync();
                 }
             }
         ],

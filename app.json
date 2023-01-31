@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Tasky",
-    "slug": "Tasky",
+    "name": "MyProjects",
+    "slug": "MyProjects",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
@@ -11,7 +11,8 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 15000
+      "fallbackToCacheTimeout": 30000,
+      "url": "https://u.expo.dev/e7af56b2-434a-417b-8fd3-e8a13df85ee5"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -21,8 +22,9 @@
       "buildNumber": "1"
     },
     "android": {
+      "jsEngine": "hermes",
       "permissions": [],
-      "versionCode": 4,
+      "versionCode": 9,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -36,6 +38,9 @@
       "eas": {
         "projectId": "e7af56b2-434a-417b-8fd3-e8a13df85ee5"
       }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }

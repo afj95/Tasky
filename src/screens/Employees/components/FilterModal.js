@@ -6,7 +6,7 @@ import {
 import Modal from 'react-native-modal';
 import Colors from '../../../utils/Colors';
 import MyText from '../../../components/UI/MyText';
-import { TouchableOpacity } from '../../../components/UI/TouchableOpacity';
+import TouchableOpacity from '../../../components/UI/TouchableOpacity';
 import { Fontisto } from '@expo/vector-icons';
 
 export const FilterModal = ({ visible, close, employeeType, setEmployeesType, seUndeletedSupervisor, undeletedSupervisor }) => {

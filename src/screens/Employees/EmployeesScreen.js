@@ -9,7 +9,7 @@ import { Header, EmployeeItem as EI, FilterModal } from './components';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllEmployees, fetchDeletedEmployees, fetchSuperVisors, fetchUndeletedEmployees, resetUsersErrors } from '../../redux/reducers/Users/users-actions';
 import MyText from '../../components/UI/MyText';
-import { t } from 'i18n-js';
+import { t } from '../../i18n';
 import { showMessage } from 'react-native-flash-message';
 import { navigate } from '../../navigation/RootNavigation';
 import Colors from '../../utils/Colors';

@@ -4,13 +4,13 @@ import {
     StyleSheet,
     ActivityIndicator
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TextInput } from 'react-native-paper';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import MyText from '../../../../components/UI/MyText';
 import { t } from '../../../../i18n';
 import { useSelector } from 'react-redux';
 import Colors from '../../../../utils/Colors';
+import TouchableOpacity from '../../../../components/UI/TouchableOpacity';
 
 export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBlur, handleSubmit } }) => {
 
@@ -74,17 +74,19 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
             />
             {errors?.password ? <ErrorText error={errors?.password} /> : null}
 
-            <TouchableOpacity
-                style={styles.loginButton}
-                disabled={loadings?.login}
-                activeOpacity={0.8}
-                onPress={handleSubmit}>
-                {loadings?.login ?
-                    <ActivityIndicator size={'large'} color={'white'} />
-                    :
-                    <MyText style={styles.loginText}>login</MyText>
-                }
-            </TouchableOpacity>
+            <View style={styles.loginButtonContainer}>
+                <TouchableOpacity
+                    style={styles.loginButton}
+                    disabled={loadings?.login}
+                    onPress={handleSubmit}
+                >
+                    {loadings?.login ?
+                        <ActivityIndicator size={'large'} color={'white'} />
+                        :
+                        <MyText style={styles.loginText}>login</MyText>
+                    }
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
@@ -99,13 +101,15 @@ const styles = StyleSheet.create({
         fontFamily: 'bold',
         fontSize: 15
     },
+    loginButtonContainer: {
+        marginTop: 50
+    },
     loginButton: {
         height: 50,
         backgroundColor: Colors.secondary,
         borderRadius: 10,
         justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 50
+        alignItems: 'center'
     },
     loginText: {
         color: Colors.appWhite,

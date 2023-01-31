@@ -1,6 +1,6 @@
 import { request } from "../../../tools";
 import { setLoading, stopLoading } from "../Global/global-actions";
-import { getProjectTasks } from "../Tasks/tasks-actions";
+import { fetchProjectTasks } from "../Tasks/tasks-actions";
 import {
     FETCHING_PROJECTS_SUCCESS,
 
@@ -58,12 +58,12 @@ export const fetchOneProject = (project_id) => {
                 method: 'GET',
             })
 
-            await dispatch({
+            dispatch(stopLoading())
+            dispatch({
                 type: FETCHING_PROJECT_SUCCESS,
                 payload: { project: fetchingProjectRes?.data?.data }
             })
-
-            await dispatch(getProjectTasks(project_id, () => dispatch(stopLoading())))
+            dispatch(fetchProjectTasks(project_id))
 
         } catch (error) {
             dispatch(stopLoading({ failed: true, error: { 'project': error } }))

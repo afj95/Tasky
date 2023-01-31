@@ -1,7 +1,10 @@
 import { request } from '../../../tools';
 import { setLoading, stopLoading } from '../Global/global-actions';
 import {
+    CLEAR_TASK,
     EDIT_TASK_SUCCESS,
+    FETCH_TASK,
+    FETCH_TASK_MATERIALS_SUCCESS,
     PROJECT_TASKS_SUCCESS,
     RESET_PROJECT_TASKS
 
@@ -14,8 +17,11 @@ export const restProjectTasks = () => ({
     type: RESET_PROJECT_TASKS,
 })
 
+export const clearTask = () => ({
+    type: CLEAR_TASK
+})
 
-export const getProjectTasks = (project_id, stopLoading) => {
+export const fetchProjectTasks = (project_id) => {
     return async dispatch => {
         try {
             dispatch(setLoading({ 'project_tasks': true }))
@@ -25,11 +31,11 @@ export const getProjectTasks = (project_id, stopLoading) => {
                 method: 'GET'
             })
 
-            await dispatch({
+            dispatch(stopLoading())
+            dispatch({
                 type: PROJECT_TASKS_SUCCESS,
                 payload: { tasks: projectTasksRes?.data?.data }
             })
-            stopLoading()
 
         } catch (error) {
             dispatch(stopLoading({ failed: true, error: { 'project_tasks': error.message ? error.message : error } }))
@@ -90,8 +96,70 @@ export const editTask = (task, params) => {
                 type: EDIT_TASK_SUCCESS,
                 payload: editTaskRes?.data?.data
             })
+            dispatch(fetchTask(task.id))
         } catch (error) {
             dispatch(stopLoading({ failed: true, error: { 'edit_task': error.message ? error.message : error } }))
+        }
+    }
+}
+
+
+export const fetchTask = (task_id) => {
+    return async dispatch => {
+        try {
+            dispatch(setLoading({ 'edit_task': true }))
+
+            const fetchTaskRes = await request({
+                url: `tasks/${task_id}`,
+                method: 'GET'
+            })
+
+            dispatch(stopLoading());
+            dispatch({
+                type: FETCH_TASK,
+                payload: fetchTaskRes?.data?.data
+            })
+        } catch (error) {
+            dispatch(stopLoading({ failed: true, error: { 'edit_task': error.message ? error.message : error } }))
+        }
+    }
+}
+
+export const fetchTaskMaterials = (task_id) => {
+    return async dispatch => {
+        try {
+            dispatch(setLoading({ 'fetch_materials': true }))
+
+            const fetchTaskMaterialsRes = await request({
+                url: `tasks/${task_id}/materials`,
+                method: 'GET'
+            })
+            dispatch(stopLoading())
+            dispatch({ type: FETCH_TASK_MATERIALS_SUCCESS, payload: fetchTaskMaterialsRes })
+        } catch (error) {
+            dispatch(stopLoading({ failed: true, error: { 'fetch_materials': error.message ? error.message : error } }))
+        }
+    }
+}
+
+export const addMaterials = (materials, task_id) => {
+    return async dispatch => {
+        try {
+            dispatch(setLoading({ 'add_material': true }))
+
+            const addMaterialsRes = await request({
+                url: `tasks/${task_id}/materials`,
+                method: 'POST',
+                params: materials
+            })
+
+            dispatch(stopLoading())
+            // TODO: Read the task from returned response
+            dispatch(fetchTask(task_id))
+            dispatch(fetchTaskMaterials(task_id))
+        } catch (error) {
+            console.log('error', error);
+            dispatch(stopLoading({ failed: true, error: { 'add_material': error.message ? error.message : error } }))
         }
     }
 }

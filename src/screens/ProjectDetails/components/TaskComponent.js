@@ -1,26 +1,24 @@
+import React, { useState, useEffect } from 'react'
 import { Fontisto } from '@expo/vector-icons';
-import React, { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../../components/UI/MyText';
-import { checkTask as checkTaskAction, unCheckTask } from '../../../redux/reducers/Tasks/tasks-actions';
+import { checkTask as checkTaskAction, fetchTask, unCheckTask } from '../../../redux/reducers/Tasks/tasks-actions';
 import Colors from '../../../utils/Colors';
 import moment from 'moment';
 import '../../../utils/ar-sa-mine';
 import 'moment/locale/en-gb';
-import { showMessage } from '../../../tools/showMessage';
-import { clearErrors, stopLoading } from '../../../redux/reducers/Global/global-actions';
+import { showMessage } from '../../../tools';
+import { clearErrors } from '../../../redux/reducers/Global/global-actions';
+import TouchableOpacity from '../../../components/UI/TouchableOpacity';
+import { TaskDetailsModal } from './TaskDetailsModal';
+import { fetchOneProject } from '../../../redux/reducers/Projects/projects-actions';
 import {
     ActivityIndicator,
-    I18nManager,
     StyleSheet,
-
     View
 } from 'react-native';
-import { TouchableOpacity } from '../../../components/UI/TouchableOpacity';
-import { TaskDetailsModal } from './TaskDetailsModal';
 
-export const TaskComponent = ({ project, task, onRefresh }) => {
-    const _ref = useRef(null);
+export const TaskComponent = ({ task, project_id, onPress }) => {
     const dispatch = useDispatch();
 
     const errors = useSelector((state) => state?.globalReducer?.errors)
@@ -29,44 +27,6 @@ export const TaskComponent = ({ project, task, onRefresh }) => {
     const [checkLoading, setCheckLoading] = useState(false);
     // const [deleteLoading, setDeleteLoading] = useState(false);
     const [detailsModal, setDetailsModal] = useState(false);
-
-    useEffect(() => {
-        if (!_ref.current) {
-            moment.updateLocale('ar-sa-mine', {
-                parentLocale: 'ar-sa',
-                preparse: function (string) {
-                    return string;
-                },
-                postformat: function (string) {
-                    return string;
-                },
-                relativeTime: {
-                    future: 'بعد %s',
-                    past: 'منذ %s',
-                    s: 'ثوان',
-                    ss: '%d ثانية',
-                    m: 'دقيقة',
-                    mm: '%d دقائق',
-                    h: 'ساعة',
-                    hh: '%d ساعات',
-                    d: 'يوم',
-                    dd: '%d أيام',
-                    M: 'شهر',
-                    MM: '%d أشهر',
-                    y: 'سنة',
-                    yy: '%d سنوات',
-                },
-            });
-
-            I18nManager.isRTL ? moment.locale('ar') : moment.locale('en')
-        }
-    }, [])
-
-    useEffect(() => {
-        if (!_ref.current) {
-            _ref.current = true;
-        }
-    }, [])
 
     useEffect(() => {
         if (errors?.project_tasks) {
@@ -86,15 +46,16 @@ export const TaskComponent = ({ project, task, onRefresh }) => {
     // }
 
     const checkTask = async () => {
-        // TODO:  Change to local then send it to API
+        // TODO: Change to local then send it to API
         setCheckLoading(true)
         if (task?.checked) {
             dispatch(unCheckTask(task.id))
         } else {
             dispatch(checkTaskAction(task?.id))
         }
-        await onRefresh()
         setCheckLoading(false)
+        dispatch(fetchTask(task.id))
+        dispatch(fetchOneProject(project_id))
     }
 
     const openTaskDetailsModal = () => setDetailsModal(true);
@@ -103,7 +64,7 @@ export const TaskComponent = ({ project, task, onRefresh }) => {
     return (
         <TouchableOpacity
             style={styles.taskContainer(task?.priority)}
-            onPress={openTaskDetailsModal}>
+            onPress={onPress ? openTaskDetailsModal : null}>
             <View>
                 <MyText style={styles.taskText(task?.checked)} numberOfLines={3} text={`${task?.title}`} />
                 <MyText style={styles.taskDate} text={moment(task?.date).fromNow()} />
@@ -117,13 +78,12 @@ export const TaskComponent = ({ project, task, onRefresh }) => {
                         : <View />
                 } */}
                 {checkLoading ? <ActivityIndicator size={'small'} color={Colors.primary} /> :
-                    project?.status === 'finished' || project?.deleted_at ? null :
-                        <Fontisto
-                            name={task.checked ? 'checkbox-active' : 'checkbox-passive'}
-                            size={20}
-                            onPress={checkTask}
-                            color={Colors.primary}
-                        />
+                    <Fontisto
+                        name={task.checked ? 'checkbox-active' : 'checkbox-passive'}
+                        size={20}
+                        onPress={checkTask}
+                        color={Colors.primary}
+                    />
                 }
             </View>
             <TaskDetailsModal
@@ -132,7 +92,6 @@ export const TaskComponent = ({ project, task, onRefresh }) => {
                 closeModal={closeDetailsModal}
                 checkLoading={checkLoading}
                 checkTask={checkTask}
-                project={project}
             />
         </TouchableOpacity>
     )
