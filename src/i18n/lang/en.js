@@ -112,6 +112,8 @@ export default {
         materials: "Materials",
         quantity: "Quantity",
         addMaterials: "Add Materials",
-        addMaterialHelper: "Add new material"
+        addMaterialHelper: "Add new material",
+        calculations: "Calculate Quantities",
+        successOperation: "Success Operation"
     }
 }

@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import {
     ScrollView,
     View,
     StyleSheet,
     Linking,
     RefreshControl,
-    ActivityIndicator
+    ActivityIndicator,
+    I18nManager
 } from 'react-native';
 import TouchableOpacity from '../../components/UI/TouchableOpacity';
-import { AntDesign, Feather } from '@expo/vector-icons';
+import { AntDesign, Feather, MaterialIcons } from '@expo/vector-icons';
 import { showMessage } from 'react-native-flash-message';
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../components/UI/MyText';
@@ -19,52 +20,52 @@ import ErrorHappened from '../../components/UI/ErrorHappened';
 import { clearErrors } from '../../redux/reducers/Global/global-actions';
 import { restProjectTasks } from '../../redux/reducers/Tasks/tasks-actions';
 import { navigate } from '../../navigation/RootNavigation';
+import { t } from '../../i18n';
+import Indicator from '../../components/UI/Indicator';
 
 export const ProjectDetails = (props) => {
     const dispatch = useDispatch();
-    const _scroll = useRef(null);
 
     const { id, status, deleted } = props?.route?.params
 
-    const [optionsModal, setOptionsModal] = useState(false);
-    const [scrolledToBottom, setScrolledToBottom] = useState(false);
+    // const [optionsModal, setOptionsModal] = useState(false);
 
-    const loadings = useSelector((state) => state?.globalReducer?.loadings)
     const errors = useSelector((state) => state?.globalReducer?.errors)
+    const loadings = useSelector((state) => state?.globalReducer?.loadings)
 
     const user = useSelector((state) => state?.authReducer?.user);
     const project = useSelector((state) => state?.projectsReducer?.project);
     const projectTasks = useSelector((state) => state?.tasksReducer?.projectTasks);
+    const projectCheckedTasks = useSelector((state) => state?.tasksReducer?.projectCheckedTasks);
     let projectMaterials = [];
     projectMaterials = project ? project?.materials : [];
-    const projectCheckedTasks = useSelector((state) => state?.tasksReducer?.projectCheckedTasks);
-
-    useEffect(() => {
-        dispatch(fetchOneProject(id))
-        return () => {
-            dispatch(fetchProjects(status, deleted))
-            dispatch(resetProject())
-            dispatch(restProjectTasks())
-        }
-    }, [])
 
     useEffect(() => {
         if (errors?.project) {
             showMessage({
-                message: errors?.project + '',
+                message: t('app.serverError'),
                 type: 'danger',
             })
         }
         if (errors?.project_tasks) {
             showMessage({
-                message: errors?.project_tasks + '',
+                message: errors?.project_tasks?.message + '',
                 type: 'danger',
             })
         }
-        dispatch(clearErrors());
     }, [errors?.project, errors?.project_tasks])
 
-    const onRefresh = () => dispatch(fetchOneProject(id))
+    useEffect(() => {
+        dispatch(clearErrors());
+        dispatch(fetchOneProject(id, false))
+        return () => {
+            dispatch(fetchProjects(status, deleted, false, 1, 5))
+            dispatch(resetProject())
+            dispatch(restProjectTasks())
+        }
+    }, [])
+
+    const onRefresh = () => dispatch(fetchOneProject(id, true))
 
     // const closeOptionsModal = () => {
     //     setOptionsModal(false)
@@ -74,26 +75,11 @@ export const ProjectDetails = (props) => {
     //     setOptionsModal(!optionsModal);
     // }
 
-    const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
-        const paddingToBottom = 20;
-        return layoutMeasurement.height + contentOffset.y >=
-            contentSize.height - paddingToBottom;
-    };
-
-    const scrollToTop = () => {
-        _scroll?.current?.scrollTo({ x: 0, y: 0, animated: true });
-        setScrolledToBottom(false)
-    }
-
-    const onScroll = ({ nativeEvent }) => {
-        if (isCloseToBottom(nativeEvent)) {
-            setScrolledToBottom(true)
-        }
-    }
-
     const onPhoneNumberPressed = () => Linking.openURL(`tel:${project?.user?.phone_number}`)
 
-    const loadMore = () => navigate('MaterialsScreen', { materials: projectMaterials })
+    const loadMore = () => navigate('MaterialsScreen', { materials: projectMaterials, screen: 'project' })
+
+    // const goToCalculatingScreen = () => navigate('CalcualtionsScreen')
 
     return (
         <View style={styles.container}>
@@ -101,27 +87,26 @@ export const ProjectDetails = (props) => {
                 // user={user}
                 // showModal={openOptionsModal}
                 showGoBackButton
-                onRefresh={onRefresh}
-                fetchingProjectsLoading={loadings?.project}
                 text={!project?.name ? '' : project?.name}
             />
             {errors?.project || errors?.project_tasks ? <ErrorHappened /> :
                 <>
-                    <View style={styles.detailsContainer}>
-                        {project?.status === 'finished' && <View style={styles.deleted} />}
-                        {project?.deleted_at && <View style={styles.status} />}
-                        {!project ? <ActivityIndicator size={'large'} color={Colors.secondary} style={{ marginTop: 20 }} /> :
+                    {loadings?.project ?
+                        <ActivityIndicator size={'small'} color={Colors.primary} style={{ flex: 1, alignSelf: 'center' }} />
+                        :
+                        <View style={styles.detailsContainer}>
+                            {/* {project?.status === 'finished' && <View style={styles.deleted} />} */}
+                            {/* {project?.deleted_at && <View style={styles.status} />} */}
                             <ScrollView
-                                ref={_scroll}
-                                onScroll={onScroll}
                                 scrollEventThrottle={400}
                                 contentContainerStyle={styles.scrollContainer}
                                 keyboardShouldPersistTaps={'always'}
                                 keyboardDismissMode={'on-drag'}
                                 refreshControl={
                                     <RefreshControl
-                                        refreshing={false}
+                                        refreshing={loadings?.project_refresh === true}
                                         onRefresh={onRefresh}
+                                        tintColor={Colors.primary}
                                         colors={[Colors.primary, Colors.secondary, Colors.appWhite]}
                                     />
                                 }>
@@ -134,27 +119,29 @@ export const ProjectDetails = (props) => {
                                         <MyText style={styles.supervisor} text={`${project?.user?.name}`} />
                                         <TouchableOpacity
                                             disabled={user?.phoneNumber === project?.user?.phone_number}
-                                            activeOpacity={0.6}
                                             onPress={user?.phone_number !== project?.user?.phone_number ? onPhoneNumberPressed : null}
                                             style={styles.phoneNumberContainer}>
                                             <MyText style={styles.phoneNumber} text={`${project?.user?.phone_number}`} />
-                                            {user?.phone_number !== project?.user?.phone_number ? <Feather name={'external-link'} size={15} color={Colors.black} /> : null}
+                                            {user?.phone_number !== project?.user?.phone_number ? <Feather name={'external-link'} size={15} color={Colors.primary} /> : null}
                                         </TouchableOpacity>
                                     </View> : null}
-                                {project?.description ? <View style={styles.descriptionContainer}>
-                                    <MyText style={styles.label}>projectDescription</MyText>
-                                    <MyText style={styles.description} text={`${project?.description}`} />
-                                </View> : null}
+                                {!project?.description ? null :
+                                    <View style={styles.descriptionContainer}>
+                                        <MyText style={styles.label}>projectDescription</MyText>
+                                        <MyText style={styles.description} text={`${project?.description}`} />
+                                    </View>
+                                }
+                                {/* {!project || !project?.description ? null :
+                                    <TouchableOpacity style={styles.calculationsContainer}
+                                        onPress={goToCalculatingScreen}>
+                                        <MyText>calculations</MyText>
+                                        <MaterialIcons name={'arrow-forward-ios'} size={20} color={Colors.primary} style={styles.arrow} />
+                                    </TouchableOpacity>
+                                } */}
                                 {projectMaterials?.length ?
                                     <View style={styles.materialsContainer}>
                                         <View style={styles.materialsLabelContainer}>
                                             <MyText style={styles.label}>materials</MyText>
-                                            <ActivityIndicator
-                                                animating={loadings?.project === true}
-                                                hidesWhenStopped
-                                                size={15}
-                                                color={Colors.primary}
-                                            />
                                             <MyText style={styles.label}>quantity</MyText>
                                         </View>
                                         {projectMaterials?.length > 5 ?
@@ -163,70 +150,55 @@ export const ProjectDetails = (props) => {
                                             projectMaterials?.map((item, index) => <MaterialComponent material={item} key={index} />)
                                         }
                                         {projectMaterials?.length > 5 ?
-                                            <View style={styles.watchMore}>
-                                                <AntDesign
-                                                    name={'pluscircleo'}
-                                                    size={20}
-                                                    color={Colors.primary}
-                                                    onPress={loadMore}
-                                                />
-                                                <MyText>loadMore</MyText>
-                                            </View> : null}
+                                            <TouchableOpacity
+                                                onPress={loadMore}
+                                                style={styles.watchMore}>
+                                                <MyText style={styles.watchMoreText}>loadMore</MyText>
+                                            </TouchableOpacity>
+                                            : null}
                                     </View>
-                                    : null}
+                                    : null
+                                }
 
-                                {projectTasks?.length ?
-                                    <View style={styles.tasksContainer}>
-                                        <View style={styles.tasksLabelContainer}>
-                                            <MyText style={styles.label}>tasks</MyText>
-                                            <ActivityIndicator
-                                                animating={loadings?.project_tasks === true}
-                                                hidesWhenStopped
-                                                size={15}
-                                                color={Colors.primary}
-                                            />
-                                        </View>
-                                        {projectTasks?.map((task, index) =>
-                                            <TaskComponent
-                                                task={task}
-                                                project_id={id}
-                                                onPress
-                                                key={index}
-                                                index={index}
-                                            />
-                                        )}
-                                    </View>
-                                    : null}
-                                {projectCheckedTasks?.length ?
-                                    <View style={[styles.tasksContainer, { marginTop: 20 }]}>
-                                        <View style={styles.tasksLabelContainer}>
-                                            <MyText style={styles.label}>checkedTasks</MyText>
-                                            <ActivityIndicator
-                                                animating={loadings?.project_tasks === true}
-                                                hidesWhenStopped
-                                                size={15}
-                                                color={Colors.primary}
-                                            />
-                                        </View>
-                                        {projectCheckedTasks?.map((task, index) =>
-                                            <TaskComponent
-                                                task={task}
-                                                project_id={id}
-                                                onPress
-                                                key={index}
-                                                index={index}
-                                            />
-                                        )}
-                                    </View>
-                                    : null}
+                                {loadings?.project_tasks ? <Indicator animating={loadings?.project_tasks} /> :
+                                    <>
+                                        {projectTasks?.length ?
+                                            <View style={styles.tasksContainer}>
+                                                <View style={styles.tasksLabelContainer}>
+                                                    <MyText style={styles.label}>tasks</MyText>
+                                                </View>
+                                                {projectTasks?.map((task, index) =>
+                                                    <TaskComponent
+                                                        task={task}
+                                                        project_id={id}
+                                                        onPress
+                                                        key={index}
+                                                        index={index}
+                                                    />
+                                                )}
+                                            </View>
+                                            : null}
+                                        {projectCheckedTasks?.length ?
+                                            <View style={[styles.tasksContainer, { marginTop: 20 }]}>
+                                                <View style={styles.tasksLabelContainer}>
+                                                    <MyText style={styles.label}>checkedTasks</MyText>
+                                                </View>
+                                                {projectCheckedTasks?.map((task, index) =>
+                                                    <TaskComponent
+                                                        task={task}
+                                                        project_id={id}
+                                                        onPress
+                                                        key={index}
+                                                        index={index}
+                                                    />
+                                                )}
+                                            </View>
+                                            : null}
+                                    </>
+                                }
                             </ScrollView>
-                        }
-                    </View>
-                    {scrolledToBottom ?
-                        <TouchableOpacity style={styles.scrollToTopButton}
-                            onPress={scrollToTop}>
-                            <AntDesign name={'totop'} size={20} color={Colors.appWhite} onPress={scrollToTop} />
-                        </TouchableOpacity> : null}
+                        </View>
+                    }
 
                     {/* {user?.role === 'admin' && project?.status !== 'finished' && !project?.deleted ?
                         <AddTask project={project} _scrollRef={_scroll} />
@@ -246,6 +218,7 @@ const styles = StyleSheet.create({
     detailsContainer: {
         flex: 1,
         paddingTop: 2,
+        paddingHorizontal: 10,
     },
     scrollContainer: { paddingBottom: 120 },
     status: {
@@ -260,8 +233,6 @@ const styles = StyleSheet.create({
     },
     nameContainer: {
         backgroundColor: Colors.white,
-        width: '95%',
-        alignSelf: 'center',
         marginBottom: 1.5,
         paddingHorizontal: 10,
         paddingVertical: 5,
@@ -270,25 +241,23 @@ const styles = StyleSheet.create({
     },
     supervisorContainer: {
         backgroundColor: Colors.white,
-        width: '95%',
-        alignSelf: 'center',
         marginVertical: 1.5,
         paddingHorizontal: 10,
         paddingVertical: 5,
     },
     supervisor: {
-        marginHorizontal: 5,
+        marginStart: 5,
         fontSize: 13,
-        color: Colors.primary,
+        color: Colors.black,
         fontFamily: 'light'
     },
     phoneNumberContainer: {
+        alignSelf: 'flex-start',
         flexDirection: 'row',
         alignItems: 'center',
-        borderRadius: 8
     },
     phoneNumber: {
-        paddingHorizontal: 5,
+        marginStart: 5,
         fontSize: 13,
         color: Colors.secondary,
         textDecorationLine: 'underline',
@@ -299,122 +268,83 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 10,
         backgroundColor: Colors.white,
-        width: '95%',
-        alignSelf: 'center',
-        borderBottomStartRadius: 10,
-        borderBottomEndRadius: 10,
+        borderBottomStartRadius: 8,
+        borderBottomEndRadius: 8,
     },
     description: {
-        paddingHorizontal: 5,
         fontSize: 13,
         fontFamily: 'bold',
-        color: Colors.primary
+        color: Colors.black
     },
-    addMaterialContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 10,
-        marginHorizontal: 10,
-        borderRadius: 8,
-    },
-    buttonsContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-    },
-    submitButton: {
-        backgroundColor: Colors.primary,
-        height: 40,
-        width: 140,
-        borderRadius: 8,
-        marginTop: 5,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    submitText: {
-        fontFamily: 'light',
-        color: Colors.appWhite,
-        fontSize: 15
-    },
-    tasksContainer: {
-        borderTopStartRadius: 10,
-        borderTopEndRadius: 10,
-        marginVertical: 1.5,
-        paddingHorizontal: 10,
+    calculationsContainer: {
+        paddingVertical: 10,
         backgroundColor: Colors.white,
-        width: '95%',
-        alignSelf: 'center',
-        borderBottomEndRadius: 8,
-        borderBottomStartRadius: 8,
-        paddingBottom: 8
-    },
-    tasksLabelContainer: {
-        alignItems: 'center',
+        flexDirection: 'row',
         justifyContent: 'space-between',
-        flexDirection: 'row'
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        borderRadius: 8,
+        marginTop: 1.5,
+        marginBottom: 1.5
+    },
+    arrow: {
+        transform: I18nManager.isRTL ?
+            [
+                { rotateY: "180deg" },
+                { rotateZ: "0deg" }
+            ]
+            :
+            [
+                { rotateY: "0deg" },
+                { rotateZ: "0deg" }
+            ]
     },
     materialsContainer: {
-        borderTopStartRadius: 10,
-        borderTopEndRadius: 10,
+        borderRadius: 8,
         marginVertical: 1.5,
         paddingHorizontal: 10,
+        paddingVertical: 5,
         backgroundColor: Colors.white,
-        width: '95%',
-        alignSelf: 'center',
-        borderBottomEndRadius: 8,
-        borderBottomStartRadius: 8,
-        paddingBottom: 8
     },
     materialsLabelContainer: {
         alignItems: 'center',
         justifyContent: 'space-between',
         flexDirection: 'row'
     },
-    label: {
-        fontFamily: 'bold',
-        color: Colors.text
+    tasksContainer: {
+        borderRadius: 8,
+        marginVertical: 1.5,
+        paddingHorizontal: 10,
+        backgroundColor: Colors.white,
+        paddingVertical: 5
     },
-    watchMore: {
-        borderColor: 'red',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingVertical: 2
-    },
-    scrollToTopButton: {
-        width: 30,
-        height: 30,
-        borderRadius: 15,
-        backgroundColor: Colors.primary,
-        position: 'absolute',
-        bottom: 20,
-        start: 20,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    dynamicFieldsComponent: {
-        paddingTop: 5,
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        marginHorizontal: 5
-    },
-    dynamicInputsContainer: {
-        flexDirection: 'row',
+    tasksLabelContainer: {
         alignItems: 'center',
         justifyContent: 'space-between',
-        width: '100%',
+        flexDirection: 'row'
     },
-    input: {
-        width: 85,
-        height: 40,
-        marginVertical: 5,
-        justifyContent: 'center',
-        backgroundColor: Colors.appWhite,
+    label: {
         fontFamily: 'bold',
-        borderWidth: 0.5,
+        color: Colors.primary
+    },
+    watchMore: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'flex-end',
+        padding: 2,
+        borderWidth: 1,
         borderColor: Colors.primary,
         borderRadius: 8,
-        marginStart: 6,
-        overflow: 'hidden'
+    },
+    watchMoreText: {
+        fontFamily: 'light',
+        fontSize: 12,
+        color: Colors.primary,
+    },
+    noDataContainer: {
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        paddingVertical: 20
     },
 })

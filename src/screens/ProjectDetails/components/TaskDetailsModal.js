@@ -71,7 +71,7 @@ export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, chec
     // }
 
     const loadMore = () => {
-        navigate('MaterialsScreen', { materials: taskMaterials, task })
+        navigate('MaterialsScreen', { materials: taskMaterials, screen: 'task', task })
         closeModal();
     }
 
@@ -80,63 +80,62 @@ export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, chec
             swipeThreshold={10}
             isVisible={visible}
             style={styles.modal}
+            onSwipeComplete={closeModal}
+            onBackdropPress={closeModal}
             onBackButtonPress={closeModal}
             animationIn={'slideInUp'}
             animationInTiming={500}
             animationOutTiming={500}
             useNativeDriver>
-            <View style={styles.contentView(loadings?.edit_task || !currentTask)}>
-                <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
-                    <View style={styles.header}>
-                        {loadings?.edit_task ?
-                            <Indicator animating={loadings?.edit_task} />
-                            :
-                            <MyText style={styles.taskId} text={task?.id} />
-                        }
-                        <MyText style={styles.headerText}>taskDetails</MyText>
-                        {loadings?.edit_task ? <View /> : <AntDesign name={'edit'} onPress={EditTaskButton} size={20} color={Colors.primary} />}
-                    </View>
-                    {/* Content */}
-                    {loadings?.edit_task || !currentTask ? null :
-                        <>
-                            <View style={styles.priorityContainer}>
-                                <View style={styles.prioritySquare(currentTask)}>
-                                    <View style={styles.priorityCircle(currentTask)} />
-                                    <MyText style={styles.priorityText}>{currentTask?.priority}</MyText>
-                                </View>
-                                <MyText style={styles.dateText} text={moment(currentTask?.date).fromNow()} />
-                            </View>
-                            <View style={styles.titleContainer}>
-                                <MyText style={styles.taskText(currentTask?.checked)} numberOfLines={3} text={`${currentTask?.title}`} />
-                                <View style={styles.checkContainer}>
-                                    {checkLoading ? <ActivityIndicator size={'small'} color={Colors.primary} /> :
-                                        <Fontisto
-                                            name={currentTask?.checked ? 'checkbox-active' : 'checkbox-passive'}
-                                            size={20}
-                                            onPress={() => { checkTask(); closeModal(); }}
-                                            color={Colors.primary}
-                                        />
-                                    }
-                                </View>
-                            </View>
-                            {taskMaterials?.length ?
-                                <View style={styles.materialsContainer}>
-                                    <View style={styles.materialsLabelContainer}>
-                                        <MyText style={styles.label}>materials</MyText>
-                                        <ActivityIndicator
-                                            animating={loadings?.project === true}
-                                            hidesWhenStopped
-                                            size={15}
-                                            color={Colors.primary}
-                                        />
-                                        <MyText style={styles.label}>quantity</MyText>
+            <View style={styles.contentView}>
+                {loadings?.edit_task ? <Indicator margin={10} animating={loadings?.edit_task} /> :
+                    <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
+                        <View style={styles.header}>
+                            <AntDesign onPress={closeModal} name="closecircleo" size={20} color={Colors.primary} />
+                            <MyText style={styles.headerText}>taskDetails</MyText>
+                            {loadings?.edit_task ? <View /> : <AntDesign name={'edit'} onPress={EditTaskButton} size={20} color={Colors.primary} />}
+                        </View>
+                        {/* Content */}
+                        {loadings?.edit_task || !currentTask ? null :
+                            <>
+                                <View style={styles.priorityContainer}>
+                                    <View style={styles.prioritySquare(currentTask)}>
+                                        <View style={styles.priorityCircle(currentTask)} />
+                                        <MyText style={styles.priorityText}>{currentTask?.priority}</MyText>
                                     </View>
-                                    {taskMaterials?.length > 5 ?
-                                        taskMaterials?.slice(0, 5).map((item, index) => <MaterialComponent material={item} key={index} />)
-                                        :
-                                        taskMaterials?.map((item, index) => <MaterialComponent material={item} key={index} />)
-                                    }
-                                    {/* <View style={styles.dynamicFieldsComponent}>
+                                    <MyText style={styles.dateText} text={moment(currentTask?.date).fromNow()} />
+                                </View>
+                                <View style={styles.titleContainer}>
+                                    <MyText style={styles.taskText(currentTask?.checked)} numberOfLines={3} text={`${currentTask?.title}`} />
+                                    <View style={styles.checkContainer}>
+                                        {checkLoading ? <ActivityIndicator size={'small'} color={Colors.primary} /> :
+                                            <Fontisto
+                                                name={currentTask?.checked ? 'checkbox-active' : 'checkbox-passive'}
+                                                size={20}
+                                                onPress={() => { checkTask(); closeModal(); }}
+                                                color={Colors.primary}
+                                            />
+                                        }
+                                    </View>
+                                </View>
+                                {taskMaterials?.length ?
+                                    <View style={styles.materialsContainer}>
+                                        <View style={styles.materialsLabelContainer}>
+                                            <MyText style={styles.label}>materials</MyText>
+                                            <ActivityIndicator
+                                                animating={loadings?.project === true}
+                                                hidesWhenStopped
+                                                size={15}
+                                                color={Colors.primary}
+                                            />
+                                            <MyText style={styles.label}>quantity</MyText>
+                                        </View>
+                                        {taskMaterials?.length > 5 ?
+                                            taskMaterials?.slice(0, 5).map((item, index) => <MaterialComponent material={item} key={index} />)
+                                            :
+                                            taskMaterials?.map((item, index) => <MaterialComponent material={item} key={index} />)
+                                        }
+                                        {/* <View style={styles.dynamicFieldsComponent}>
                                         {materialsFields.map((field, index) => {
                                             return (
                                                 <View key={index} style={styles.dynamicInputsContainer}>
@@ -167,19 +166,15 @@ export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, chec
                                             )
                                         })}
                                     </View> */}
-                                    {taskMaterials.length > 5 ?
-                                        <View style={styles.watchMore}>
-                                            <AntDesign
-                                                name={'pluscircleo'}
-                                                size={20}
-                                                color={Colors.primary}
+                                        {taskMaterials.length > 5 ?
+                                            <TouchableOpacity
                                                 onPress={loadMore}
-                                            />
-                                            <MyText>loadMore</MyText>
-                                        </View> : null}
-                                </View>
-                                : null}
-                            {/* <View style={styles.addMaterialContainer}>
+                                                style={styles.watchMore}>
+                                                <MyText style={styles.watchMoreText}>loadMore</MyText>
+                                            </TouchableOpacity> : null}
+                                    </View>
+                                    : null}
+                                {/* <View style={styles.addMaterialContainer}>
                                 <TouchableOpacity onPress={onExtraFieldPressed}>
                                     <AntDesign
                                         name={'pluscircleo'}
@@ -201,18 +196,18 @@ export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, chec
                                     null
                                 }
                             </View> */}
-                            <View style={styles.inputContainer}>
-                                <MyText>employeesQuantity</MyText>
-                                <MyText text={currentTask?.required_employees_quantity + ''} />
-                            </View>
-                        </>
-                    }
-                </ScrollView>
-                <View style={styles.buttonsContainer}>
-                    <TouchableOpacity onPress={closeModal} style={styles.cancelButton}>
-                        <MyText style={styles.cancelText}>close</MyText>
-                    </TouchableOpacity>
-                </View>
+                                <View style={styles.inputContainer}>
+                                    <MyText>employeesQuantity</MyText>
+                                    <MyText text={currentTask?.required_employees_quantity + ''} />
+                                </View>
+                            </>
+                        }
+                        <View style={styles.buttonsContainer}>
+                            <TouchableOpacity onPress={closeModal} style={styles.cancelButton}>
+                                <MyText style={styles.cancelText}>close</MyText>
+                            </TouchableOpacity>
+                        </View>
+                    </ScrollView>}
             </View>
         </Modal>
     )

@@ -9,7 +9,8 @@ import {
   AddProjectScreen,
   ProjectDetails,
   EditTaskScreen,
-  MaterialsScreen
+  MaterialsScreen,
+  CalcualtionsScreen
 } from '../screens';
 import { useSelector } from 'react-redux';
 import { adminScreens, supervisorScreens } from './Screens';
@@ -67,7 +68,7 @@ const MyTabs = () => {
   return (
     <Tab.Navigator
       initialRouteName={user?.role === 'admin' ? 'DashboardScreen' : 'HomeScreen'}
-      screenOptions={{ headerShown: false, tabBarStyle: { height: 50, borderTopWidth: 1 } }}>
+      screenOptions={{ headerShown: false, }}>
       {user?.role === 'admin' ?
         adminScreens.map((screen, index) => {
           const { name, component, options } = screen;
@@ -103,7 +104,7 @@ export const MainStackScreens = () => (
 
     {/* ADMIN */}
     <MainStack.Group screenOptions={{ headerShown: false }}>
-      <MainStack.Screen name="Dashboard" component={MyTabs} />
+      <MainStack.Screen name="Tabs" component={MyTabs} />
       <MainStack.Screen name="AddProject" component={AddProjectScreen} />
     </MainStack.Group>
 
@@ -111,6 +112,7 @@ export const MainStackScreens = () => (
       <MainStack.Screen name={'ProjectDetailsScreen'} component={ProjectDetails} />
       <MainStack.Screen name={'EditTaskScreen'} component={EditTaskScreen} />
       <MainStack.Screen name={'MaterialsScreen'} component={MaterialsScreen} />
+      <MainStack.Screen name={'CalcualtionsScreen'} component={CalcualtionsScreen} />
     </MainStack.Group>
 
     {/* <MainStack.Group screenOptions={{ headerShown: false }}>

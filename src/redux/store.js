@@ -24,7 +24,6 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
     key: 'tasky-V1.0.0',
-    // key: 'root',
     storage: AsyncStorage,
     stateReconciler: hardSet
 }

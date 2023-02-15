@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Image } from 'react-native'
 import { Formik } from 'formik';
 import { LoginForm } from './components';
 import MyText from '../../../components/UI/MyText';
@@ -131,7 +132,7 @@ export const LoginScreen = ({ navigation }) => {
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
             <View style={styles.welcomeContainer}>
-                <MyText style={styles.welcomeText}>welcomeBack</MyText>
+                <Image source={require('../../../../assets/logo.png')} style={{ width: '100%', height: 60 }} />
             </View>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollStyle}>
                 <View style={styles.formContainer}>

@@ -8,7 +8,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#326273"
     },
     "updates": {
       "fallbackToCacheTimeout": 30000,
@@ -26,8 +26,7 @@
       "permissions": [],
       "versionCode": 9,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/adaptive-icon.png"
       },
       "package": "com.ahmad.myProjects"
     },

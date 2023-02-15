@@ -23,7 +23,7 @@ export const resetProject = () => ({
     type: RESET_PROJECT
 })
 
-export const fetchProjects = (status = '', deleted = false, loadMore, page = 1, perPage = 10) => {
+export const fetchProjects = (status = '', deleted = false, loadMore = false, page = 1, perPage = 10) => {
     return async (dispatch) => {
         try {
             dispatch(setLoading({ 'projects': true }))
@@ -48,23 +48,26 @@ export const fetchProjects = (status = '', deleted = false, loadMore, page = 1, 
     }
 }
 
-export const fetchOneProject = (project_id) => {
+export const fetchOneProject = (project_id, refresh = false) => {
     return async (dispatch) => {
         try {
-            dispatch(setLoading({ 'project': true }))
+            if (refresh) {
+                dispatch(setLoading({ 'project_refresh': true }))
+            } else {
+                dispatch(setLoading({ 'project': true }))
+            }
 
             const fetchingProjectRes = await request({
                 url: `projects/${project_id}`,
                 method: 'GET',
             })
 
-            dispatch(stopLoading())
-            dispatch({
+            await dispatch(stopLoading())
+            await dispatch({
                 type: FETCHING_PROJECT_SUCCESS,
                 payload: { project: fetchingProjectRes?.data?.data }
             })
-            dispatch(fetchProjectTasks(project_id))
-
+            dispatch(fetchProjectTasks(project_id, refresh))
         } catch (error) {
             dispatch(stopLoading({ failed: true, error: { 'project': error } }))
         }

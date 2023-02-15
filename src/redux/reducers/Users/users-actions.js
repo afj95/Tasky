@@ -12,8 +12,9 @@
 //     RESET_ERRORS,
 
 import { request } from "../../../tools";
+import { fetchProfile } from "../Auth/auth-actions";
 import { setLoading, stopLoading } from "../Global/global-actions"
-import { EDIT_PROFILE_SUCCESS, FETCH_PROFILE_SUCCESS } from "./users-reducer";
+import { EDIT_PROFILE_SUCCESS, RESET } from "./users-reducer";
 
 //     FETCHING_ALL_EMP,
 //     FETCHING_ALL_EMP_SUCCESS,
@@ -194,9 +195,14 @@ import { EDIT_PROFILE_SUCCESS, FETCH_PROFILE_SUCCESS } from "./users-reducer";
 
 // Supervisors actions
 
+export const resetUserErrors = () => ({
+    type: RESET
+})
+
+
 export const editProfile = (user_id, params) => {
-    try {
-        return async dispatch => {
+    return async dispatch => {
+        try {
             dispatch(setLoading({ 'edit_profile': true }));
 
             const editProfileRes = await request({
@@ -210,8 +216,9 @@ export const editProfile = (user_id, params) => {
                 type: EDIT_PROFILE_SUCCESS,
                 payload: editProfileRes?.data?.data
             })
+            dispatch(fetchProfile())
+        } catch (error) {
+            dispatch(stopLoading({ failed: true, error: { 'edit_profile': error.message } }))
         }
-    } catch (error) {
-        dispatch(stopLoading({ failed: true, error }))
     }
 }

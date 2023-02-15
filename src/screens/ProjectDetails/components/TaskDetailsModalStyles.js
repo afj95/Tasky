@@ -18,21 +18,21 @@ export const styles = StyleSheet.create({
           margin: 0,
           justifyContent: 'flex-end'
      },
-     contentView: loading => ({
+     contentView: {
           width: '100%',
-          height: loading ? '50%' : undefined,
           backgroundColor: Colors.appWhite,
           borderTopEndRadius: 10,
           borderTopStartRadius: 10,
           padding: 10,
-          paddingBottom: 15
-     }),
+          paddingBottom: 15,
+          maxHeight: '75%',
+     },
      header: {
           height: 40,
           borderBottomWidth: 0.5,
           borderColor: Colors.primary,
           justifyContent: 'space-between',
-          alignItems: 'baseline',
+          alignItems: 'center',
           flexDirection: 'row',
      },
      taskId: { marginEnd: 5, color: Colors.primary, fontFamily: 'light' },
@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
      prioritySquare: task => ({
           backgroundColor: alphaColors[task?.priority],
           height: 30,
-          width: '30%',
+          // width: '30%',
           borderRadius: 4,
           alignItems: 'center',
           paddingHorizontal: 5,
@@ -111,7 +111,8 @@ export const styles = StyleSheet.create({
           width: '100%',
           alignSelf: 'center',
           paddingBottom: 8,
-          marginTop: 5,
+          paddingHorizontal: 10,
+          paddingTop: 5,
      },
      materialsLabelContainer: {
           alignItems: 'center',
@@ -135,10 +136,18 @@ export const styles = StyleSheet.create({
           width: '100%',
      },
      watchMore: {
-          borderColor: 'red',
           justifyContent: 'center',
           alignItems: 'center',
-          paddingVertical: 2
+          alignSelf: 'flex-end',
+          padding: 2,
+          borderWidth: 1,
+          borderColor: Colors.primary,
+          borderRadius: 8,
+     },
+     watchMoreText: {
+          fontFamily: 'light',
+          fontSize: 12,
+          color: Colors.primary,
      },
      addMaterialContainer: {
           flexDirection: 'row',

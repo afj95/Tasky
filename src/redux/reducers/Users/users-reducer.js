@@ -1,29 +1,30 @@
 import { usersState } from "./users-state";
-import {
-    RESET_ERRORS,
+// import {
+//     RESET_ERRORS,
 
-    FETCHING_ALL_EMP,
-    FETCHING_ALL_EMP_SUCCESS,
-    FETCHING_ALL_EMP_FAILED,
+//     FETCHING_ALL_EMP,
+//     FETCHING_ALL_EMP_SUCCESS,
+//     FETCHING_ALL_EMP_FAILED,
 
-    FETCHING_SUPERVISORS,
-    FETCHING_SUPERVISORS_SUCCESS,
-    FETCHING_SUPERVISORS_FAILED,
+//     FETCHING_SUPERVISORS,
+//     FETCHING_SUPERVISORS_SUCCESS,
+//     FETCHING_SUPERVISORS_FAILED,
 
-    FETCHING_DELETED_SUCCESS,
-    FETCHING_DELETED_FAILED,
+//     FETCHING_DELETED_SUCCESS,
+//     FETCHING_DELETED_FAILED,
 
-    EDIT_EMPLOYEE,
-    EDIT_EMPLOYEE_SUCCEE,
-    EDIT_EMPLOYEE_FAILED,
+//     EDIT_EMPLOYEE,
+//     EDIT_EMPLOYEE_SUCCEE,
+//     EDIT_EMPLOYEE_FAILED,
 
-    ADD_EMPLOYEE,
-    ADD_EMPLOYEE_SUCCESS,
-    ADD_EMPLOYEE_FAILED,
-    FETCHING_UNDELETED_SUCCESS,
-} from "./users-types";
+//     ADD_EMPLOYEE,
+//     ADD_EMPLOYEE_SUCCESS,
+//     ADD_EMPLOYEE_FAILED,
+//     FETCHING_UNDELETED_SUCCESS,
+// } from "./users-types";
 
 export const EDIT_PROFILE_SUCCESS = 'EDIT_PROFILE_SUCCESS';
+export const RESET = 'RESET';
 
 
 const usersReducer = (state = usersState, action) => {
@@ -150,12 +151,18 @@ const usersReducer = (state = usersState, action) => {
         //     }
         // }
 
-
+        case RESET: {
+            return {
+                ...state,
+                profile_updated: false
+            }
+        }
 
         case EDIT_PROFILE_SUCCESS: {
             return {
                 ...state,
-                user: action?.payload
+                user: action?.payload,
+                profile_updated: true
             }
         }
 

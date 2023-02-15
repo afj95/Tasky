@@ -21,10 +21,14 @@ export const clearTask = () => ({
     type: CLEAR_TASK
 })
 
-export const fetchProjectTasks = (project_id) => {
+export const fetchProjectTasks = (project_id, refresh) => {
     return async dispatch => {
         try {
-            dispatch(setLoading({ 'project_tasks': true }))
+            if (refresh) {
+                dispatch(setLoading({ 'project_tasks_refresh': true }))
+            } else {
+                dispatch(setLoading({ 'project_tasks': true }))
+            }
 
             const projectTasksRes = await request({
                 url: `projects/${project_id}/tasks`,
@@ -46,7 +50,7 @@ export const fetchProjectTasks = (project_id) => {
 export const checkTask = (task_id) => {
     return async dispatch => {
         try {
-            dispatch(setLoading({ 'project_tasks': true }))
+            dispatch(setLoading({ 'check_task': true }))
 
             const checkTaskRes = await request({
                 url: `tasks/${task_id}/check`,
@@ -55,7 +59,7 @@ export const checkTask = (task_id) => {
 
             dispatch(stopLoading());
         } catch (error) {
-            dispatch(stopLoading({ failed: true, error: { 'project_tasks': error.message ? error.message : error } }))
+            dispatch(stopLoading({ failed: true, error: { 'check_task': error.message ? error.message : error } }))
         }
     }
 }
@@ -63,7 +67,7 @@ export const checkTask = (task_id) => {
 export const unCheckTask = (task_id) => {
     return async dispatch => {
         try {
-            dispatch(setLoading({ 'project_tasks': true }))
+            dispatch(setLoading({ 'uncheck_task': true }))
 
             const checkTaskRes = await request({
                 url: `tasks/${task_id}/uncheck`,
@@ -72,7 +76,7 @@ export const unCheckTask = (task_id) => {
 
             dispatch(stopLoading());
         } catch (error) {
-            dispatch(stopLoading({ failed: true, error: { 'project_tasks': error.message ? error.message : error } }))
+            dispatch(stopLoading({ failed: true, error: { 'uncheck_task': error.message ? error.message : error } }))
         }
     }
 }
@@ -158,7 +162,6 @@ export const addMaterials = (materials, task_id) => {
             dispatch(fetchTask(task_id))
             dispatch(fetchTaskMaterials(task_id))
         } catch (error) {
-            console.log('error', error);
             dispatch(stopLoading({ failed: true, error: { 'add_material': error.message ? error.message : error } }))
         }
     }

@@ -71,7 +71,7 @@ export const HomeScreen = () => {
         style={styles.projectItem}>
         <View style={{ alignItems: 'center' }}>
           <MyText style={styles.projectName} text={item?.name} />
-          <MyText style={styles.projectDescription} numberOfLines={2} text={item?.description} />
+          <MyText style={styles.projectDescription} ellipsizeMode={'tail'} numberOfLines={3} text={item?.description} />
         </View>
         {item?.deleted_at ? <View style={styles.deletedIcon} /> : null}
         {item?.status === 'finished' ? <View style={styles.finishedIcon} /> : null}
@@ -114,7 +114,7 @@ export const HomeScreen = () => {
     return (
       <View style={styles.footerContainer}>
         {totalProjects <= projects?.length ?
-          <MyText>reachedEnd</MyText>
+          <View />
           : loadMoreLoading ?
             <ActivityIndicator
               size={'small'}
@@ -143,7 +143,7 @@ export const HomeScreen = () => {
 
       <View style={styles.projectsContainer}>
         <FlatList
-          contentContainerStyle={{ paddingBottom: projects?.length ? 50 : 0, flex: projects?.length ? 0 : 1 }}
+          contentContainerStyle={{ paddingBottom: projects?.length ? 30 : 0, flex: projects?.length ? 0 : 1 }}
           style={{ flex: 1 }}
           keyExtractor={(item, index) => '#' + index.toString()}
           data={projects}
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   footerContainer: {
-    height: 50,
+    paddingVertical: 5,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 10
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.secondary,
     alignSelf: 'center',
     borderRadius: 8,
-    paddingHorizontal: 5,
+    padding: 5,
   },
   projectName: {
     fontFamily: 'bold',
@@ -214,7 +214,6 @@ const styles = StyleSheet.create({
   projectDescription: {
     fontFamily: 'light',
     fontSize: 15,
-    marginEnd: 35
   },
   emptyImage: {
     width: '90%',
