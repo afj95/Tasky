@@ -17,6 +17,7 @@ import {
     StyleSheet,
     View
 } from 'react-native';
+import Indicator from '../../../components/UI/Indicator';
 
 export const TaskComponent = ({ task, project_id, onPress }) => {
     const dispatch = useDispatch();
@@ -49,13 +50,12 @@ export const TaskComponent = ({ task, project_id, onPress }) => {
         // TODO: Change to local then send it to API
         setCheckLoading(true)
         if (task?.checked) {
-            dispatch(unCheckTask(task.id))
+            await dispatch(unCheckTask(task.id))
         } else {
-            dispatch(checkTaskAction(task?.id))
+            await dispatch(checkTaskAction(task?.id))
         }
+        await dispatch(fetchOneProject(project_id, true))
         setCheckLoading(false)
-        dispatch(fetchTask(task.id))
-        dispatch(fetchOneProject(project_id))
     }
 
     const openTaskDetailsModal = () => setDetailsModal(true);
@@ -77,12 +77,12 @@ export const TaskComponent = ({ task, project_id, onPress }) => {
                         <Ionicons name={'trash-bin'} size={20} color={Colors.red} onPress={deleteTaskPressed} />
                         : <View />
                 } */}
-                {checkLoading ? <ActivityIndicator size={'small'} color={Colors.primary} /> :
+                {checkLoading ? <Indicator margin={0} animating={checkLoading} /> :
                     <Fontisto
                         name={task.checked ? 'checkbox-active' : 'checkbox-passive'}
                         size={20}
                         onPress={checkTask}
-                        color={Colors.primary}
+                        color={Colors.text}
                     />
                 }
             </View>

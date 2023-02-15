@@ -37,9 +37,8 @@ const tasksReducer = (state = tasksState, action) => {
         case PROJECT_TASKS_SUCCESS: {
             return {
                 ...state,
-                // projectTasks: action.payload.tasks
-                projectTasks: action.payload.tasks.filter((task) => !task?.checked),
-                projectCheckedTasks: action.payload.tasks.filter((task) => task?.checked),
+                projectTasks: action.payload.tasks?.filter((task) => !task?.checked),
+                projectCheckedTasks: action.payload.tasks?.filter((task) => task?.checked),
             }
         }
 

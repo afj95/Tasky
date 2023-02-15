@@ -4,6 +4,7 @@ import Colors from '../../../utils/Colors';
 import moment from 'moment';
 import 'moment/locale/en-gb';
 import {
+     I18nManager,
      StyleSheet,
      View
 } from 'react-native';
@@ -36,18 +37,21 @@ const styles = StyleSheet.create({
           flexDirection: 'row'
      },
      materialText: {
-          color: Colors.primary,
+          color: Colors.text,
           textDecorationStyle: 'solid',
           width: '90%',
+          textAlign: 'left',
           alignSelf: 'flex-start',
           fontSize: 15
      },
      materialDate: {
-          fontSize: 12
+          fontSize: 12,
+          width: '90%',
+          textAlign: 'left',
      },
      checkContainer: {
           alignSelf: 'center',
-          width: 50,
+          width: '10%',
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'flex-end'

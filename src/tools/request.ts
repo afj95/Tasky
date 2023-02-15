@@ -1,11 +1,10 @@
-import axios, { Method, AxiosRequestConfig } from "axios";
+import axios, { Method, AxiosRequestConfig, AxiosRequestHeaders } from "axios";
 import { I18nManager } from "react-native";
 import { API_URL } from "../constants";
 import { store } from "../redux";
 import { stopLoading } from "../redux/reducers/Global/global-actions";
 import { navigationRef } from '../navigation/RootNavigation';
 import { CommonActions } from "@react-navigation/native";
-import { showMessage } from "./showMessage";
 import { t } from "../i18n";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LOGOUT } from "../redux/reducers";
@@ -13,16 +12,17 @@ import { LOGOUT } from "../redux/reducers";
 type RequestProps = {
     url: string;
     method: Method;
+    headers?: AxiosRequestHeaders;
     params?: any;
 } | AxiosRequestConfig;
 
-export const request = async ({ url, method, params }: RequestProps) => {
+export const request = async ({ url, method, headers, params }: RequestProps) => {
     const fullURL = `${API_URL}${url}`;
     // @ts-ignore
     const user = store.getState().authReducer.user;
 
     let timeout = false;
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             setTimeout(() => {
                 timeout = true;
@@ -33,11 +33,14 @@ export const request = async ({ url, method, params }: RequestProps) => {
                 Authorization: `Bearer ${user?.token}`,
                 "Accept-Language": I18nManager.isRTL ? 'ar' : 'en',
                 "Accept": "application/json",
-                // "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                ...headers
             };
 
             if (__DEV__) {
-                console.log("\n\n" + "fullURL ==> ", fullURL);
+                console.log("\n\n" + "URL ==> ", url);
+                console.log("========================================");
+                console.log("fullURL ==> ", fullURL);
                 console.log("========================================");
                 console.log("method  ==> ", method);
                 console.log("========================================");
@@ -45,7 +48,7 @@ export const request = async ({ url, method, params }: RequestProps) => {
                 console.log("========================================\n");
             }
 
-            axios({
+            await axios({
                 method: method,
                 url: fullURL,
                 headers: modfiedHeaders,
@@ -53,24 +56,17 @@ export const request = async ({ url, method, params }: RequestProps) => {
             })
                 .then((res) => {
                     if (timeout) {
-                        throw new Error('Error')
+                        reject(new Error('Tiemout, Server is not responding'))
                     }
-
-                    resolve(res);
+                    resolve(res)
                 })
                 .catch(async (error) => {
-                    if (__DEV__) {
-                        console.log({
+                    if (!__DEV__) {
+                        console.log('request error', {
                             'url': url,
                             'error': error,
-                            'request error - error?.response?.data ': error?.response?.data
+                            'error?.response?.data ': error?.response?.data
                         });
-                    }
-                    if (error.includes('Network')) {
-                        showMessage({
-                            message: t('app.serverError'),
-                            type: 'danger'
-                        })
                     }
 
                     if (error?.response?.data?.message === 'Unauthenticated.') {
@@ -92,17 +88,16 @@ export const request = async ({ url, method, params }: RequestProps) => {
                         */
                         reject({ message: error?.response?.data?.message })
                     }
-
                 });
         } catch (error) {
             if (__DEV__) {
-                console.log({
+                console.log('request try/catch error', {
                     'url': url,
-                    'request try/catch error - error ': error
+                    'error ': error
                 });
             }
-            store.dispatch(stopLoading({ 'general': error }))
-            reject({ message: error })
+            store.dispatch(stopLoading({ 'general': t('app.serverError') }))
+            reject({ message: t('app.serverError') })
         }
     })
 };

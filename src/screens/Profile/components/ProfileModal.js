@@ -1,23 +1,30 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
      I18nManager,
      StyleSheet,
-     View
+     View,
+     KeyboardAvoidingView,
+     Platform
 } from 'react-native'
 import Modal from 'react-native-modal';
 import MyText from '../../../components/UI/MyText';
 import Colors from '../../../utils/Colors';
 import { TextInput } from 'react-native-paper';
-import { AntDesign, Entypo } from '@expo/vector-icons';
-import { useDispatch } from 'react-redux';
-import { editProfile } from '../../../redux/reducers/Users/users-actions';
-import { fetchProfile } from '../../../redux/reducers/Auth/auth-actions';
+import { AntDesign } from '@expo/vector-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { editProfile, resetUserErrors } from '../../../redux/reducers/Users/users-actions';
 import About from './About';
+import { showMessage } from '../../../tools';
+import { t } from '../../../i18n';
 
 export const ProfileModal = ({ visible, closeModal, label, value, user }) => {
      const dispatch = useDispatch()
 
+     const errors = useSelector((state) => state?.globalReducer?.errors)
+     const profile_updated = useSelector((state) => state.usersReducer.profile_updated);
+
      const [text, setText] = useState('');
+     // password validation error
      const [confirmError, setConfirmError] = useState('');
      const [error, setError] = useState('');
 
@@ -29,6 +36,28 @@ export const ProfileModal = ({ visible, closeModal, label, value, user }) => {
           },
           roundness: 5
      }
+
+     useEffect(() => {
+          dispatch(resetUserErrors())
+     }, [])
+
+     useEffect(() => {
+          if (errors?.edit_profile) {
+               showMessage({
+                    message: errors?.edit_profile,
+                    type: 'danger'
+               })
+          }
+          if (profile_updated) {
+               showMessage({
+                    message: t('app.successOperation'),
+                    type: 'success',
+                    duration: 1500
+               })
+               dispatch(resetUserErrors())
+          }
+     }, [errors?.edit_profile, profile_updated])
+
 
      const checkPhone = input => {
           if (isNaN(input)) {
@@ -66,60 +95,68 @@ export const ProfileModal = ({ visible, closeModal, label, value, user }) => {
 
      const edit = () => {
           if (label !== 'about' && text && (!confirmError && !error)) {
+               // TODO: Validate 
                let params = { ...user };
                switch (label) {
                     case 'name': {
-                         params = { ...params, name: text }
+                         params = { ...user, name: text }
                     }
                          break;
                     case 'phone': {
-                         params = { ...params, phone: text }
+                         params = { ...user, phone_number: text }
                     }
                          break;
                     case 'email': {
-                         params = { ...params, email: text }
+                         params = { ...user, email: text }
                     }
                          break;
                     case 'password': {
-                         params = { ...params, password: text }
+                         params = { ...user, password: text }
                     }
                          break;
                }
 
                dispatch(editProfile(user.id, params))
-               dispatch(fetchProfile())
           }
           closeModal()
      }
 
      const AboutComponent = () => <MyText text={I18nManager.isRTL ? new About().about_ar : new About().about_en} />
 
+     const close = () => {
+          if (error) {
+               setError(null)
+          }
+          closeModal()
+     }
+
      return (
           <Modal
                swipeThreshold={10}
                isVisible={visible}
                style={styles.modal}
-               onBackButtonPress={closeModal}
-               onBackdropPress={closeModal}
+               onBackButtonPress={close}
+               onBackdropPress={close}
                animationIn={'slideInUp'}
                animationInTiming={500}
                animationOutTiming={500}
-               useNativeDriver>
+               useNativeDriver
+               avoidKeyboard>
                <View style={styles.contentView}>
                     <View style={styles.header}>
                          <View />
                          <MyText style={styles.headerText}>editProfile</MyText>
                          <AntDesign
-                              name={'checkcircleo'}
-                              size={30}
+                              name="check"
+                              size={22}
                               color={Colors.primary}
                               onPress={edit}
                          />
                     </View>
                     <MyText style={styles.headerText}>{label}</MyText>
                     {label === 'about' ? <AboutComponent /> :
-                         <>
-                              <>
+                         <View>
+                              <View>
                                    <TextInput
                                         style={styles.input}
                                         defaultValue={value}
@@ -128,10 +165,11 @@ export const ProfileModal = ({ visible, closeModal, label, value, user }) => {
                                         fontFamily={'light'}
                                         theme={inputTheme}
                                         onChangeText={validateValue}
+                                        keyboardType={label === 'email' ? 'email-address' : label === 'phone' ? 'decimal-pad' : 'default'}
                                         secureTextEntry={label === 'password'}
                                    />
                                    {error && label !== 'password' ? <ErrorText error={error} /> : null}
-                              </>
+                              </View>
                               {label === 'password' ?
                                    <>
                                         <TextInput
@@ -148,7 +186,7 @@ export const ProfileModal = ({ visible, closeModal, label, value, user }) => {
                                    </>
                                    : null
                               }
-                         </>
+                         </View>
                     }
                </View>
           </Modal>
@@ -158,7 +196,8 @@ export const ProfileModal = ({ visible, closeModal, label, value, user }) => {
 const styles = StyleSheet.create({
      modal: {
           margin: 0,
-          justifyContent: 'flex-end'
+          justifyContent: 'flex-end',
+          flex: 1,
      },
      contentView: {
           width: '100%',
@@ -179,7 +218,8 @@ const styles = StyleSheet.create({
      headerText: {
           fontFamily: 'bold',
           color: Colors.primary,
-          fontSize: 18,
+          marginTop: 8,
+          marginBottom: 2
      },
      input: {
           width: '95%',

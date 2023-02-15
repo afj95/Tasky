@@ -3,7 +3,9 @@ import {
      StyleSheet,
      View,
      FlatList,
-     ActivityIndicator
+     ActivityIndicator,
+     KeyboardAvoidingView,
+     Platform
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import MyText from '../../components/UI/MyText'
@@ -15,15 +17,16 @@ import { AntDesign } from '@expo/vector-icons'
 import { addMaterials, fetchTaskMaterials } from '../../redux/reducers/Tasks/tasks-actions'
 
 /**
- * TODO: Add floating input at bottom of screen
- * to add new amterial to the task
- * TODO: Fetch task materials on first load screen
- */
-
-export const MaterialsScreen = ({ route: { params: { materials } } }) => {
+ * @param {materials} param0 The materials to show.
+ * This will be shown if the previous screen is 'project' otherwise will fetch materials from API depends on 'task.id'
+ * 
+ * @param {screen} param1 What is the previous screen.
+ * If TaskDetailsModal should be 'task' otherwise 'project'
+ * 
+ * @param {task} param2 Task will not be null if the previous screen was 'TaskDetailsModal' otherwise null
+*/
+export const MaterialsScreen = ({ route: { params: { materials, screen, task } } }) => {
      const dispatch = useDispatch()
-
-     const task_id = materials[0].task_id;
 
      const [title, setTitle] = useState('');
      const [quantity, setQuantity] = useState('');
@@ -32,7 +35,9 @@ export const MaterialsScreen = ({ route: { params: { materials } } }) => {
      const taskMaterials = useSelector((state) => state?.tasksReducer?.taskMaterials)
 
      useEffect(() => {
-          dispatch(fetchTaskMaterials(task_id))
+          if (screen === 'task') {
+               dispatch(fetchTaskMaterials(task.id))
+          }
      }, [])
 
 
@@ -46,9 +51,11 @@ export const MaterialsScreen = ({ route: { params: { materials } } }) => {
      }
 
      const addNewMaterials = () => {
-          dispatch(addMaterials({ title, quantity }, task_id))
-          setTitle('');
-          setQuantity('')
+          if (title !== '' && quantity !== '') {
+               dispatch(addMaterials({ title, quantity }, task.id))
+               setTitle('');
+               setQuantity('')
+          }
      }
 
      const _listHeaderComponent = () => {
@@ -65,55 +72,61 @@ export const MaterialsScreen = ({ route: { params: { materials } } }) => {
           )
      }
 
-     const onRefresh = () => dispatch(fetchTaskMaterials(task_id));
+     const onRefresh = () => dispatch(fetchTaskMaterials(task.id));
 
      return (
-          <View style={styles.container}>
-               <Header showGoBackButton text={'materials'} />
-               <View style={styles.subContainer}>
-                    <FlatList
-                         keyExtractor={(item, index) => '#' + index}
-                         contentContainerStyle={{ paddingBottom: 60 }}
-                         style={{ flex: 1 }}
-                         data={taskMaterials}
-                         onRefresh={onRefresh}
-                         refreshing={false}
-                         ListHeaderComponent={_listHeaderComponent}
-                         renderItem={({ item, index }) => <MaterialComponent material={item} key={index} />}
-                    />
-               </View>
-               <View style={styles.floatingContainer}>
-                    <View style={styles.dynamicInputsContainer}>
-                         <TextInput
-                              style={[styles.input, { width: '60%', marginStart: 0 }]}
-                              mode={'flat'}
-                              fontFamily={'light'}
-                              theme={inputTheme}
-                              value={title}
-                              onChangeText={setTitle}
+          <KeyboardAvoidingView
+               behavior={Platform.OS === "ios" ? "padding" : null}
+               style={{ flex: 1 }}>
+               <View style={styles.container}>
+                    <Header showGoBackButton text={'materials'} />
+                    <View style={styles.subContainer}>
+                         <FlatList
+                              keyExtractor={(item, index) => '#' + index}
+                              contentContainerStyle={{ paddingBottom: 60 }}
+                              style={{ flex: 1 }}
+                              data={screen === 'task' ? taskMaterials : materials}
+                              onRefresh={screen === 'task' ? onRefresh : null}
+                              refreshing={false}
+                              ListHeaderComponent={_listHeaderComponent}
+                              renderItem={({ item, index }) => <MaterialComponent material={item} key={index} />}
                          />
-                         <TextInput
-                              style={[styles.input, { width: '25%', marginStart: 0 }]}
-                              mode={'flat'}
-                              fontFamily={'light'}
-                              keyboardType={'decimal-pad'}
-                              theme={inputTheme}
-                              value={quantity}
-                              onChangeText={setQuantity}
-                         />
-                         {loadings?.add_material || loadings?.fetch_materials ?
-                              <ActivityIndicator size={25} color={Colors.primary} />
-                              :
-                              <AntDesign
-                                   name={'pluscircleo'}
-                                   size={25}
-                                   color={Colors.primary}
-                                   onPress={addNewMaterials}
-                              />
-                         }
                     </View>
+                    {screen === 'task' ?
+                         <View style={styles.floatingContainer}>
+                              <View style={styles.dynamicInputsContainer}>
+                                   <TextInput
+                                        style={[styles.input, { width: '60%', marginStart: 0 }]}
+                                        mode={'flat'}
+                                        fontFamily={'light'}
+                                        theme={inputTheme}
+                                        value={title}
+                                        onChangeText={setTitle}
+                                   />
+                                   <TextInput
+                                        style={[styles.input, { width: '25%', marginStart: 0 }]}
+                                        mode={'flat'}
+                                        fontFamily={'light'}
+                                        keyboardType={'decimal-pad'}
+                                        theme={inputTheme}
+                                        value={quantity}
+                                        onChangeText={setQuantity}
+                                   />
+                                   {loadings?.add_material || loadings?.fetch_materials ?
+                                        <ActivityIndicator size={25} color={Colors.primary} />
+                                        :
+                                        <AntDesign
+                                             name={'pluscircleo'}
+                                             size={25}
+                                             color={Colors.primary}
+                                             onPress={addNewMaterials}
+                                        />
+                                   }
+                              </View>
+                         </View> : null
+                    }
                </View>
-          </View>
+          </KeyboardAvoidingView>
      )
 }
 
@@ -134,7 +147,7 @@ const styles = StyleSheet.create({
      },
      label: {
           fontFamily: 'bold',
-          color: Colors.text
+          color: Colors.primary
      },
      dynamicFieldsComponent: {
           paddingTop: 5,

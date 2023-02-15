@@ -40,14 +40,6 @@ export const adminScreens = [
                tabBarLabel: ({ focused }) => <MyText style={{ ...styles.title, color: focused ? Colors.primary : 'rgba(0, 0, 0, 0.5)' }}>dashboardScreen</MyText>,
           }
      },
-     {
-          name: 'HomeScreen',
-          component: HomeScreen,
-          label: 'projects',
-          options: {
-               tabBarLabel: ({ focused }) => <MyText style={{ ...styles.title, color: focused ? Colors.primary : 'rgba(0, 0, 0, 0.5)' }}>projects</MyText>,
-          }
-     },
      ...supervisorScreens
 ];
 

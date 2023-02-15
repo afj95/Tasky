@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { TaskComponent } from '../ProjectDetails/components';
 import TouchableOpacity from '../../components/UI/TouchableOpacity';
 import { editTask } from '../../redux/reducers/Tasks/tasks-actions';
+import { navigate } from '../../navigation/RootNavigation';
 
 export const EditTaskScreen = () => {
      const dispatch = useDispatch();
@@ -40,6 +41,8 @@ export const EditTaskScreen = () => {
           }
      }
 
+     const loadMore = () => navigate('MaterialsScreen', { materials: currentTask?.materials, screen: 'task', task: currentTask })
+
      return (
           <View style={{ flex: 1 }}>
                <Header showGoBackButton text={'updateTask'} />
@@ -68,7 +71,18 @@ export const EditTaskScreen = () => {
                                         />
                                         <MyText style={styles.label}>quantity</MyText>
                                    </View>
-                                   {currentTask?.materials?.map((item, index) => <MaterialComponent material={item} key={index} />)}
+                                   {currentTask?.materials?.length > 5 ?
+                                        currentTask?.materials?.slice(0, 5).map((item, index) => <MaterialComponent material={item} key={index} />)
+                                        :
+                                        currentTask?.materials?.map((item, index) => <MaterialComponent material={item} key={index} />)
+                                   }
+                                   {currentTask?.materials?.length > 5 ?
+                                        <TouchableOpacity
+                                             onPress={loadMore}
+                                             style={styles.watchMore}>
+                                             <MyText style={styles.watchMoreText}>loadMore</MyText>
+                                        </TouchableOpacity> : null}
+                                   {/* {currentTask?.materials?.map((item, index) => <MaterialComponent material={item} key={index} />)} */}
                               </View>
                               : null}
                          <View style={styles.inputContainer}>

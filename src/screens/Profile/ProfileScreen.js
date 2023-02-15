@@ -113,28 +113,28 @@ export const ProfileScreen = ({ navigation }) => {
                label: 'name',
                labelStyle: { color: Colors.primary, fontFamily: 'bold' },
                value: user?.name,
-               valueStyle: { color: Colors.secondary, fontFamily: 'light', fontSize: 13 },
+               valueStyle: { color: Colors.text, fontFamily: 'light', fontSize: 13 },
                onPress: () => openModal('name', user?.name)
           },
           {
                label: 'phone',
                labelStyle: { color: Colors.primary, fontFamily: 'bold' },
                value: user?.phone_number,
-               valueStyle: { color: Colors.secondary, fontFamily: 'light', fontSize: 13 },
+               valueStyle: { color: Colors.text, fontFamily: 'light', fontSize: 13 },
                onPress: () => openModal('phone', user?.phone_number)
           },
           {
                label: 'email',
                labelStyle: { color: Colors.primary, fontFamily: 'bold' },
                value: user?.email,
-               valueStyle: { color: Colors.secondary, fontFamily: 'light', fontSize: 13 },
+               valueStyle: { color: Colors.text, fontFamily: 'light', fontSize: 13 },
                onPress: () => openModal('email', user?.email)
           },
           {
                label: 'password',
                labelStyle: { color: Colors.primary, fontFamily: 'bold' },
                value: '********',
-               valueStyle: { color: Colors.secondary, fontFamily: 'light', fontSize: 13 },
+               valueStyle: { color: Colors.text, fontFamily: 'light', fontSize: 13 },
                onPress: () => openModal('password', '')
           },
      ];

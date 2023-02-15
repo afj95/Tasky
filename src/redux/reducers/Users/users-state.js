@@ -1,18 +1,20 @@
 export const usersState = {
-    fetchAllEmployeesLoading: false,
-    all_employees: [],
-    fetchAllEmployeesError: '',
+    profile_updated: false,
 
-    supervisors: [],
+    // fetchAllEmployeesLoading: false,
+    // all_employees: [],
+    // fetchAllEmployeesError: '',
 
-    deletedEmployees: [],
-    undeletedEmployees: [],
+    // supervisors: [],
 
-    editEmpLoading: false,
-    editEmpSuccess: '',
-    editEmpError: '',
+    // deletedEmployees: [],
+    // undeletedEmployees: [],
 
-    addEmployeeLoading: false,
-    addEmployeeSuccess: '',
-    addEmployeeError: ''
+    // editEmpLoading: false,
+    // editEmpSuccess: '',
+    // editEmpError: '',
+
+    // addEmployeeLoading: false,
+    // addEmployeeSuccess: '',
+    // addEmployeeError: ''
 };
