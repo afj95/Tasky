@@ -149,7 +149,7 @@ export const ProjectDetails = (props) => {
                                             :
                                             projectMaterials?.map((item, index) => <MaterialComponent material={item} key={index} />)
                                         }
-                                        {projectMaterials?.length > 5 ?
+                                        {projectMaterials?.length ?
                                             <TouchableOpacity
                                                 onPress={loadMore}
                                                 style={styles.watchMore}>
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     },
     nameContainer: {
         backgroundColor: Colors.white,
-        marginBottom: 1.5,
+        marginTop: 5,
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderTopEndRadius: 8,
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     },
     supervisorContainer: {
         backgroundColor: Colors.white,
-        marginVertical: 1.5,
+        marginTop: 5,
         paddingHorizontal: 10,
         paddingVertical: 5,
     },
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
         fontFamily: 'bold'
     },
     descriptionContainer: {
-        marginVertical: 1.5,
+        marginTop: 5,
         paddingVertical: 5,
         paddingHorizontal: 10,
         backgroundColor: Colors.white,
@@ -301,19 +301,19 @@ const styles = StyleSheet.create({
     },
     materialsContainer: {
         borderRadius: 8,
-        marginVertical: 1.5,
-        paddingHorizontal: 10,
+        marginTop: 5,
         paddingVertical: 5,
         backgroundColor: Colors.white,
     },
     materialsLabelContainer: {
         alignItems: 'center',
         justifyContent: 'space-between',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        paddingHorizontal: 10,
     },
     tasksContainer: {
         borderRadius: 8,
-        marginVertical: 1.5,
+        marginTop: 5,
         paddingHorizontal: 10,
         backgroundColor: Colors.white,
         paddingVertical: 5

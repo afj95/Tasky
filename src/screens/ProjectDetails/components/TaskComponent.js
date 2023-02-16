@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
         fontSize: 13,
         width: '100%',
         paddingVertical: 5,
-        marginVertical: 2,
+        marginTop: 5,
         justifyContent: 'space-between',
         flexDirection: 'row',
         borderStartColor: priority === 'high' ? Colors.red : priority === 'mid' ? 'yellow' : 'green',

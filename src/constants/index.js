@@ -1,6 +1,6 @@
 import Colors from "../utils/Colors";
 
-export const API_URL = __DEV__ ? `https://75d6-2-88-199-152.ngrok.io/api/` : 'https://my-projects-api-beta.herokuapp.com/api/v1/';
+export const API_URL = __DEV__ ? `https://75d6-2-88-199-152.ngrok.io/api/` : 'http://tasky-erp.com/api/';
 
 export const mainStyles = {
     viewShadow: {

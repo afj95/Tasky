@@ -44,7 +44,7 @@ export const EditTaskScreen = () => {
      const loadMore = () => navigate('MaterialsScreen', { materials: currentTask?.materials, screen: 'task', task: currentTask })
 
      return (
-          <View style={{ flex: 1 }}>
+          <View style={styles.editTaskContainer}>
                <Header showGoBackButton text={'updateTask'} />
                <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
                     <View style={{ paddingHorizontal: 10 }}>
@@ -76,7 +76,7 @@ export const EditTaskScreen = () => {
                                         :
                                         currentTask?.materials?.map((item, index) => <MaterialComponent material={item} key={index} />)
                                    }
-                                   {currentTask?.materials?.length > 5 ?
+                                   {currentTask?.materials?.length ?
                                         <TouchableOpacity
                                              onPress={loadMore}
                                              style={styles.watchMore}>

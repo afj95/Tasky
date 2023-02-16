@@ -166,7 +166,7 @@ export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, chec
                                             )
                                         })}
                                     </View> */}
-                                        {taskMaterials.length > 5 ?
+                                        {taskMaterials?.length ?
                                             <TouchableOpacity
                                                 onPress={loadMore}
                                                 style={styles.watchMore}>

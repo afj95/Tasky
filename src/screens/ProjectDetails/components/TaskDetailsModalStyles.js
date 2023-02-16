@@ -14,6 +14,10 @@ const colors = {
 }
 
 export const styles = StyleSheet.create({
+     editTaskContainer: {
+          flex: 1,
+          backgroundColor: Colors.appWhite
+     },
      modal: {
           margin: 0,
           justifyContent: 'flex-end'
@@ -53,7 +57,6 @@ export const styles = StyleSheet.create({
      prioritySquare: task => ({
           backgroundColor: alphaColors[task?.priority],
           height: 30,
-          // width: '30%',
           borderRadius: 4,
           alignItems: 'center',
           paddingHorizontal: 5,
@@ -106,7 +109,7 @@ export const styles = StyleSheet.create({
      },
      materialsContainer: {
           borderRadius: 8,
-          marginVertical: 1.5,
+          marginTop: 5,
           backgroundColor: Colors.white,
           width: '100%',
           alignSelf: 'center',
@@ -121,10 +124,11 @@ export const styles = StyleSheet.create({
      },
      label: {
           fontFamily: 'bold',
-          color: Colors.text
+          color: Colors.primary
      },
      dynamicFieldsComponent: {
           paddingTop: 5,
+          backgroundColor: 'red',
           justifyContent: 'center',
           alignItems: 'flex-start',
           marginHorizontal: 5
@@ -209,6 +213,7 @@ export const styles = StyleSheet.create({
           color: Colors.primary
      },
      buttonsContainer: {
+          marginTop: 5,
           flexDirection: 'row-reverse',
           alignItems: 'center',
           justifyContent: 'space-between'
