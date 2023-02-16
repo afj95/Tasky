@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, ActivityIndicator, ScrollView, FlatList } from 'react-native';
+import { View, ActivityIndicator, ScrollView } from 'react-native';
 import MyText from '../../../components/UI/MyText';
 import Colors from '../../../utils/Colors';
 import Modal from 'react-native-modal';

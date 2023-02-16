@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Fontisto } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../../components/UI/MyText';
-import { checkTask as checkTaskAction, fetchTask, unCheckTask } from '../../../redux/reducers/Tasks/tasks-actions';
+import { checkTask as checkTaskAction, unCheckTask } from '../../../redux/reducers/Tasks/tasks-actions';
 import Colors from '../../../utils/Colors';
 import moment from 'moment';
 import '../../../utils/ar-sa-mine';
@@ -12,11 +12,7 @@ import { clearErrors } from '../../../redux/reducers/Global/global-actions';
 import TouchableOpacity from '../../../components/UI/TouchableOpacity';
 import { TaskDetailsModal } from './TaskDetailsModal';
 import { fetchOneProject } from '../../../redux/reducers/Projects/projects-actions';
-import {
-    ActivityIndicator,
-    StyleSheet,
-    View
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Indicator from '../../../components/UI/Indicator';
 
 export const TaskComponent = ({ task, project_id, onPress }) => {
