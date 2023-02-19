@@ -16,7 +16,6 @@ import Indicator from '../../../components/UI/Indicator';
 export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, checkTask }) => {
     const dispatch = useDispatch()
 
-
     // const [materialsFields, setMaterialsFields] = useState([]);
 
     const loadings = useSelector((state) => state?.globalReducer?.loadings)

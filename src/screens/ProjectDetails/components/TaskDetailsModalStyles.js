@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
           maxHeight: '75%',
      },
      header: {
-          height: 40,
+          paddingVertical: 8,
           borderBottomWidth: 0.5,
           borderColor: Colors.primary,
           justifyContent: 'space-between',

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../../components/UI/MyText';
 import { checkTask as checkTaskAction, unCheckTask } from '../../../redux/reducers/Tasks/tasks-actions';
 import Colors from '../../../utils/Colors';
-import moment from 'moment';
+import moment from 'moment/min/moment-with-locales';
 import '../../../utils/ar-sa-mine';
 import 'moment/locale/en-gb';
 import { showMessage } from '../../../tools';
@@ -12,7 +12,7 @@ import { clearErrors } from '../../../redux/reducers/Global/global-actions';
 import TouchableOpacity from '../../../components/UI/TouchableOpacity';
 import { TaskDetailsModal } from './TaskDetailsModal';
 import { fetchOneProject } from '../../../redux/reducers/Projects/projects-actions';
-import { StyleSheet, View } from 'react-native';
+import { I18nManager, StyleSheet, View } from 'react-native';
 import Indicator from '../../../components/UI/Indicator';
 
 export const TaskComponent = ({ task, project_id, onPress }) => {
@@ -24,6 +24,10 @@ export const TaskComponent = ({ task, project_id, onPress }) => {
     const [checkLoading, setCheckLoading] = useState(false);
     // const [deleteLoading, setDeleteLoading] = useState(false);
     const [detailsModal, setDetailsModal] = useState(false);
+
+    useEffect(() => {
+        moment.locale(I18nManager.isRTL ? 'ar' : 'en');
+    }, [])
 
     useEffect(() => {
         if (errors?.project_tasks) {

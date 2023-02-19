@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import MyText from '../../../components/UI/MyText';
 import Colors from '../../../utils/Colors';
-import moment from 'moment';
-import { StyleSheet, View } from 'react-native';
+import moment from 'moment/min/moment-with-locales';
+import { StyleSheet, View, I18nManager } from 'react-native';
 
 export const MaterialComponent = ({ material }) => {
+
+     useEffect(() => {
+          moment.locale(I18nManager.isRTL ? 'ar' : 'en');
+     }, [])
+
      return (
           <View style={styles.materialContainer}>
                <View>

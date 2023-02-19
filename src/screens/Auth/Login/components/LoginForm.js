@@ -41,6 +41,7 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
                 onChangeText={handleChange('email')}
                 value={values?.email}
                 error={errors?.email}
+                autoCapitalize={false}
                 onBlur={handleBlur('email')}
                 keyboardType={"email-address"}
                 theme={inputTheme}

@@ -61,32 +61,38 @@ export const request = async ({ url, method, headers, params }: RequestProps) =>
                     resolve(res)
                 })
                 .catch(async (error) => {
-                    if (!__DEV__) {
-                        console.log('request error', {
-                            'url': url,
-                            'error': error,
-                            'error?.response?.data ': error?.response?.data
-                        });
-                    }
+                    // console.log('error', Object.keys(error.response.data));
+                    // console.log('error', error.response.data);
+                    if (error && error?.response) {
+                        if (!__DEV__) {
+                            console.log('request error', {
+                                'url': url,
+                                'error': error,
+                                'error?.response?.data ': error?.response?.data
+                            });
+                        }
 
-                    if (error?.response?.data?.message === 'Unauthenticated.') {
-                        // Logout the user if Unauthenticated.
-                        await AsyncStorage.removeItem('token')
-                            .then(() => store.dispatch({ type: LOGOUT }))
-                            .then(() => {
-                                navigationRef.current.dispatch(
-                                    CommonActions.reset({
-                                        index: 1,
-                                        routes: [{ name: 'Auth' }]
-                                    })
-                                )
-                            })
+                        if (error?.response?.data?.message === 'Unauthenticated.') {
+                            // Logout the user if Unauthenticated.
+                            await AsyncStorage.removeItem('token')
+                                .then(() => store.dispatch({ type: LOGOUT }))
+                                .then(() => {
+                                    navigationRef.current.dispatch(
+                                        CommonActions.reset({
+                                            index: 1,
+                                            routes: [{ name: 'Auth' }]
+                                        })
+                                    )
+                                })
+                        } else {
+                            /*
+                             * returning the message came from the API.
+                             * { success: true/false, message: '...' }
+                            */
+                            reject({ message: error?.response?.data?.message })
+                        }
                     } else {
-                        /*
-                         * returning the message came from the API.
-                         * { success: true/false, message: '...' }
-                        */
-                        reject({ message: error?.response?.data?.message })
+                        reject({ message: error })
                     }
                 });
         } catch (error) {
