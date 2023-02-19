@@ -15,6 +15,8 @@ import { showMessage } from '../tools';
 import { clearErrors } from '../redux/reducers/Global/global-actions';
 import { t } from '../i18n';
 import moment from 'moment';
+import './ar-sa-mine';
+import 'moment/locale/en-gb';
 
 const MainStack = createStackNavigator();
 const MainNavigator = () => {
@@ -55,7 +57,6 @@ const MainNavigator = () => {
                 i18n.locale = "ar";
                 I18nManager.forceRTL(true);
                 I18nManager.allowRTL(true);
-                moment.locale('ar')
             }
         }
         getLange();
