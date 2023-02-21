@@ -12,6 +12,7 @@ import { TaskComponent } from '../ProjectDetails/components';
 import TouchableOpacity from '../../components/UI/TouchableOpacity';
 import { editTask } from '../../redux/reducers/Tasks/tasks-actions';
 import { navigate } from '../../navigation/RootNavigation';
+import LoadMore from '../../components/UI/LoadMore';
 
 export const EditTaskScreen = () => {
      const dispatch = useDispatch();
@@ -76,12 +77,7 @@ export const EditTaskScreen = () => {
                                         :
                                         currentTask?.materials?.map((item, index) => <MaterialComponent material={item} key={index} />)
                                    }
-                                   {currentTask?.materials?.length ?
-                                        <TouchableOpacity
-                                             onPress={loadMore}
-                                             style={styles.watchMore}>
-                                             <MyText style={styles.watchMoreText}>loadMore</MyText>
-                                        </TouchableOpacity> : null}
+                                   {currentTask?.materials?.length ? <LoadMore loadMore={loadMore} /> : null}
                                    {/* {currentTask?.materials?.map((item, index) => <MaterialComponent material={item} key={index} />)} */}
                               </View>
                               : null}

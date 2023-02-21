@@ -21,3 +21,5 @@ yarn.lock
 .env
 src/screens/Calculations/response.js
 src/screens/Calculations/response.json
+src/screens/Calculations
+src/utils/ImagePicker.ts

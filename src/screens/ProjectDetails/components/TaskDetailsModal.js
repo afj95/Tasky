@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { View, ActivityIndicator, ScrollView } from 'react-native';
+import { View, ActivityIndicator, ScrollView, I18nManager } from 'react-native';
 import MyText from '../../../components/UI/MyText';
 import Colors from '../../../utils/Colors';
 import Modal from 'react-native-modal';
 import { AntDesign, Fontisto } from '@expo/vector-icons';
 import moment from 'moment';
+import '../../../utils/ar-sa-mine';
 import TouchableOpacity from '../../../components/UI/TouchableOpacity';
 import { styles } from './TaskDetailsModalStyles';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +13,7 @@ import { clearTask, fetchTask } from '../../../redux/reducers/Tasks/tasks-action
 import { MaterialComponent } from './MaterialComponent';
 import { navigate } from '../../../navigation/RootNavigation';
 import Indicator from '../../../components/UI/Indicator';
+import LoadMore from '../../../components/UI/LoadMore';
 
 export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, checkTask }) => {
     const dispatch = useDispatch()
@@ -23,6 +25,10 @@ export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, chec
     const currentTask = useSelector((state) => state?.tasksReducer?.currentTask)
     let taskMaterials = [];
     taskMaterials = currentTask ? currentTask?.materials : [];
+
+    useEffect(() => {
+        moment.locale(I18nManager.isRTL ? 'ar-sa' : 'en');
+    }, [])
 
     useEffect(() => {
         if (visible) {
@@ -165,12 +171,7 @@ export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, chec
                                             )
                                         })}
                                     </View> */}
-                                        {taskMaterials?.length ?
-                                            <TouchableOpacity
-                                                onPress={loadMore}
-                                                style={styles.watchMore}>
-                                                <MyText style={styles.watchMoreText}>loadMore</MyText>
-                                            </TouchableOpacity> : null}
+                                        {taskMaterials?.length ? <LoadMore loadMore={loadMore} /> : null}
                                     </View>
                                     : null}
                                 {/* <View style={styles.addMaterialContainer}>

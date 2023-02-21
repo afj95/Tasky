@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react'
 import MyText from '../../../components/UI/MyText';
 import Colors from '../../../utils/Colors';
-import moment from 'moment/min/moment-with-locales';
+import moment from 'moment';
+import '../../../utils/ar-sa-mine';
 import { StyleSheet, View, I18nManager } from 'react-native';
 
 export const MaterialComponent = ({ material }) => {
 
      useEffect(() => {
-          moment.locale(I18nManager.isRTL ? 'ar' : 'en');
+          moment.locale(I18nManager.isRTL ? 'ar-sa' : 'en');
      }, [])
 
      return (
@@ -43,8 +44,9 @@ const styles = StyleSheet.create({
           fontSize: 15
      },
      materialDate: {
-          fontSize: 12,
+          fontSize: 10,
           textAlign: 'left',
+          fontFamily: 'light'
      },
      quantityContainer: {
           alignSelf: 'center',

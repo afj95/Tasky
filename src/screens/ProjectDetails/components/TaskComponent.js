@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../../components/UI/MyText';
 import { checkTask as checkTaskAction, unCheckTask } from '../../../redux/reducers/Tasks/tasks-actions';
 import Colors from '../../../utils/Colors';
-import moment from 'moment/min/moment-with-locales';
+import moment from 'moment';
 import '../../../utils/ar-sa-mine';
 import 'moment/locale/en-gb';
 import { showMessage } from '../../../tools';
@@ -122,7 +122,8 @@ const styles = StyleSheet.create({
         fontSize: 15
     }),
     taskDate: {
-        fontSize: 12
+        fontSize: 10,
+        fontFamily: 'light'
     },
     checkContainer: {
         alignSelf: 'center',

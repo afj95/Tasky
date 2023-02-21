@@ -16,6 +16,7 @@ import {
 import { showMessage } from '../../tools';
 import { clearErrors } from '../../redux/reducers/Global/global-actions';
 import { ActivityIndicator } from 'react-native-paper';
+import moment from 'moment';
 
 export const HomeScreen = () => {
   const dispatch = useDispatch()
@@ -72,12 +73,14 @@ export const HomeScreen = () => {
         <View style={{ alignItems: 'center' }}>
           <MyText style={styles.projectName} text={item?.name} />
           <MyText style={styles.projectDescription} ellipsizeMode={'tail'} numberOfLines={3} text={item?.description} />
+          <MyText style={styles.projectStartDate} text={moment(item?.start_date).fromNow()} />
         </View>
-        {item?.deleted_at ? <View style={styles.deletedIcon} /> : null}
-        {item?.status === 'finished' ? <View style={styles.finishedIcon} /> : null}
+        {/* {item?.deleted_at ? <View style={styles.deletedIcon} /> : null}
+        {item?.status === 'finished' ? <View style={styles.finishedIcon} /> : null} */}
       </TouchableOpacity>
     )
   }
+
 
   const _listHeaderComponent = () => {
     return (
@@ -214,6 +217,12 @@ const styles = StyleSheet.create({
   projectDescription: {
     fontFamily: 'light',
     fontSize: 15,
+  },
+  projectStartDate: {
+    fontFamily: 'light',
+    textAlign: 'left',
+    marginTop: 8,
+    fontSize: 10
   },
   emptyImage: {
     width: '90%',

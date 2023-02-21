@@ -5,11 +5,10 @@ import {
     StyleSheet,
     Linking,
     RefreshControl,
-    ActivityIndicator,
     I18nManager
 } from 'react-native';
 import TouchableOpacity from '../../components/UI/TouchableOpacity';
-import { AntDesign, Feather, MaterialIcons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { showMessage } from 'react-native-flash-message';
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../components/UI/MyText';
@@ -22,6 +21,8 @@ import { restProjectTasks } from '../../redux/reducers/Tasks/tasks-actions';
 import { navigate } from '../../navigation/RootNavigation';
 import { t } from '../../i18n';
 import Indicator from '../../components/UI/Indicator';
+import LoadMore from '../../components/UI/LoadMore';
+import moment from 'moment';
 
 export const ProjectDetails = (props) => {
     const dispatch = useDispatch();
@@ -92,7 +93,7 @@ export const ProjectDetails = (props) => {
             {errors?.project || errors?.project_tasks ? <ErrorHappened /> :
                 <>
                     {loadings?.project ?
-                        <ActivityIndicator size={'small'} color={Colors.primary} style={{ flex: 1, alignSelf: 'center' }} />
+                        <Indicator size={'small'} animating={loadings?.project} style={{ flex: 1 }} />
                         :
                         <View style={styles.detailsContainer}>
                             {/* {project?.status === 'finished' && <View style={styles.deleted} />} */}
@@ -111,7 +112,8 @@ export const ProjectDetails = (props) => {
                                     />
                                 }>
                                 {project?.name ? <View style={styles.nameContainer}>
-                                    <MyText text={`${project?.name}`} />
+                                    <MyText text={project?.name} />
+                                    <MyText style={styles.projectStartDate} text={moment(project?.start_date).fromNow()} />
                                 </View> : null}
                                 {project?.user ?
                                     <View style={styles.supervisorContainer}>
@@ -149,13 +151,7 @@ export const ProjectDetails = (props) => {
                                             :
                                             projectMaterials?.map((item, index) => <MaterialComponent material={item} key={index} />)
                                         }
-                                        {projectMaterials?.length ?
-                                            <TouchableOpacity
-                                                onPress={loadMore}
-                                                style={styles.watchMore}>
-                                                <MyText style={styles.watchMoreText}>loadMore</MyText>
-                                            </TouchableOpacity>
-                                            : null}
+                                        {projectMaterials?.length ? <LoadMore loadMore={loadMore} /> : null}
                                     </View>
                                     : null
                                 }
@@ -237,7 +233,16 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderTopEndRadius: 8,
-        borderTopStartRadius: 8
+        borderTopStartRadius: 8,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    projectStartDate: {
+        fontFamily: 'light',
+        textAlign: 'left',
+        marginTop: 8,
+        fontSize: 10
     },
     supervisorContainer: {
         backgroundColor: Colors.white,
