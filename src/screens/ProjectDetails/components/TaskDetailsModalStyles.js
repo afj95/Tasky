@@ -114,10 +114,10 @@ export const styles = StyleSheet.create({
           width: '100%',
           alignSelf: 'center',
           paddingBottom: 8,
-          paddingHorizontal: 10,
           paddingTop: 5,
      },
      materialsLabelContainer: {
+          paddingHorizontal: 10,
           alignItems: 'center',
           justifyContent: 'space-between',
           flexDirection: 'row'

@@ -78,7 +78,6 @@ export const EditTaskScreen = () => {
                                         currentTask?.materials?.map((item, index) => <MaterialComponent material={item} key={index} />)
                                    }
                                    {currentTask?.materials?.length ? <LoadMore loadMore={loadMore} /> : null}
-                                   {/* {currentTask?.materials?.map((item, index) => <MaterialComponent material={item} key={index} />)} */}
                               </View>
                               : null}
                          <View style={styles.inputContainer}>
