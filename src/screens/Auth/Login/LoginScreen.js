@@ -69,7 +69,7 @@ export const LoginScreen = ({ navigation }) => {
         password: '',
     }
     const devInitialValues = {
-        email: 'ahmad@gmail.com',
+        email: 'ahmad@o-ct.com',
         password: '12341234',
     }
 

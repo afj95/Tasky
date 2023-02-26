@@ -23,10 +23,14 @@ export const resetProject = () => ({
     type: RESET_PROJECT
 })
 
-export const fetchProjects = (status = '', deleted = false, loadMore = false, page = 1, perPage = 10) => {
+export const fetchProjects = (status = '', deleted = false, loadMore = false, page = 1, perPage = 10, refresh) => {
     return async (dispatch) => {
         try {
-            dispatch(setLoading({ 'projects': true }))
+            if (refresh) {
+                dispatch(setLoading({ 'projects_refresh': true }))
+            } else {
+                dispatch(setLoading({ 'projects': true }))
+            }
 
             const fetchingProjectsRes = await request({
                 url: `projects?status=${status}&deleted=${deleted}&page=${page}&perPage=${perPage}`,

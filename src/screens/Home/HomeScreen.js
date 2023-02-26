@@ -47,12 +47,12 @@ export const HomeScreen = () => {
   }, [errors?.projects])
 
   useEffect(() => {
-    dispatch(fetchProjects(status, deleted, false, page, 5))
+    dispatch(fetchProjects(status, deleted, false, page, 5, false))
   }, [status, deleted])
 
   const _onRefresh = () => {
     setPage(1)
-    dispatch(fetchProjects(status, deleted, false, 1, 5))
+    dispatch(fetchProjects(status, deleted, false, 1, 5, true))
   }
 
   const onProjectPressed = (item) => {
@@ -73,6 +73,7 @@ export const HomeScreen = () => {
         <View style={{ alignItems: 'center' }}>
           <MyText style={styles.projectName} text={item?.name} />
           <MyText style={styles.projectDescription} ellipsizeMode={'tail'} numberOfLines={3} text={item?.description} />
+          <View style={styles.seperator} />
           <MyText style={styles.projectStartDate} text={moment(item?.start_date).fromNow()} />
         </View>
         {/* {item?.deleted_at ? <View style={styles.deletedIcon} /> : null}
@@ -108,7 +109,7 @@ export const HomeScreen = () => {
   const loadMore = async () => {
     let nextPage = page + 1;
     setLoadMore(true)
-    await dispatch(fetchProjects(status, deleted, true, nextPage, 5))
+    await dispatch(fetchProjects(status, deleted, true, nextPage, 5, true))
     setLoadMore(false)
     setPage(nextPage)
   }
@@ -145,19 +146,25 @@ export const HomeScreen = () => {
       </View>
 
       <View style={styles.projectsContainer}>
-        <FlatList
-          contentContainerStyle={{ paddingBottom: projects?.length ? 30 : 0, flex: projects?.length ? 0 : 1 }}
-          style={{ flex: 1 }}
-          keyExtractor={(item, index) => '#' + index.toString()}
-          data={projects}
-          ListHeaderComponent={user?.role === 'admin' ? _listHeaderComponent : null}
-          ListEmptyComponent={_listEmptyComponent}
-          ListFooterComponent={projects?.length ? _listFooterComponent : null}
-          showsVerticalScrollIndicator={false}
-          onRefresh={_onRefresh}
-          refreshing={false}
-          renderItem={_renderItem}
-        />
+        {loadings?.projects ? null :
+          <FlatList
+            contentContainerStyle={{ paddingBottom: projects?.length ? 30 : 0, flex: projects?.length ? 0 : 1 }}
+            style={{ flex: 1 }}
+            keyExtractor={(item, index) => '#' + index.toString()}
+            data={projects}
+            ListHeaderComponent={user?.role === 'admin' ? _listHeaderComponent : null}
+            ListEmptyComponent={_listEmptyComponent}
+            ListFooterComponent={projects?.length ? _listFooterComponent : null}
+            showsVerticalScrollIndicator={false}
+            onRefresh={_onRefresh}
+            refreshing={false}
+            renderItem={_renderItem}
+          />}
+        {loadings?.projects ?
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator color={Colors.primary} size={'small'} animating={loadings?.project} style={{ flex: 1 }} />
+          </View> : null
+        }
       </View>
       <FilterModal
         visible={filterVisible}
@@ -194,6 +201,14 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%'
   },
+  loadingContainer: {
+    position: 'absolute',
+    justifyContent: 'center',
+    top: 0,
+    bottom: 0,
+    start: 0,
+    end: 0,
+  },
   footerContainer: {
     paddingVertical: 5,
     justifyContent: 'center',
@@ -217,6 +232,11 @@ const styles = StyleSheet.create({
   projectDescription: {
     fontFamily: 'light',
     fontSize: 15,
+  },
+  seperator: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    width: '100%'
   },
   projectStartDate: {
     fontFamily: 'light',

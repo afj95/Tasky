@@ -26,7 +26,14 @@ export const TaskComponent = ({ task, project_id, onPress }) => {
     const [detailsModal, setDetailsModal] = useState(false);
 
     useEffect(() => {
-        moment.locale(I18nManager.isRTL ? 'ar' : 'en');
+        function changeMomentLocale() {
+            try {
+                moment.locale(I18nManager.isRTL ? 'ar-sa' : 'en');
+            } catch (error) {
+                alert('error while changing moment locale ' + error)
+            }
+        }
+        changeMomentLocale()
     }, [])
 
     useEffect(() => {

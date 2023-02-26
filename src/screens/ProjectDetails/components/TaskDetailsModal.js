@@ -27,7 +27,14 @@ export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, chec
     taskMaterials = currentTask ? currentTask?.materials : [];
 
     useEffect(() => {
-        moment.locale(I18nManager.isRTL ? 'ar-sa' : 'en');
+        function changeMomentLocale() {
+            try {
+                moment.locale(I18nManager.isRTL ? 'ar-sa' : 'en');
+            } catch (error) {
+                alert('error while changing moment locale ' + error)
+            }
+        }
+        changeMomentLocale()
     }, [])
 
     useEffect(() => {

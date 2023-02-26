@@ -5,7 +5,8 @@ import {
     StyleSheet,
     Linking,
     RefreshControl,
-    I18nManager
+    I18nManager,
+    ActivityIndicator
 } from 'react-native';
 import TouchableOpacity from '../../components/UI/TouchableOpacity';
 import { Feather } from '@expo/vector-icons';
@@ -60,7 +61,7 @@ export const ProjectDetails = (props) => {
         dispatch(clearErrors());
         dispatch(fetchOneProject(id, false))
         return () => {
-            dispatch(fetchProjects(status, deleted, false, 1, 5))
+            dispatch(fetchProjects(status, deleted, false, 1, 5, true))
             dispatch(resetProject())
             dispatch(restProjectTasks())
         }
@@ -93,7 +94,7 @@ export const ProjectDetails = (props) => {
             {errors?.project || errors?.project_tasks ? <ErrorHappened /> :
                 <>
                     {loadings?.project ?
-                        <Indicator size={'small'} animating={loadings?.project} style={{ flex: 1 }} />
+                        <ActivityIndicator color={Colors.primary} size={'small'} animating={loadings?.project} style={{ flex: 1 }} />
                         :
                         <View style={styles.detailsContainer}>
                             {/* {project?.status === 'finished' && <View style={styles.deleted} />} */}
