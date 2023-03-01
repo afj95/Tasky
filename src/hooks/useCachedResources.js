@@ -19,7 +19,6 @@ export default useCachedResources = () => {
                 console.warn(error);
             } finally {
                 setLoadingComplete(true)
-                // SplashScreen.hideAsync();
             }
         }
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     ScrollView,
     View,
@@ -9,7 +9,7 @@ import {
     ActivityIndicator
 } from 'react-native';
 import TouchableOpacity from '../../components/UI/TouchableOpacity';
-import { Feather } from '@expo/vector-icons';
+import { AntDesign, Feather } from '@expo/vector-icons';
 import { showMessage } from 'react-native-flash-message';
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../components/UI/MyText';
@@ -21,7 +21,6 @@ import { clearErrors } from '../../redux/reducers/Global/global-actions';
 import { restProjectTasks } from '../../redux/reducers/Tasks/tasks-actions';
 import { navigate } from '../../navigation/RootNavigation';
 import { t } from '../../i18n';
-import Indicator from '../../components/UI/Indicator';
 import LoadMore from '../../components/UI/LoadMore';
 import moment from 'moment';
 
@@ -31,6 +30,8 @@ export const ProjectDetails = (props) => {
     const { id, status, deleted } = props?.route?.params
 
     // const [optionsModal, setOptionsModal] = useState(false);
+    const [uncheckedHeight, setUncheckedHeight] = useState(false);
+    const [checkedHeight, setCheckedHeight] = useState(false);
 
     const errors = useSelector((state) => state?.globalReducer?.errors)
     const loadings = useSelector((state) => state?.globalReducer?.loadings)
@@ -41,6 +42,16 @@ export const ProjectDetails = (props) => {
     const projectCheckedTasks = useSelector((state) => state?.tasksReducer?.projectCheckedTasks);
     let projectMaterials = [];
     projectMaterials = project ? project?.materials : [];
+
+    useEffect(() => {
+        dispatch(clearErrors());
+        dispatch(fetchOneProject(id, false))
+        return () => {
+            dispatch(fetchProjects(status, deleted, false, 1, 5, true))
+            dispatch(resetProject())
+            dispatch(restProjectTasks())
+        }
+    }, [])
 
     useEffect(() => {
         if (errors?.project) {
@@ -56,16 +67,6 @@ export const ProjectDetails = (props) => {
             })
         }
     }, [errors?.project, errors?.project_tasks])
-
-    useEffect(() => {
-        dispatch(clearErrors());
-        dispatch(fetchOneProject(id, false))
-        return () => {
-            dispatch(fetchProjects(status, deleted, false, 1, 5, true))
-            dispatch(resetProject())
-            dispatch(restProjectTasks())
-        }
-    }, [])
 
     const onRefresh = () => dispatch(fetchOneProject(id, true))
 
@@ -157,14 +158,20 @@ export const ProjectDetails = (props) => {
                                     : null
                                 }
 
-                                {loadings?.project_tasks ? <Indicator animating={loadings?.project_tasks} /> :
+                                {loadings?.project_tasks ? <ActivityIndicator animating={loadings?.project_tasks} /> :
                                     <>
                                         {projectTasks?.length ?
                                             <View style={styles.tasksContainer}>
-                                                <View style={styles.tasksLabelContainer}>
-                                                    <MyText style={styles.label}>tasks</MyText>
-                                                </View>
-                                                {projectTasks?.map((task, index) =>
+                                                <TouchableOpacity
+                                                    onPress={() => setUncheckedHeight(!uncheckedHeight)}
+                                                    style={styles.tasksLabelContainer}>
+                                                    <View style={styles.tasksLabelLengthContainer}>
+                                                        <MyText style={styles.label}>unChecked</MyText>
+                                                        <MyText style={styles.tasksLength} text={projectTasks?.length} />
+                                                    </View>
+                                                    <AntDesign name={uncheckedHeight ? 'down' : 'up'} color={Colors.primary} />
+                                                </TouchableOpacity>
+                                                {uncheckedHeight && projectTasks?.map((task, index) =>
                                                     <TaskComponent
                                                         task={task}
                                                         project_id={id}
@@ -176,11 +183,17 @@ export const ProjectDetails = (props) => {
                                             </View>
                                             : null}
                                         {projectCheckedTasks?.length ?
-                                            <View style={[styles.tasksContainer, { marginTop: 20 }]}>
-                                                <View style={styles.tasksLabelContainer}>
-                                                    <MyText style={styles.label}>checkedTasks</MyText>
-                                                </View>
-                                                {projectCheckedTasks?.map((task, index) =>
+                                            <View style={[styles.tasksContainer, { marginTop: 5 }]}>
+                                                <TouchableOpacity
+                                                    onPress={() => setCheckedHeight(!checkedHeight)}
+                                                    style={styles.tasksLabelContainer}>
+                                                    <View style={styles.tasksLabelLengthContainer}>
+                                                        <MyText style={styles.label}>checked</MyText>
+                                                        <MyText style={styles.tasksLength} text={projectCheckedTasks?.length} />
+                                                    </View>
+                                                    <AntDesign name={checkedHeight ? 'down' : 'up'} color={Colors.primary} />
+                                                </TouchableOpacity>
+                                                {checkedHeight && projectCheckedTasks?.map((task, index) =>
                                                     <TaskComponent
                                                         task={task}
                                                         project_id={id}
@@ -217,7 +230,7 @@ const styles = StyleSheet.create({
         paddingTop: 2,
         paddingHorizontal: 10,
     },
-    scrollContainer: { paddingBottom: 120 },
+    scrollContainer: { paddingBottom: 50 },
     status: {
         width: '100%',
         height: 20,
@@ -329,9 +342,21 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'row'
     },
+    tasksLabelLengthContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    tasksLength: {
+        fontSize: 12,
+        fontFamily: 'bold',
+        marginStart: 8,
+        color: Colors.primary,
+        opacity: 0.5
+    },
     label: {
         fontFamily: 'bold',
-        color: Colors.primary
+        color: Colors.primary,
+        marginVertical: 5,
     },
     watchMore: {
         justifyContent: 'center',

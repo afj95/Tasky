@@ -73,7 +73,12 @@ export const TaskComponent = ({ task, project_id, onPress }) => {
             style={styles.taskContainer(task?.priority)}
             onPress={onPress ? openTaskDetailsModal : null}>
             <View>
-                <MyText style={styles.taskText(task?.checked)} numberOfLines={3} text={`${task?.title}`} />
+                <MyText
+                    style={styles.taskText(task?.checked)}
+                    numberOfLines={3}
+                    ellipsizeMode={'tail'}
+                    text={`${task?.title}`}
+                />
                 <MyText style={styles.taskDate} text={moment(task?.date).fromNow()} />
             </View>
             <View style={styles.checkContainer}>
@@ -126,7 +131,8 @@ const styles = StyleSheet.create({
         textDecorationStyle: 'solid',
         width: '80%',
         alignSelf: 'flex-start',
-        fontSize: 15
+        fontSize: 15,
+        fontFamily: 'light'
     }),
     taskDate: {
         fontSize: 10,

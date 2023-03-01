@@ -26,9 +26,6 @@ export default function App() {
         </Provider>
       </SafeAreaProvider>
     )
-  } else {
-    return (
-      null
-    )
-  }
+  } else return null
+
 }

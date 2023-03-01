@@ -37,7 +37,6 @@ export default {
         add: "Add",
         task: "Task",
         tasks: "Tasks",
-        checkedTasks: "Checked Tasks",
         tasksHelp: "Add tasks by clicking on add button below",
         changeLangAlertTitle: "Changing language",
         changeLangMessage: "The application will be restarted to change the language",
