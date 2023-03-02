@@ -137,13 +137,14 @@ const styles = StyleSheet.create({
      },
      subContainer: {
           flex: 1,
-          marginHorizontal: 10,
+          // paddingHorizontal: 10,
           marginTop: 5
      },
      materialsLabelContainer: {
           alignItems: 'center',
           justifyContent: 'space-between',
-          flexDirection: 'row'
+          flexDirection: 'row',
+          paddingHorizontal: 10,
      },
      label: {
           fontFamily: 'bold',
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
      },
      floatingContainer: {
           position: 'absolute',
-          bottom: 0,
+          bottom: 10,
           height: 50,
           width: '100%',
           backgroundColor: Colors.white,

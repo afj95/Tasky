@@ -37,7 +37,6 @@ export default {
         add: "إضافة",
         task: "المهمة",
         tasks: "المهام",
-        checkedTasks: "المهام المنجزة",
         tasksHelp: "قم بإضافة المهام بالضغط على زر إضافة أسفل الشاشة",
         changeLangAlertTitle: "تغيير لغة التطبيق",
         changeLangMessage: "سيتم إعادة تشغيل التطبيق لتغيير اللغة ؟",

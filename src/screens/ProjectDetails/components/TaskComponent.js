@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Fontisto } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../../components/UI/MyText';
-import { checkTask as checkTaskAction, fetchTask, unCheckTask } from '../../../redux/reducers/Tasks/tasks-actions';
+import { checkTask as checkTaskAction, unCheckTask } from '../../../redux/reducers/Tasks/tasks-actions';
 import Colors from '../../../utils/Colors';
 import moment from 'moment';
 import '../../../utils/ar-sa-mine';
@@ -12,11 +12,7 @@ import { clearErrors } from '../../../redux/reducers/Global/global-actions';
 import TouchableOpacity from '../../../components/UI/TouchableOpacity';
 import { TaskDetailsModal } from './TaskDetailsModal';
 import { fetchOneProject } from '../../../redux/reducers/Projects/projects-actions';
-import {
-    ActivityIndicator,
-    StyleSheet,
-    View
-} from 'react-native';
+import { I18nManager, StyleSheet, View } from 'react-native';
 import Indicator from '../../../components/UI/Indicator';
 
 export const TaskComponent = ({ task, project_id, onPress }) => {
@@ -28,6 +24,17 @@ export const TaskComponent = ({ task, project_id, onPress }) => {
     const [checkLoading, setCheckLoading] = useState(false);
     // const [deleteLoading, setDeleteLoading] = useState(false);
     const [detailsModal, setDetailsModal] = useState(false);
+
+    useEffect(() => {
+        function changeMomentLocale() {
+            try {
+                moment.locale(I18nManager.isRTL ? 'ar-sa' : 'en');
+            } catch (error) {
+                alert('error while changing moment locale ' + error)
+            }
+        }
+        changeMomentLocale()
+    }, [])
 
     useEffect(() => {
         if (errors?.project_tasks) {
@@ -66,7 +73,12 @@ export const TaskComponent = ({ task, project_id, onPress }) => {
             style={styles.taskContainer(task?.priority)}
             onPress={onPress ? openTaskDetailsModal : null}>
             <View>
-                <MyText style={styles.taskText(task?.checked)} numberOfLines={3} text={`${task?.title}`} />
+                <MyText
+                    style={styles.taskText(task?.checked)}
+                    numberOfLines={3}
+                    ellipsizeMode={'tail'}
+                    text={`${task?.title}`}
+                />
                 <MyText style={styles.taskDate} text={moment(task?.date).fromNow()} />
             </View>
             <View style={styles.checkContainer}>
@@ -106,7 +118,7 @@ const styles = StyleSheet.create({
         fontSize: 13,
         width: '100%',
         paddingVertical: 5,
-        marginVertical: 2,
+        marginTop: 5,
         justifyContent: 'space-between',
         flexDirection: 'row',
         borderStartColor: priority === 'high' ? Colors.red : priority === 'mid' ? 'yellow' : 'green',
@@ -119,10 +131,12 @@ const styles = StyleSheet.create({
         textDecorationStyle: 'solid',
         width: '80%',
         alignSelf: 'flex-start',
-        fontSize: 15
+        fontSize: 15,
+        fontFamily: 'light'
     }),
     taskDate: {
-        fontSize: 12
+        fontSize: 10,
+        fontFamily: 'light'
     },
     checkContainer: {
         alignSelf: 'center',

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "MyProjects",
-    "slug": "MyProjects",
+    "name": "Tasky",
+    "slug": "Tasky",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
@@ -12,7 +12,7 @@
     },
     "updates": {
       "fallbackToCacheTimeout": 30000,
-      "url": "https://u.expo.dev/e7af56b2-434a-417b-8fd3-e8a13df85ee5"
+      "url": "https://u.expo.dev/03487d23-8ffc-440b-995c-ee2cb7944a79"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -24,22 +24,22 @@
     "android": {
       "jsEngine": "hermes",
       "permissions": [],
-      "versionCode": 9,
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png"
       },
-      "package": "com.ahmad.myProjects"
+      "package": "com.ahmad.tasky"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {
-      "eas": {
-        "projectId": "e7af56b2-434a-417b-8fd3-e8a13df85ee5"
-      }
-    },
     "runtimeVersion": {
       "policy": "sdkVersion"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "03487d23-8ffc-440b-995c-ee2cb7944a79"
+      }
     }
   }
 }

@@ -12,6 +12,7 @@ import { TaskComponent } from '../ProjectDetails/components';
 import TouchableOpacity from '../../components/UI/TouchableOpacity';
 import { editTask } from '../../redux/reducers/Tasks/tasks-actions';
 import { navigate } from '../../navigation/RootNavigation';
+import LoadMore from '../../components/UI/LoadMore';
 
 export const EditTaskScreen = () => {
      const dispatch = useDispatch();
@@ -44,7 +45,7 @@ export const EditTaskScreen = () => {
      const loadMore = () => navigate('MaterialsScreen', { materials: currentTask?.materials, screen: 'task', task: currentTask })
 
      return (
-          <View style={{ flex: 1 }}>
+          <View style={styles.editTaskContainer}>
                <Header showGoBackButton text={'updateTask'} />
                <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
                     <View style={{ paddingHorizontal: 10 }}>
@@ -76,13 +77,7 @@ export const EditTaskScreen = () => {
                                         :
                                         currentTask?.materials?.map((item, index) => <MaterialComponent material={item} key={index} />)
                                    }
-                                   {currentTask?.materials?.length > 5 ?
-                                        <TouchableOpacity
-                                             onPress={loadMore}
-                                             style={styles.watchMore}>
-                                             <MyText style={styles.watchMoreText}>loadMore</MyText>
-                                        </TouchableOpacity> : null}
-                                   {/* {currentTask?.materials?.map((item, index) => <MaterialComponent material={item} key={index} />)} */}
+                                   {currentTask?.materials?.length ? <LoadMore loadMore={loadMore} /> : null}
                               </View>
                               : null}
                          <View style={styles.inputContainer}>

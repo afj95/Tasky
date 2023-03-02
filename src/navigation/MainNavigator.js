@@ -6,11 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../components/Loaders/Loader';
 import { ErrorScreen } from '../screens/ErrorScreen';
-import { i18n } from '../i18n';
 // Navigators
 import { AuthStackScreens, MainStackScreens } from './Navigators';
 import FlashMessage from 'react-native-flash-message';
-import { I18nManager } from 'react-native';
 import { showMessage } from '../tools';
 import { clearErrors } from '../redux/reducers/Global/global-actions';
 import { t } from '../i18n';
@@ -34,28 +32,6 @@ const MainNavigator = () => {
         }
         dispatch(clearErrors());
     }, [errors])
-
-    useEffect(() => {
-        const getLange = async () => {
-            try {
-                const lang = await AsyncStorage.getItem('lang')
-                if (lang !== null) {
-                    i18n.locale = lang;
-                    I18nManager.forceRTL(lang === 'ar');
-                    I18nManager.allowRTL(lang === 'ar');
-                } else {
-                    i18n.locale = "ar";
-                    I18nManager.forceRTL(true);
-                    I18nManager.allowRTL(true);
-                }
-            } catch (error) {
-                i18n.locale = "ar";
-                I18nManager.forceRTL(true);
-                I18nManager.allowRTL(true);
-            }
-        }
-        getLange();
-    }, [])
 
     useEffect(() => {
         const getToken = async () => {

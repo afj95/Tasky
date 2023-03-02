@@ -37,7 +37,7 @@
             '0': '0',
         };
 
-    var arSa = moment.defineLocale('ar-sa', {
+    var arSa = moment.updateLocale('ar-sa', {
         months: 'يناير_فبراير_مارس_أبريل_مايو_يونيو_يوليو_أغسطس_سبتمبر_أكتوبر_نوفمبر_ديسمبر'.split(
             '_'
         ),
@@ -77,7 +77,7 @@
             sameElse: 'L',
         },
         relativeTime: {
-            future: 'في %s',
+            future: 'بعد %s',
             past: 'منذ %s',
             s: 'ثوان',
             ss: '%d ثانية',
@@ -86,11 +86,11 @@
             h: 'ساعة',
             hh: '%d ساعات',
             d: 'يوم',
-            dd: '%d أيام',
+            dd: '%d يوم',
             M: 'شهر',
             MM: '%d أشهر',
             y: 'سنة',
-            yy: '%d سنوات',
+            yy: '%d سنة',
         },
         preparse: function (string) {
             return string
