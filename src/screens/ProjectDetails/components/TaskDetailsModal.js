@@ -6,7 +6,6 @@ import Modal from 'react-native-modal';
 import { AntDesign, Fontisto } from '@expo/vector-icons';
 import moment from 'moment';
 import '../../../utils/ar-sa-mine';
-import TouchableOpacity from '../../../components/UI/TouchableOpacity';
 import { styles } from './TaskDetailsModalStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearTask, fetchTask } from '../../../redux/reducers/Tasks/tasks-actions';
@@ -209,11 +208,6 @@ export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, chec
                                 </View>
                             </>
                         }
-                        <View style={styles.buttonsContainer}>
-                            <TouchableOpacity onPress={closeModal} style={styles.cancelButton}>
-                                <MyText style={styles.cancelText}>close</MyText>
-                            </TouchableOpacity>
-                        </View>
                     </ScrollView>}
             </View>
         </Modal>
