@@ -93,14 +93,14 @@ export const styles = StyleSheet.create({
           borderRadius: 8
      },
      taskText: (checked) => ({
+          textAlign: 'left',
           textDecorationLine: checked ? 'line-through' : 'none',
           textDecorationColor: Colors.text,
           color: checked ? Colors.primary : Colors.text,
           textDecorationStyle: 'solid',
-          width: '80%',
           alignSelf: 'flex-start',
           fontSize: 15,
-          fontFamily: 'bold'
+          fontFamily: 'light'
      }),
      checkContainer: {
           alignSelf: 'center',

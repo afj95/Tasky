@@ -9,6 +9,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from "./src/redux";
 import Loader from "./src/components/Loaders/Loader";
 import MainNavigator from "./src/navigation/MainNavigator";
+import Colors from './src/utils/Colors';
 
 export default function App() {
 
@@ -21,7 +22,7 @@ export default function App() {
         <Provider store={store}>
           <PersistGate loading={<Loader />} persistor={persistor}>
             <MainNavigator />
-            <StatusBar style={'auto'} />
+            <StatusBar style={'light'} backgroundColor={Colors.primary} />
           </PersistGate>
         </Provider>
       </SafeAreaProvider>
