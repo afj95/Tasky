@@ -1,3 +1,4 @@
+import { showMessage } from 'react-native-flash-message';
 import { request } from '../../../tools';
 import { setLoading, stopLoading } from '../Global/global-actions';
 import {
@@ -93,6 +94,11 @@ export const editTask = (task, params) => {
                     ...task,
                     ...params
                 }
+            })
+
+            showMessage({
+                message: editTaskRes.data?.message,
+                type: 'success'
             })
 
             dispatch(stopLoading());

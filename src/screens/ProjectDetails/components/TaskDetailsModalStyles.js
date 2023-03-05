@@ -18,6 +18,9 @@ export const styles = StyleSheet.create({
           flex: 1,
           backgroundColor: Colors.appWhite
      },
+     container: {
+          flex: 1
+     },
      modal: {
           margin: 0,
           justifyContent: 'flex-end'
@@ -90,14 +93,14 @@ export const styles = StyleSheet.create({
           borderRadius: 8
      },
      taskText: (checked) => ({
+          textAlign: 'left',
           textDecorationLine: checked ? 'line-through' : 'none',
           textDecorationColor: Colors.text,
           color: checked ? Colors.primary : Colors.text,
           textDecorationStyle: 'solid',
-          width: '80%',
           alignSelf: 'flex-start',
           fontSize: 15,
-          fontFamily: 'bold'
+          fontFamily: 'light'
      }),
      checkContainer: {
           alignSelf: 'center',
@@ -211,41 +214,5 @@ export const styles = StyleSheet.create({
      percentageText: {
           fontSize: 18,
           color: Colors.primary
-     },
-     buttonsContainer: {
-          marginTop: 5,
-          flexDirection: 'row-reverse',
-          alignItems: 'center',
-          justifyContent: 'space-between'
-     },
-     submitButton: {
-          backgroundColor: Colors.primary,
-          height: 40,
-          width: 140,
-          borderRadius: 8,
-          marginTop: 5,
-          alignItems: 'center',
-          justifyContent: 'center'
-     },
-     submitText: {
-          fontFamily: 'light',
-          color: Colors.appWhite,
-          fontSize: 15
-     },
-     cancelButton: {
-          backgroundColor: Colors.white,
-          height: 40,
-          width: 140,
-          borderRadius: 8,
-          marginTop: 5,
-          borderColor: Colors.secondary,
-          borderWidth: 1,
-          alignItems: 'center',
-          justifyContent: 'center'
-     },
-     cancelText: {
-          fontFamily: 'light',
-          color: Colors.primary,
-          fontSize: 15
-     },
+     }
 });

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, ActivityIndicator, ScrollView } from 'react-native';
+import { KeyboardAvoidingView, Platform, View, ActivityIndicator, ScrollView } from 'react-native';
 import MyText from '../../components/UI/MyText';
 import Colors from '../../utils/Colors';
 import { TextInput } from 'react-native-paper';
@@ -13,15 +13,17 @@ import TouchableOpacity from '../../components/UI/TouchableOpacity';
 import { editTask } from '../../redux/reducers/Tasks/tasks-actions';
 import { navigate } from '../../navigation/RootNavigation';
 import LoadMore from '../../components/UI/LoadMore';
+import { showMessage } from 'react-native-flash-message';
 
 export const EditTaskScreen = () => {
      const dispatch = useDispatch();
 
      const loadings = useSelector((state) => state?.globalReducer?.loadings)
+     const errors = useSelector((state) => state?.globalReducer?.errors)
      const currentTask = useSelector((state) => state?.tasksReducer?.currentTask)
 
-     const [employeesQuantity, setEmployeesQuantity] = useState('0');
-     const [workProgress, setWorkProgress] = useState('0');
+     const [employeesQuantity, setEmployeesQuantity] = useState(currentTask?.current_employees_quantity);
+     const [workProgress, setWorkProgress] = useState(currentTask?.work_progress);
 
      const inputTheme = {
           colors: {
@@ -32,12 +34,22 @@ export const EditTaskScreen = () => {
           roundness: 8
      }
 
+     // useEffect(() => {
+     //      if (errors?.edit_task) {
+     //           showMessage({
+     //                message: errors?.edit_task,
+     //                type: 'danger'
+     //           })
+     //      }
+     //      // TODO: reset errors
+     // }, [errors?.edit_task])
+
      const editTaskButton = () => {
           if (employeesQuantity !== '0' || workProgress !== '0') {
                let current_employees_quantity = Number(employeesQuantity), work_progress = Number(workProgress);
                dispatch(editTask(currentTask, {
-                    employees_quantity: current_employees_quantity,
-                    work_progress: work_progress
+                    current_employees_quantity,
+                    work_progress
                }))
           }
      }
@@ -45,7 +57,7 @@ export const EditTaskScreen = () => {
      const loadMore = () => navigate('MaterialsScreen', { materials: currentTask?.materials, screen: 'task', task: currentTask })
 
      return (
-          <View style={styles.editTaskContainer}>
+          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : 'height'} style={styles.editTaskContainer}>
                <Header showGoBackButton text={'updateTask'} />
                <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
                     <View style={{ paddingHorizontal: 10 }}>
@@ -92,7 +104,7 @@ export const EditTaskScreen = () => {
                                    fontFamily={'light'}
                                    keyboardType={"decimal-pad"}
                                    theme={inputTheme}
-                                   defaultValue={'0'}
+                                   defaultValue={employeesQuantity + ''}
                                    value={employeesQuantity}
                                    onChangeText={text => setEmployeesQuantity(text)}
                                    disabled={currentTask?.checked}
@@ -125,6 +137,6 @@ export const EditTaskScreen = () => {
                          </View>
                     </View>
                </ScrollView>
-          </View>
+          </KeyboardAvoidingView>
      )
 }

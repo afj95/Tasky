@@ -7,17 +7,6 @@ import { StyleSheet, View, I18nManager } from 'react-native';
 
 export const MaterialComponent = ({ material }) => {
 
-     useEffect(() => {
-          function changeMomentLocale() {
-               try {
-                    moment.locale(I18nManager.isRTL ? 'ar-sa' : 'en');
-               } catch (error) {
-                    alert('error while changing moment locale ' + error)
-               }
-          }
-          changeMomentLocale()
-     }, [])
-
      return (
           <View style={styles.materialContainer}>
                <View>
