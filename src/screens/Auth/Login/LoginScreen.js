@@ -65,22 +65,29 @@ export const LoginScreen = ({ navigation }) => {
     }, [errors, user])
 
     const initialValues = {
-        email: '',
+        phone_number: '',
         password: '',
     }
     const devInitialValues = {
-        email: 'ahmad@o-ct.com',
+        phone_number: '0531119339',
         password: '12341234',
     }
 
     const onSubmit = (values) => {
-        dispatch(login(values.email, values.password))
+        dispatch(login(values.phone_number, values.password))
     }
 
     const validate = (values) => {
         const errors = {}
-        if (!values.email) {
-            errors.email = 'required';
+        if (isNaN(values.phone_number)) {
+            errors.phone_number = 'phoneNumbersOnlyNums'
+        } else if (values.phone_number?.charAt(0) !== '0') {
+            errors.phone_number = 'phonneNumstart'
+        } else if (values.phone_number?.length < 10) {
+            errors.phone_number = 'phoneNumlength'
+        }
+        if (!values.phone_number) {
+            errors.phone_number = 'required';
         }
         // Checking password
         if (!values.password) {

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { Provider } from "react-redux";
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor, store } from "../redux";
+import Loader from "../components/Loaders/Loader";
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { navigationRef } from './RootNavigation';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Loader from '../components/Loaders/Loader';
 import { ErrorScreen } from '../screens/ErrorScreen';
 // Navigators
 import { AuthStackScreens, MainStackScreens } from './Navigators';
@@ -13,8 +16,19 @@ import { showMessage } from '../tools';
 import { clearErrors } from '../redux/reducers/Global/global-actions';
 import { t } from '../i18n';
 
+export default function MainNavigator() {
+    return (
+        <Provider store={store}>
+            <PersistGate loading={<Loader />} persistor={persistor}>
+                <NavigationContainer ref={navigationRef}>
+                    <ScreensNavigator />
+                </NavigationContainer>
+            </PersistGate>
+        </Provider>
+    );
+}
 const MainStack = createStackNavigator();
-const MainNavigator = () => {
+const ScreensNavigator = () => {
     const dispatch = useDispatch();
 
     const [initialRouteName, setInitialRouteName] = useState('');
@@ -63,7 +77,7 @@ const MainNavigator = () => {
         }
     } else {
         return (
-            <NavigationContainer ref={navigationRef}>
+            <>
                 <MainStack.Navigator
                     initialRouteName={initialRouteName}
                     screenOptions={{ headerShown: false }}>
@@ -71,9 +85,7 @@ const MainNavigator = () => {
                     <MainStack.Screen name={'Home'} component={MainStackScreens} />
                 </MainStack.Navigator>
                 <FlashMessage ref={ref => (global["flash"] = ref)} position="top" />
-            </NavigationContainer>
+            </>
         )
     }
 }
-
-export default MainNavigator;

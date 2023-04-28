@@ -18,8 +18,9 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "buildNumber": "1"
+      "supportsTablet": false,
+      "buildNumber": "1",
+      "bundleIdentifier": "com.ahmad.tasky"
     },
     "android": {
       "jsEngine": "hermes",

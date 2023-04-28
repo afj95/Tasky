@@ -26,7 +26,7 @@ export const request = async ({ url, method, headers, params }: RequestProps) =>
         try {
             setTimeout(() => {
                 timeout = true;
-                reject(new Error('Tiemout, Server is not responding'))
+                reject(new Error(t('app.serverError')))
             }, 15000);
 
             let modfiedHeaders = {
@@ -56,7 +56,7 @@ export const request = async ({ url, method, headers, params }: RequestProps) =>
             })
                 .then((res) => {
                     if (timeout) {
-                        reject(new Error('Tiemout, Server is not responding'))
+                        reject(new Error(t('app.serverError')))
                     }
                     resolve(res)
                 })

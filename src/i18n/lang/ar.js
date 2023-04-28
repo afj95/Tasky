@@ -113,6 +113,8 @@ export default {
         addMaterials: "إضافة المواد",
         addMaterialHelper: "إضافة مادة جديدة",
         calculations: "حساب الكميات",
-        successOperation: "تمت العملية بنجاح"
+        successOperation: "تمت العملية بنجاح",
+        inProgressProjects: "المشاريع الجارية",
+        upcomingProjects: "المشاريع القادمة"
     }
 }

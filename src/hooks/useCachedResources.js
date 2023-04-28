@@ -4,6 +4,7 @@ import * as Font from 'expo-font';
 
 export default useCachedResources = () => {
     const [isLoadingComplete, setLoadingComplete] = React.useState(false);
+    const [hasError, setHasError] = React.useState(false);
 
     React.useEffect(() => {
         async function loadResourcesAndDataAsync() {
@@ -15,7 +16,9 @@ export default useCachedResources = () => {
                     bold: require('../../assets/fonts/bold.otf')
                 })
 
+                setHasError(false)
             } catch (error) {
+                setHasError(true)
                 console.warn(error);
             } finally {
                 setLoadingComplete(true)
@@ -25,5 +28,5 @@ export default useCachedResources = () => {
         loadResourcesAndDataAsync();
     }, [])
 
-    return isLoadingComplete;
+    return { isLoadingComplete, hasError };
 }

@@ -30,23 +30,23 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
         <View>
             <View style={styles.textContainer}>
                 <AntDesign name={'user'} size={15} style={{ marginEnd: 5 }} color={Colors.appWhite} />
-                <MyText style={styles.label}>email</MyText>
+                <MyText style={styles.label}>phone</MyText>
             </View>
             <TextInput
                 style={styles.input}
-                placeholder={t('app.email')}
+                placeholder={t('app.phone')}
                 placeholderTextColor={Colors.secondary}
                 mode={'flat'}
                 fontFamily={'light'}
-                onChangeText={handleChange('email')}
-                value={values?.email}
-                error={errors?.email}
+                onChangeText={handleChange('phone_number')}
+                value={values?.phone_number}
+                error={errors?.phone_number}
                 autoCapitalize={false}
-                onBlur={handleBlur('email')}
-                keyboardType={"email-address"}
+                onBlur={handleBlur('phone_number')}
+                keyboardType={"number-pad"}
                 theme={inputTheme}
             />
-            {errors?.email ? <ErrorText error={errors?.email} /> : null}
+            {errors?.phone_number ? <ErrorText error={errors?.phone_number} /> : null}
 
             <View style={[styles.textContainer, { marginTop: 30 }]}>
                 <Feather name={'lock'} size={15} style={{ marginEnd: 5 }} color={Colors.appWhite} />
@@ -152,6 +152,7 @@ const ErrorText = ({ error }) => {
                 fontSize: 12,
                 fontFamily: 'bold',
                 marginTop: 2,
+                textAlign: 'left'
             }}>
             {error}
         </MyText>

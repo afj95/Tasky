@@ -18,6 +18,8 @@ import {
 
 const projectsState = {
     projects: [],
+    inProgressProjects: [],
+    upcomingProjects: [],
     totalProjects: 0,
     project: {},
 
@@ -44,13 +46,24 @@ const projectsReducer = (state = projectsState, action) => {
         }
 
         case FETCHING_PROJECTS_SUCCESS: {
-            return {
-                ...state,
-                totalProjects: payload?.projects?.data?.total,
-                projects: payload?.loadMore ? [
-                    ...state.projects,
-                    ...payload?.projects?.data?.data,
-                ] : payload?.projects?.data?.data
+            if (payload?.in_progress) {
+                return {
+                    ...state,
+                    totalProjects: payload?.projects?.data?.total,
+                    inProgressProjects: payload?.loadMore ? [
+                        ...state.projects,
+                        ...payload?.projects?.data?.data,
+                    ] : payload?.projects?.data?.data
+                }
+            } else {
+                return {
+                    ...state,
+                    totalProjects: payload?.projects?.data?.total,
+                    upcomingProjects: payload?.loadMore ? [
+                        ...state.projects,
+                        ...payload?.projects?.data?.data,
+                    ] : payload?.projects?.data?.data
+                }
             }
         }
 

@@ -113,6 +113,8 @@ export default {
         addMaterials: "Add Materials",
         addMaterialHelper: "Add new material",
         calculations: "Calculate Quantities",
-        successOperation: "Success Operation"
+        successOperation: "Success Operation",
+        inProgressProjects: "In Progress Projects",
+        upcomingProjects: "Upcoming Projects"
     }
 }
