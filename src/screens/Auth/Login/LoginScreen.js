@@ -59,6 +59,8 @@ export const LoginScreen = ({ navigation }) => {
             showMessage({
                 message: errors?.login?.message ? errors?.login?.message : errors?.login + '',
                 type: 'danger',
+                style: { paddingTop: StatusBar.currentHeight + 10 },
+                duration: 5000
             })
             dispatch(clearErrors());
         }

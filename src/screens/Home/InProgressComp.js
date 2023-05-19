@@ -112,7 +112,6 @@ export const InProgressComp = ({ _onRefresh, ...props }) => {
      }
 
      const _listFooterComponent = () => {
-          console.log('totalProjects - inProgress', totalProjects);
           return (
                <View style={styles.footerContainer}>
                     {totalProjects <= projects?.length ?

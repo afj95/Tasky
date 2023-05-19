@@ -112,7 +112,6 @@ export const UpcomingComp = ({ _onRefresh, ...props }) => {
      }
 
      const _listFooterComponent = () => {
-          console.log('totalProjects - upcoming', totalProjects);
           return (
                <View style={styles.footerContainer}>
                     {totalProjects <= projects?.length ?
