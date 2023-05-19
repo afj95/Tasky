@@ -169,9 +169,8 @@ export const ProfileScreen = ({ navigation }) => {
                     <View style={styles.lowContainer}>
                          {/* TODO: Add change profile image */}
                          <TouchableOpacity disabled onPressOut={changeImage} style={styles.profileImageContainer}>
-                              {/* <Image source={{ uri: 'https://picsum.photos/200' }} style={styles.profileImage} /> */}
-                              {user.image ?
-                                   <Image source={{ uri: user?.image }} style={styles.profileImage} />
+                              {user?.image_url ?
+                                   <Image source={{ uri: user?.image_url }} style={styles.profileImage} />
                                    :
                                    <Ionicons name={'person'} size={90} color={Colors.appWhite} />
                               }

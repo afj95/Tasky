@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
           textAlign: 'left',
           alignSelf: 'flex-start',
           fontSize: 15,
-          fontFamily: 'light'
+          fontFamily: 'light',
+          width: '90%'
      },
      materialDate: {
           fontSize: 10,

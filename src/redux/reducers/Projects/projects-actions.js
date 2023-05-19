@@ -23,7 +23,15 @@ export const resetProject = () => ({
     type: RESET_PROJECT
 })
 
-export const fetchProjects = (status = '', deleted = false, loadMore = false, page = 1, perPage = 10, refresh) => {
+// status & deleted for admins only
+// export const fetchProjects = (status = '', deleted = false, loadMore = false, page = 1, perPage = 10, refresh) => {
+export const fetchInprogressProjects = ({
+    loadMore = false,
+    page = 1,
+    perPage = 5,
+    refresh = false,
+    in_progress = true
+}) => {
     return async (dispatch) => {
         try {
             if (refresh) {
@@ -33,7 +41,8 @@ export const fetchProjects = (status = '', deleted = false, loadMore = false, pa
             }
 
             const fetchingProjectsRes = await request({
-                url: `projects?status=${status}&deleted=${deleted}&page=${page}&perPage=${perPage}`,
+                // url: `projects?status=${status}&deleted=${deleted}&page=${page}&perPage=${perPage}`,
+                url: `projects?page=${page}&perPage=${perPage}`,
                 method: 'GET',
             })
 
@@ -42,6 +51,44 @@ export const fetchProjects = (status = '', deleted = false, loadMore = false, pa
                 type: FETCHING_PROJECTS_SUCCESS,
                 payload: {
                     loadMore,
+                    in_progress,
+                    projects: fetchingProjectsRes?.data
+                }
+            })
+
+        } catch (error) {
+            dispatch(stopLoading({ failed: true, error: { 'projects': error } }))
+        }
+    }
+}
+
+export const fetchUpcomingProjects = ({
+    loadMore = false,
+    page = 1,
+    perPage = 5,
+    refresh = false,
+    in_progress = false
+}) => {
+    return async (dispatch) => {
+        try {
+            if (refresh) {
+                dispatch(setLoading({ 'projects_refresh': true }))
+            } else {
+                dispatch(setLoading({ 'projects': true }))
+            }
+
+            const fetchingProjectsRes = await request({
+                // url: `projects?status=${status}&deleted=${deleted}&page=${page}&perPage=${perPage}`,
+                url: `projects/upcoming?page=${page}&perPage=${perPage}`,
+                method: 'GET',
+            })
+
+            dispatch(stopLoading())
+            dispatch({
+                type: FETCHING_PROJECTS_SUCCESS,
+                payload: {
+                    loadMore,
+                    in_progress,
                     projects: fetchingProjectsRes?.data
                 }
             })

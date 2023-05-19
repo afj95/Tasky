@@ -13,7 +13,7 @@ import { AntDesign, Feather } from '@expo/vector-icons';
 import { showMessage } from 'react-native-flash-message';
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../components/UI/MyText';
-import { fetchOneProject, fetchProjects, resetProject } from '../../redux/reducers/Projects/projects-actions';
+import { fetchOneProject, resetProject } from '../../redux/reducers/Projects/projects-actions';
 import Colors from '../../utils/Colors';
 import { TaskComponent, Header, MaterialComponent } from './components';
 import ErrorHappened from '../../components/UI/ErrorHappened';
@@ -27,7 +27,7 @@ import moment from 'moment';
 export const ProjectDetails = (props) => {
     const dispatch = useDispatch();
 
-    const { id, status, deleted } = props?.route?.params
+    const { id, status, deleted, inProgress } = props?.route?.params
 
     // const [optionsModal, setOptionsModal] = useState(false);
     const [uncheckedHeight, setUncheckedHeight] = useState(false);
@@ -47,7 +47,10 @@ export const ProjectDetails = (props) => {
         dispatch(clearErrors());
         dispatch(fetchOneProject(id, false))
         return () => {
-            dispatch(fetchProjects(status, deleted, false, 1, 5, true))
+            // dispatch(fetchInprogressProjects({
+            //     in_progress: inProgress,
+            //     refresh: true
+            // }))
             dispatch(resetProject())
             dispatch(restProjectTasks())
         }

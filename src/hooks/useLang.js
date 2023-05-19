@@ -8,6 +8,7 @@ import moment from 'moment';
 
 export default useLang = () => {
      const [isLangLoaded, setIsLangLoaded] = React.useState(false);
+     const [hasError, setHasError] = React.useState(false);
 
      React.useEffect(() => {
           async function getLange() {
@@ -24,7 +25,9 @@ export default useLang = () => {
                          moment.locale('en');
                          await reloadAsync()
                     }
+                    setHasError(false)
                } catch (error) {
+                    setHasError(true)
                     i18n.locale = 'en';
                     await AsyncStorage.setItem('lang', 'en')
                     moment.locale('en');
@@ -37,5 +40,5 @@ export default useLang = () => {
           getLange();
      }, [])
 
-     return isLangLoaded;
+     return { isLangLoaded, hasError };
 }

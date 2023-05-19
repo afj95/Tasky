@@ -38,8 +38,8 @@ export default {
         task: "المهمة",
         tasks: "المهام",
         tasksHelp: "قم بإضافة المهام بالضغط على زر إضافة أسفل الشاشة",
-        changeLangAlertTitle: "تغيير لغة التطبيق",
-        changeLangMessage: "سيتم إعادة تشغيل التطبيق لتغيير اللغة ؟",
+        changeLangAlertTitle: "Changing language",
+        changeLangMessage: "The application will be restarted to change the language",
         cancel: "إلغاء",
         changeLangConfirm: "نعم",
         fieldRequired: "هذا الحقل اجباري",
@@ -49,7 +49,7 @@ export default {
         finishedMessage: "سيتم إظهار المشاريع المنتهية فقط",
         deleted: "المشاريع المحذوفة",
         deletedMessage: "سيتم إظهار المشاريع المحذوفة",
-        changeLanguage: "تغيير اللغة",
+        changeLanguage: "Change Language",
         logout: "تسجيل خروج",
         logoutAlertTitle: "تسجيل خروج",
         logoutMessage: "هل أنت متأكد من تسجيل الخروج ؟",
@@ -113,6 +113,8 @@ export default {
         addMaterials: "إضافة المواد",
         addMaterialHelper: "إضافة مادة جديدة",
         calculations: "حساب الكميات",
-        successOperation: "تمت العملية بنجاح"
+        successOperation: "تمت العملية بنجاح",
+        inProgressProjects: "المشاريع الجارية",
+        upcomingProjects: "المشاريع القادمة"
     }
 }

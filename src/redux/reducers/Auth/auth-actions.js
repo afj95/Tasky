@@ -3,7 +3,7 @@ import { setLoading, stopLoading } from '../Global/global-actions';
 import { AUTH_SUCCESS, FETCH_PROFILE_SUCCESS, LOGOUT } from './auth-reducer';
 import { request } from '../../../tools';
 
-export const login = (email, password) => {
+export const login = (phone_number, password) => {
     return async (dispatch) => {
         try {
             dispatch(setLoading({ 'login': true }))
@@ -12,7 +12,7 @@ export const login = (email, password) => {
                 url: 'login',
                 method: 'POST',
                 params: {
-                    email: email,
+                    phone_number: phone_number,
                     password: password
                 }
             }))?.data?.data?.user

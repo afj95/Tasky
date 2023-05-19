@@ -4,29 +4,24 @@ import { StatusBar } from 'expo-status-bar';
 import useCachedResources from './src/hooks/useCachedResources';
 import useLang from './src/hooks/useLang';
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Provider } from "react-redux";
-import { PersistGate } from 'redux-persist/integration/react';
-import { persistor, store } from "./src/redux";
-import Loader from "./src/components/Loaders/Loader";
 import MainNavigator from "./src/navigation/MainNavigator";
 import Colors from './src/utils/Colors';
+import { ErrorScreen } from './src/screens/ErrorScreen';
 
 export default function App() {
 
-  const isLoadingComplete = useCachedResources();
-  const isLangLoaded = useLang();
+  const { isLoadingComplete, hasError: hasFontsError } = useCachedResources();
+  const { isLangLoaded, hasError: hasLangError } = useLang();
 
   if (isLoadingComplete && isLangLoaded) {
     return (
       <SafeAreaProvider>
-        <Provider store={store}>
-          <PersistGate loading={<Loader />} persistor={persistor}>
-            <MainNavigator />
-            <StatusBar style={'light'} backgroundColor={Colors.primary} />
-          </PersistGate>
-        </Provider>
+        <MainNavigator />
+        <StatusBar style={'light'} backgroundColor={Colors.primary} />
       </SafeAreaProvider>
     )
-  } else return null
+  } else if (hasFontsError || hasLangError) {
+    return <ErrorScreen />
+  } else return null;
 
 }

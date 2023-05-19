@@ -38,8 +38,8 @@ export default {
         task: "Task",
         tasks: "Tasks",
         tasksHelp: "Add tasks by clicking on add button below",
-        changeLangAlertTitle: "Changing language",
-        changeLangMessage: "The application will be restarted to change the language",
+        changeLangAlertTitle: "تغيير لغة التطبيق",
+        changeLangMessage: "سيتم إعادة تشغيل التطبيق لتغيير اللغة ؟",
         cancel: "Cancel",
         changeLangConfirm: "Yes",
         fieldRequired: "This field required",
@@ -49,7 +49,7 @@ export default {
         finishedMessage: "Will show the finished projects only",
         deleted: "Deleted Projects",
         deletedMessage: "Will show the deleted projects",
-        changeLanguage: "Change Language",
+        changeLanguage: "تغيير اللغة",
         logout: "Logout",
         logoutAlertTitle: "Logout",
         logoutMessage: "Are you sure you want to logout ?",
@@ -113,6 +113,8 @@ export default {
         addMaterials: "Add Materials",
         addMaterialHelper: "Add new material",
         calculations: "Calculate Quantities",
-        successOperation: "Success Operation"
+        successOperation: "Success Operation",
+        inProgressProjects: "In Progress Projects",
+        upcomingProjects: "Upcoming Projects"
     }
 }
