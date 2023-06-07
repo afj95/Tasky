@@ -116,6 +116,8 @@ export default {
         calculations: "حساب الكميات",
         successOperation: "تمت العملية بنجاح",
         inProgressProjects: "المشاريع الجارية",
-        upcomingProjects: "المشاريع القادمة"
+        upcomingProjects: "المشاريع القادمة",
+        addNewMaterial: "إضافة مواد جديدة",
+        startNavigation: "فتح الخريطة"
     }
 }

@@ -116,6 +116,8 @@ export default {
         calculations: "Calculate Quantities",
         successOperation: "Success Operation",
         inProgressProjects: "In Progress Projects",
-        upcomingProjects: "Upcoming Projects"
+        upcomingProjects: "Upcoming Projects",
+        addNewMaterial: "Add new material",
+        startNavigation: "Start Navigation"
     }
 }

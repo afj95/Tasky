@@ -9,13 +9,13 @@ import {
     ActivityIndicator
 } from 'react-native';
 import TouchableOpacity from '../../components/UI/TouchableOpacity';
-import { AntDesign, Feather } from '@expo/vector-icons';
+import { AntDesign, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { showMessage } from 'react-native-flash-message';
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../components/UI/MyText';
 import { fetchOneProject, resetProject } from '../../redux/reducers/Projects/projects-actions';
 import Colors from '../../utils/Colors';
-import { TaskComponent, Header, MaterialComponent } from './components';
+import { TaskComponent, Header, MaterialComponent, MapComponent } from './components';
 import ErrorHappened from '../../components/UI/ErrorHappened';
 import { clearErrors } from '../../redux/reducers/Global/global-actions';
 import { restProjectTasks } from '../../redux/reducers/Tasks/tasks-actions';
@@ -32,6 +32,7 @@ export const ProjectDetails = (props) => {
     // const [optionsModal, setOptionsModal] = useState(false);
     const [uncheckedHeight, setUncheckedHeight] = useState(false);
     const [checkedHeight, setCheckedHeight] = useState(false);
+    const [mapModalVisible, setMapModalVisible] = useState(false);
 
     const errors = useSelector((state) => state?.globalReducer?.errors)
     const loadings = useSelector((state) => state?.globalReducer?.loadings)
@@ -85,6 +86,10 @@ export const ProjectDetails = (props) => {
 
     const loadMore = () => navigate('MaterialsScreen', { materials: projectMaterials, screen: 'project' })
 
+    const openMapModal = () => setMapModalVisible(true)
+
+    const closeMapModal = () => setMapModalVisible(false)
+
     // const goToCalculatingScreen = () => navigate('CalcualtionsScreen')
 
     return (
@@ -117,8 +122,29 @@ export const ProjectDetails = (props) => {
                                     />
                                 }>
                                 {project?.name ? <View style={styles.nameContainer}>
-                                    <MyText text={project?.name} />
-                                    <MyText style={styles.projectStartDate} text={moment(project?.start_date).fromNow()} />
+                                    <View>
+                                        <MyText text={project?.name} />
+                                        <MyText text={project?.work_type || ''} />
+                                        {!project?.latitude && project?.longitude ?
+                                            <MyText
+                                                style={styles.projectStartDate}
+                                                text={moment(project?.start_date).fromNow()}
+                                            /> : null}
+                                    </View>
+                                    {(project?.latitude && project?.longitude) ?
+                                        <MaterialCommunityIcons
+                                            name={'directions'}
+                                            size={20}
+                                            color={Colors.primary}
+                                            onPress={openMapModal}
+                                            style={{ padding: 5 }}
+                                        />
+                                        :
+                                        <MyText
+                                            style={styles.projectStartDate}
+                                            text={moment(project?.start_date).fromNow()}
+                                        />
+                                    }
                                 </View> : null}
                                 {project?.user ?
                                     <View style={styles.supervisorContainer}>
@@ -231,7 +257,19 @@ export const ProjectDetails = (props) => {
                         : null} */}
                 </>
             }
-            {/* <ProjectActionsModal visible={optionsModal} closeModal={closeOptionsModal} project={project} /> */}
+            {/* <ProjectActionsModal
+                visible={optionsModal}
+                closeModal={closeOptionsModal}
+                project={project}
+            /> */}
+
+
+            <MapComponent
+                visible={mapModalVisible}
+                closeModal={closeMapModal}
+                latitude={project?.latitude}
+                longitude={project?.longitude}
+            />
         </View>
     )
 }

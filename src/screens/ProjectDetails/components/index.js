@@ -4,3 +4,4 @@ export * from './Header';
 export * from './ProjectActionsModal';
 export * from './AddTask';
 export * from './MaterialComponent';
+export * from './MapComponent';
