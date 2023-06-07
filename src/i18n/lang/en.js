@@ -33,6 +33,7 @@ export default {
         projectName2: "Second Project Name",
         projectDescription: "Description",
         projectSupervisors: "Supervisors",
+        projectClient: "Client",
         admins: "Admins",
         add: "Add",
         task: "Task",

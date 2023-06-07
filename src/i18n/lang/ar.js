@@ -33,6 +33,7 @@ export default {
         projectName2: "الاسم الثاني للمشروع",
         projectDescription: "عن المشروع",
         projectSupervisors: "المشرفين",
+        projectClient: "العميل",
         admins: "المدراء",
         add: "إضافة",
         task: "المهمة",

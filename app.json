@@ -19,13 +19,13 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "buildNumber": "1",
+      "buildNumber": "2",
       "bundleIdentifier": "com.ahmad.tasky"
     },
     "android": {
       "jsEngine": "hermes",
       "permissions": [],
-      "versionCode": 2,
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png"
       },

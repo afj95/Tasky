@@ -72,7 +72,7 @@ export const TaskComponent = ({ task, project_id, onPress }) => {
                 <MyText style={styles.taskDate} text={moment(task?.date).fromNow()} />
             </View>
             <View style={styles.checkContainer}>
-                {/* delete task - only if admin */}
+                {/* NOTE: delete task - only if admin */}
                 {/* {deleteLoading ? <ActivityIndicator size={'small'} color={Colors.primary} />
                     :
                     user?.role === 'admin' && project?.status !== 'finished' && !project?.deleted ?
@@ -130,10 +130,8 @@ const styles = StyleSheet.create({
     },
     checkContainer: {
         alignSelf: 'center',
-        width: 50,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'flex-end'
     },
     checkbox: {
         alignSelf: "center",

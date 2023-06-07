@@ -81,7 +81,7 @@ export const ProjectDetails = (props) => {
     //     setOptionsModal(!optionsModal);
     // }
 
-    const onPhoneNumberPressed = () => Linking.openURL(`tel:${project?.user?.phone_number}`)
+    const onPhoneNumberPressed = phone_number => Linking.openURL(`tel:${phone_number}`)
 
     const loadMore = () => navigate('MaterialsScreen', { materials: projectMaterials, screen: 'project' })
 
@@ -93,7 +93,7 @@ export const ProjectDetails = (props) => {
                 // user={user}
                 // showModal={openOptionsModal}
                 showGoBackButton
-                text={!project?.name ? '' : project?.name}
+                text={!project?.name ? '' : __DEV__ ? project?.name + ' ' + project?.id : project?.name}
             />
             {errors?.project || errors?.project_tasks ? <ErrorHappened /> :
                 <>
@@ -124,12 +124,25 @@ export const ProjectDetails = (props) => {
                                     <View style={styles.supervisorContainer}>
                                         <MyText style={styles.label}>projectSupervisors</MyText>
                                         <MyText style={styles.supervisor} text={`${project?.user?.name}`} />
+                                        {/* supervisor phone_number */}
                                         <TouchableOpacity
                                             disabled={user?.phoneNumber === project?.user?.phone_number}
-                                            onPress={user?.phone_number !== project?.user?.phone_number ? onPhoneNumberPressed : null}
+                                            onPress={() => onPhoneNumberPressed(project?.user?.phone_number)}
                                             style={styles.phoneNumberContainer}>
-                                            <MyText style={styles.phoneNumber} text={`${project?.user?.phone_number}`} />
+                                            <MyText style={styles.phoneNumber} text={` ${project?.user?.phone_number} `} />
                                             {user?.phone_number !== project?.user?.phone_number ? <Feather name={'external-link'} size={15} color={Colors.primary} /> : null}
+                                        </TouchableOpacity>
+                                    </View> : null}
+                                {project?.client ?
+                                    <View style={styles.supervisorContainer}>
+                                        <MyText style={styles.label}>projectClient</MyText>
+                                        <MyText style={styles.supervisor} text={`${project?.client?.name}`} />
+                                        {/* Client phone_number */}
+                                        <TouchableOpacity
+                                            onPress={() => onPhoneNumberPressed(project?.client?.phone_number)}
+                                            style={styles.phoneNumberContainer}>
+                                            <MyText style={styles.phoneNumber} text={` ${project?.client?.phone_number} `} />
+                                            {<Feather name={'external-link'} size={15} color={Colors.primary} />}
                                         </TouchableOpacity>
                                     </View> : null}
                                 {!project?.description ? null :
