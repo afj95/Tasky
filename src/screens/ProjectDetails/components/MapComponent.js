@@ -13,18 +13,16 @@ import TouchableOpacity from '../../../components/UI/TouchableOpacity';
 import MyText from '../../../components/UI/MyText';
 import { t } from '../../../i18n';
 
-export const MapComponent = ({ visible, closeModal, latitude, longitude }) => {
+export const MapComponent = ({ visible, closeModal, latitude, longitude, location }) => {
 
      const openNavigation = async () => {
-          // const tag = `${Platform.OS === 'ios' ? 'maps' : 'geo'}:0,0?q=`;
-          const link = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`
 
-          Linking.canOpenURL(link)
+          Linking.canOpenURL(location)
                .then(supported => {
                     if (supported) {
-                         Linking.openURL(link);
+                         Linking.openURL(location);
                     } else {
-                         alert("Can't open this link " + link)
+                         alert("Can't open this link " + location)
                     }
                })
                .catch(e => {

@@ -269,6 +269,7 @@ export const ProjectDetails = (props) => {
                 closeModal={closeMapModal}
                 latitude={project?.latitude}
                 longitude={project?.longitude}
+                location={project?.location}
             />
         </View>
     )
