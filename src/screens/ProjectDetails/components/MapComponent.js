@@ -16,22 +16,20 @@ import { t } from '../../../i18n';
 export const MapComponent = ({ visible, closeModal, latitude, longitude }) => {
 
      const openNavigation = async () => {
-          const tag = `${Platform.OS === 'ios' ? 'maps' : 'geo'}:0,0?q=`;
-          const link = Platform.select({
-               ios: `label@${latitude},${longitude}`,
-               android: `${tag}${latitude},${longitude}label`
-          });
+          // const tag = `${Platform.OS === 'ios' ? 'maps' : 'geo'}:0,0?q=`;
+          const link = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`
 
-          try {
-               const supported = await Linking.canOpenURL(link);
-
-               if (supported) {
-                    Linking.openURL(link);
-               }
-          } catch (error) {
-               alert(t('app.errorHappened'))
-               console.log(error);
-          }
+          Linking.canOpenURL(link)
+               .then(supported => {
+                    if (supported) {
+                         Linking.openURL(link);
+                    } else {
+                         alert("Can't open this link " + link)
+                    }
+               })
+               .catch(e => {
+                    alert(t('app.errorHappened') + ' ' + e)
+               });
      }
 
      return (
