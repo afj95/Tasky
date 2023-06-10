@@ -58,7 +58,9 @@ export const EditTaskScreen = () => {
      const loadMore = () => navigate('MaterialsScreen', { materials: currentTask?.materials, screen: 'task', task: currentTask })
 
      return (
-          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : 'height'} style={styles.editTaskContainer}>
+          <KeyboardAvoidingView
+               behavior={Platform.OS === 'ios' ? 'height' : null}
+               style={styles.editTaskContainer}>
                <Header showGoBackButton text={'updateTask'} />
                <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
                     <View style={{ paddingHorizontal: 10 }}>

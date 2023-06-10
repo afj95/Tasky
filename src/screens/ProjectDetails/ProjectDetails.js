@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../components/UI/MyText';
 import { fetchOneProject, resetProject } from '../../redux/reducers/Projects/projects-actions';
 import Colors from '../../utils/Colors';
-import { TaskComponent, Header, MaterialComponent, MapComponent } from './components';
+import { TaskComponent, Header, MaterialComponent } from './components';
 import ErrorHappened from '../../components/UI/ErrorHappened';
 import { clearErrors } from '../../redux/reducers/Global/global-actions';
 import { restProjectTasks } from '../../redux/reducers/Tasks/tasks-actions';
@@ -27,7 +27,11 @@ import moment from 'moment';
 export const ProjectDetails = (props) => {
     const dispatch = useDispatch();
 
-    const { id, status, deleted, inProgress } = props?.route?.params
+    const { id,
+        // status,
+        // deleted,
+        // inProgress
+    } = props?.route?.params
 
     // const [optionsModal, setOptionsModal] = useState(false);
     const [uncheckedHeight, setUncheckedHeight] = useState(false);
@@ -86,7 +90,20 @@ export const ProjectDetails = (props) => {
 
     const loadMore = () => navigate('MaterialsScreen', { materials: projectMaterials, screen: 'project' })
 
-    const openMapModal = () => setMapModalVisible(true)
+    const openMapModal = () => {
+        Linking.canOpenURL(project?.location)
+            .then(supported => {
+                if (supported) {
+                    Linking.openURL(project?.location);
+                } else {
+                    alert("Can't open this link " + project?.location)
+                }
+            })
+            .catch(e => {
+                alert(t('app.errorHappened') + ' ' + e)
+            });
+    }
+    // const openMapModal = () => setMapModalVisible(true)
 
     const closeMapModal = () => setMapModalVisible(false)
 
@@ -264,13 +281,13 @@ export const ProjectDetails = (props) => {
             /> */}
 
 
-            <MapComponent
+            {/* <MapComponent
                 visible={mapModalVisible}
                 closeModal={closeMapModal}
                 latitude={project?.latitude}
                 longitude={project?.longitude}
                 location={project?.location}
-            />
+            /> */}
         </View>
     )
 }

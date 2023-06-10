@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     }),
     taskText: (checked) => ({
+        width: '95%',
         textAlign: 'left',
         textDecorationLine: checked ? 'line-through' : 'none',
         textDecorationColor: Colors.text,

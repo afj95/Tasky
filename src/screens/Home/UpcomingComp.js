@@ -84,7 +84,7 @@ export const UpcomingComp = ({ _onRefresh, ...props }) => {
                          color={Colors.primary}
                          onPress={() => setVisible(true)}
                     />
-                    {loadings?.projects ? <ActivityIndicator size={15} color={Colors.primary} /> : null}
+                    {loadings?.projects_upcoming ? <ActivityIndicator size={15} color={Colors.primary} /> : null}
                </View>
           )
      }
@@ -140,7 +140,7 @@ export const UpcomingComp = ({ _onRefresh, ...props }) => {
      return (
           <View style={styles.container}>
                <View style={styles.projectsContainer}>
-                    {loadings?.projects ? null :
+                    {loadings?.projects_upcoming ? null :
                          <FlatList
                               contentContainerStyle={{ paddingBottom: projects?.length ? 30 : 0, flex: projects?.length ? 0 : 1 }}
                               style={{ flex: 1 }}
@@ -154,7 +154,7 @@ export const UpcomingComp = ({ _onRefresh, ...props }) => {
                               refreshing={false}
                               renderItem={_renderItem}
                          />}
-                    {loadings?.projects ?
+                    {loadings?.projects_upcoming ?
                          <View style={styles.loadingContainer}>
                               <ActivityIndicator color={Colors.primary} size={'small'} animating={loadings?.project} style={{ flex: 1 }} />
                          </View> : null
