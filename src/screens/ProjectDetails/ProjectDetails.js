@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../components/UI/MyText';
 import { fetchOneProject, resetProject } from '../../redux/reducers/Projects/projects-actions';
 import Colors from '../../utils/Colors';
-import { TaskComponent, Header, MaterialComponent } from './components';
+import { TaskComponent, Header, MaterialComponent, MapComponent } from './components';
 import ErrorHappened from '../../components/UI/ErrorHappened';
 import { clearErrors } from '../../redux/reducers/Global/global-actions';
 import { restProjectTasks } from '../../redux/reducers/Tasks/tasks-actions';
@@ -23,6 +23,7 @@ import { navigate } from '../../navigation/RootNavigation';
 import { t } from '../../i18n';
 import LoadMore from '../../components/UI/LoadMore';
 import moment from 'moment';
+import { MainHeader } from '../../components/UI/MainHeader';
 
 export const ProjectDetails = (props) => {
     const dispatch = useDispatch();
@@ -90,20 +91,7 @@ export const ProjectDetails = (props) => {
 
     const loadMore = () => navigate('MaterialsScreen', { materials: projectMaterials, screen: 'project' })
 
-    const openMapModal = () => {
-        Linking.canOpenURL(project?.location)
-            .then(supported => {
-                if (supported) {
-                    Linking.openURL(project?.location);
-                } else {
-                    alert("Can't open this link " + project?.location)
-                }
-            })
-            .catch(e => {
-                alert(t('app.errorHappened') + ' ' + e)
-            });
-    }
-    // const openMapModal = () => setMapModalVisible(true)
+    const openMapModal = () => setMapModalVisible(true)
 
     const closeMapModal = () => setMapModalVisible(false)
 
@@ -111,11 +99,10 @@ export const ProjectDetails = (props) => {
 
     return (
         <View style={styles.container}>
-            <Header
-                // user={user}
-                // showModal={openOptionsModal}
-                showGoBackButton
-                text={!project?.name ? '' : __DEV__ ? project?.name + ' ' + project?.id : project?.name}
+            <MainHeader
+                title={!project?.name ? '' : __DEV__ ? project?.name + ' ' + project?.id : project?.name}
+                showGoBack
+                translate={false}
             />
             {errors?.project || errors?.project_tasks ? <ErrorHappened /> :
                 <>
@@ -217,7 +204,7 @@ export const ProjectDetails = (props) => {
                                     : null
                                 }
 
-                                {loadings?.project_tasks ? <ActivityIndicator animating={loadings?.project_tasks} /> :
+                                {loadings?.project_tasks ? <ActivityIndicator animating={loadings?.project_tasks} color={Colors.primary} /> :
                                     <>
                                         {projectTasks?.length ?
                                             <View style={styles.tasksContainer}>
@@ -228,9 +215,9 @@ export const ProjectDetails = (props) => {
                                                         <MyText style={styles.label}>unChecked</MyText>
                                                         <MyText style={styles.tasksLength} text={projectTasks?.length} />
                                                     </View>
-                                                    <AntDesign name={uncheckedHeight ? 'down' : 'up'} color={Colors.primary} />
+                                                    <AntDesign name={uncheckedHeight ? 'up' : 'down'} color={Colors.primary} />
                                                 </TouchableOpacity>
-                                                {uncheckedHeight && projectTasks?.map((task, index) =>
+                                                {!uncheckedHeight && projectTasks?.map((task, index) =>
                                                     <TaskComponent
                                                         task={task}
                                                         project_id={id}
@@ -281,13 +268,13 @@ export const ProjectDetails = (props) => {
             /> */}
 
 
-            {/* <MapComponent
+            <MapComponent
                 visible={mapModalVisible}
                 closeModal={closeMapModal}
                 latitude={project?.latitude}
                 longitude={project?.longitude}
                 location={project?.location}
-            /> */}
+            />
         </View>
     )
 }

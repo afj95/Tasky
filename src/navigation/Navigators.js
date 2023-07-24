@@ -67,7 +67,8 @@ const MyTabs = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName={user?.role === 'admin' ? 'DashboardScreen' : 'HomeScreen'}
+      // initialRouteName={user?.role === 'admin' ? 'DashboardScreen' : 'HomeScreen'}
+      initialRouteName={'HomeScreen'}
       screenOptions={{ headerShown: false, }}>
       {user?.role === 'admin' ?
         adminScreens.map((screen, index) => {

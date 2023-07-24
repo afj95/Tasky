@@ -18,7 +18,7 @@ import { clearErrors } from '../../redux/reducers/Global/global-actions';
 import { ActivityIndicator } from 'react-native-paper';
 import moment from 'moment';
 
-export const UpcomingComp = ({ _onRefresh, ...props }) => {
+export const UpcomingComp = ({ _onRefresh, page, setPage, ...props }) => {
      const dispatch = useDispatch()
 
      // active - finished
@@ -27,7 +27,6 @@ export const UpcomingComp = ({ _onRefresh, ...props }) => {
      const [deleted, setDeleted] = useState(false);
      const [filterVisible, setVisible] = useState(false);
      const [loadMoreLoading, setLoadMore] = useState(false);
-     const [page, setPage] = useState(1);
 
      const errors = useSelector((state) => state?.globalReducer?.errors)
      const loadings = useSelector((state) => state?.globalReducer?.loadings)
@@ -146,7 +145,7 @@ export const UpcomingComp = ({ _onRefresh, ...props }) => {
                               style={{ flex: 1 }}
                               keyExtractor={(item, index) => '#' + index.toString()}
                               data={projects}
-                              ListHeaderComponent={user?.role === 'admin' ? _listHeaderComponent : null}
+                              // ListHeaderComponent={user?.role === 'admin' ? _listHeaderComponent : null}
                               ListEmptyComponent={_listEmptyComponent}
                               ListFooterComponent={projects?.length ? _listFooterComponent : null}
                               showsVerticalScrollIndicator={false}

@@ -15,6 +15,7 @@ import { navigate } from '../../navigation/RootNavigation';
 import LoadMore from '../../components/UI/LoadMore';
 import { showMessage } from 'react-native-flash-message';
 import { AntDesign } from '@expo/vector-icons';
+import { MainHeader } from '../../components/UI/MainHeader';
 
 export const EditTaskScreen = () => {
      const dispatch = useDispatch();
@@ -61,7 +62,7 @@ export const EditTaskScreen = () => {
           <KeyboardAvoidingView
                behavior={Platform.OS === 'ios' ? 'height' : null}
                style={styles.editTaskContainer}>
-               <Header showGoBackButton text={'updateTask'} />
+               <MainHeader showGoBack title={'updateTask'} />
                <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
                     <View style={{ paddingHorizontal: 10 }}>
                          <View style={styles.priorityContainer}>

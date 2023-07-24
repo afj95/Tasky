@@ -1,8 +1,8 @@
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, FontAwesome } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import MyText from "../components/UI/MyText";
-import { DashboardScreen, EmployeesScreen, HomeScreen, ProfileScreen } from "../screens";
+import { AttendenceScreen, DashboardScreen, EmployeesScreen, HomeScreen, ProfileScreen } from "../screens";
 import Colors from "../utils/Colors";
 
 // export const screensOptions = {
@@ -20,6 +20,15 @@ export const supervisorScreens = [
                tabBarIcon: ({ focused }) => <Entypo name='list' size={25} color={focused ? Colors.primary : 'rgba(0, 0, 0, 0.5)'} />,
           }
      },
+     // {
+     //      name: 'AttendenceScreen',
+     //      component: AttendenceScreen,
+     //      label: 'attendence',
+     //      options: {
+     //           tabBarLabel: ({ focused }) => <MyText style={{ ...styles.title, color: focused ? Colors.primary : 'rgba(0, 0, 0, 0.5)' }}>attendence</MyText>,
+     //           tabBarIcon: ({ focused }) => <FontAwesome name='list-alt' size={25} color={focused ? Colors.primary : 'rgba(0, 0, 0, 0.5)'} />,
+     //      }
+     // },
      {
           name: 'ProfileScreen',
           component: ProfileScreen,
@@ -32,14 +41,14 @@ export const supervisorScreens = [
 ];
 
 export const adminScreens = [
-     {
-          name: 'DashboardScreen',
-          component: DashboardScreen,
-          label: 'dashboard',
-          options: {
-               tabBarLabel: ({ focused }) => <MyText style={{ ...styles.title, color: focused ? Colors.primary : 'rgba(0, 0, 0, 0.5)' }}>dashboardScreen</MyText>,
-          }
-     },
+     // {
+     //      name: 'DashboardScreen',
+     //      component: DashboardScreen,
+     //      label: 'dashboard',
+     //      options: {
+     //           tabBarLabel: ({ focused }) => <MyText style={{ ...styles.title, color: focused ? Colors.primary : 'rgba(0, 0, 0, 0.5)' }}>dashboardScreen</MyText>,
+     //      }
+     // },
      ...supervisorScreens
 ];
 

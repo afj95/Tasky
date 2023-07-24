@@ -7,7 +7,7 @@ import {
      Linking,
      Platform
 } from 'react-native'
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { googleMapKey } from '../../../constants';
 import TouchableOpacity from '../../../components/UI/TouchableOpacity';
 import MyText from '../../../components/UI/MyText';
@@ -45,8 +45,7 @@ export const MapComponent = ({ visible, closeModal, latitude, longitude, locatio
                <View style={styles.contentView}>
                     <MapView
                          style={styles.map}
-                         key={googleMapKey}
-                         provider={'google'}
+                         provider={PROVIDER_GOOGLE}
                          pitchEnabled={false}
                          zoomEnabled={false}
                          scrollEnabled={false}

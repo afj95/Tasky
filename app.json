@@ -19,20 +19,25 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "buildNumber": "3",
+      "buildNumber": "4",
       "bundleIdentifier": "com.ahmad.tasky",
       "config": {
-        "googleMapsApiKey": "AIzaSyBy9xokt7ciS8rwVPfJ58PwTCcCv9eRqso"
+        "googleMapsApiKey": "AIzaSyBGr_V2xg0TADPttbNepGOt__CAPaCuq0k"
       }
     },
     "android": {
       "jsEngine": "hermes",
       "permissions": [],
-      "versionCode": 4,
+      "versionCode": 5,
+      "package": "com.ahmad.tasky",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBy9xokt7ciS8rwVPfJ58PwTCcCv9eRqso"
+        }
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png"
-      },
-      "package": "com.ahmad.tasky"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -44,6 +49,14 @@
       "eas": {
         "projectId": "03487d23-8ffc-440b-995c-ee2cb7944a79"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-sensors",
+        {
+          "motionPermission": "Allow $(Tasky App) to access your device motion."
+        }
+      ]
+    ]
   }
 }
