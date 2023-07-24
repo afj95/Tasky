@@ -42,7 +42,9 @@ export default {
         changeLangAlertTitle: "Changing language",
         changeLangMessage: "The application will be restarted to change the language",
         cancel: "إلغاء",
-        changeLangConfirm: "نعم",
+        changeLangCancel: "No",
+        changeLangConfirm: "Yes",
+        logoutConfirm: "نعم",
         fieldRequired: "هذا الحقل اجباري",
         active: "المشاريع الجارية",
         activeMessage: "سيتم إظهار المشاريع الجارية فقط",
@@ -118,6 +120,7 @@ export default {
         inProgressProjects: "المشاريع الجارية",
         upcomingProjects: "المشاريع القادمة",
         addNewMaterial: "إضافة مواد جديدة",
-        startNavigation: "فتح الخريطة"
+        startNavigation: "فتح الخريطة",
+        attendence: "الحضور والإنصراف"
     }
 }

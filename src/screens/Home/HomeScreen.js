@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Header } from "./components";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchInprogressProjects, fetchUpcomingProjects } from '../../redux/reducers/Projects/projects-actions';
 import MyText from '../../components/UI/MyText';

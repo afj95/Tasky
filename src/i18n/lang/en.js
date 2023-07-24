@@ -42,7 +42,9 @@ export default {
         changeLangAlertTitle: "تغيير لغة التطبيق",
         changeLangMessage: "سيتم إعادة تشغيل التطبيق لتغيير اللغة ؟",
         cancel: "Cancel",
-        changeLangConfirm: "Yes",
+        changeLangCancel: "إلغاء",
+        changeLangConfirm: "نعم",
+        logoutConfirm: "Yes",
         fieldRequired: "This field required",
         active: 'Active Projects',
         activeMessage: "Will show the active projects only",
@@ -118,6 +120,7 @@ export default {
         inProgressProjects: "In Progress Projects",
         upcomingProjects: "Upcoming Projects",
         addNewMaterial: "Add new material",
-        startNavigation: "Start Navigation"
+        startNavigation: "Start Navigation",
+        attendence: "Attendence"
     }
 }

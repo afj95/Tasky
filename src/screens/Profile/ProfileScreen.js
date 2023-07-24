@@ -82,7 +82,7 @@ export const ProfileScreen = ({ navigation }) => {
                          text: t('app.cancel')
                     },
                     {
-                         text: t('app.changeLangConfirm'),
+                         text: t('app.logoutConfirm'),
                          onPress: () => {
                               dispatch(logoutAction(() =>
                                    navigation.dispatch(
