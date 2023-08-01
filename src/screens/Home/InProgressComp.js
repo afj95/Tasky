@@ -17,6 +17,7 @@ import { showMessage } from '../../tools';
 import { clearErrors } from '../../redux/reducers/Global/global-actions';
 import { ActivityIndicator } from 'react-native-paper';
 import moment from 'moment';
+import { _listEmptyComponent } from '../../components/UI/_listEmptyComponent';
 
 export const InProgressComp = ({ _onRefresh, page, setPage, ...props }) => {
      const dispatch = useDispatch()
@@ -84,15 +85,6 @@ export const InProgressComp = ({ _onRefresh, page, setPage, ...props }) => {
                          onPress={() => setVisible(true)}
                     />
                     {loadings?.projects ? <ActivityIndicator size={15} color={Colors.primary} /> : null}
-               </View>
-          )
-     }
-
-     const _listEmptyComponent = () => {
-          return (
-               <View style={styles.emptyContainer}>
-                    <Image source={require('../../../assets/images/no_data.gif')} style={styles.emptyImage} />
-                    <MyText style={styles.emptyText}>noData</MyText>
                </View>
           )
      }
@@ -236,18 +228,6 @@ const styles = StyleSheet.create({
      emptyImage: {
           width: '90%',
           height: '50%',
-     },
-     emptyContainer: {
-          flex: 1,
-          height: '100%',
-          width: '100%',
-          justifyContent: 'center',
-          alignItems: 'center'
-     },
-     emptyText: {
-          fontFamily: 'bold',
-          color: Colors.primary,
-          fontSize: 18
      },
      deletedIcon: {
           height: '50%',

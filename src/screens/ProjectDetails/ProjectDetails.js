@@ -125,31 +125,28 @@ export const ProjectDetails = (props) => {
                                         colors={[Colors.primary, Colors.secondary, Colors.appWhite]}
                                     />
                                 }>
-                                {project?.name ? <View style={styles.nameContainer}>
-                                    <View>
-                                        <MyText text={project?.name} />
-                                        <MyText text={project?.work_type || ''} />
-                                        {!project?.latitude && project?.longitude ?
+                                {project?.name ?
+                                    <View style={styles.nameContainer}>
+                                        <View>
+                                            <MyText text={project?.name} />
+                                            <MyText text={project?.work_type || ''} />
+                                            {/* {!project?.latitude && project?.longitude ?
+                                                 : null} */}
                                             <MyText
                                                 style={styles.projectStartDate}
                                                 text={moment(project?.start_date).fromNow()}
-                                            /> : null}
-                                    </View>
-                                    {(project?.latitude && project?.longitude) ?
-                                        <MaterialCommunityIcons
-                                            name={'directions'}
-                                            size={20}
-                                            color={Colors.primary}
-                                            onPress={openMapModal}
-                                            style={{ padding: 5 }}
-                                        />
-                                        :
-                                        <MyText
-                                            style={styles.projectStartDate}
-                                            text={moment(project?.start_date).fromNow()}
-                                        />
-                                    }
-                                </View> : null}
+                                            />
+                                        </View>
+                                        {(project?.latitude && project?.longitude) ?
+                                            <MaterialCommunityIcons
+                                                name={'directions'}
+                                                size={20}
+                                                color={Colors.primary}
+                                                onPress={openMapModal}
+                                                style={{ padding: 5 }}
+                                            />
+                                            : null}
+                                    </View> : null}
                                 {project?.user ?
                                     <View style={styles.supervisorContainer}>
                                         <MyText style={styles.label}>projectSupervisors</MyText>

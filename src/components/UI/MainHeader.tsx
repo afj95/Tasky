@@ -11,15 +11,34 @@ import { Appbar as RNAppbar } from 'react-native-paper';
 
 const { height } = Dimensions.get("screen");
 
-export const MainHeader = ({ title, translate = true, showGoBack = false }) => {
+type HeaderProps = {
+     title: string;
+     translate?: boolean;
+     showGoBack?: boolean;
+     LeftComponent?: React.ComponentType<any> | null | undefined;
+     RightComponent?: React.ComponentType<any> | null | undefined;
+};
+
+export const MainHeader = ({
+     title,
+     translate = true,
+     showGoBack = false,
+     LeftComponent,
+     RightComponent
+}: HeaderProps) => {
 
      return (
           <View style={styles.container}>
                {showGoBack ?
-                    <RNAppbar.BackAction size={25} style={styles.backButton} color={Colors.appWhite} onPress={() => goBack()} />
-                    : <View style={{ height: 25, width: 25 }} />}
-               {translate == true ? <MyText style={styles.title}>{title}</MyText> : <MyText style={styles.title} text={title} />}
-               <View />
+                    <RNAppbar.BackAction
+                         size={25}
+                         style={styles.backButton}
+                         color={Colors.appWhite}
+                         onPress={() => goBack()}
+                    />
+                    : LeftComponent ? <LeftComponent /> : <View />}
+               {translate ? <MyText style={styles.title}>{title}</MyText> : <MyText style={styles.title} text={title} />}
+               {RightComponent ? <RightComponent /> : <View />}
           </View>
      )
 }
