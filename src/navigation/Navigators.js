@@ -10,6 +10,7 @@ import {
   ProjectDetails,
   EditTaskScreen,
   MaterialsScreen,
+  EmployeeDetailsScreen,
   // CalcualtionsScreen
 } from '../screens';
 import { useSelector } from 'react-redux';
@@ -114,6 +115,9 @@ export const MainStackScreens = () => (
       <MainStack.Screen name={'EditTaskScreen'} component={EditTaskScreen} />
       <MainStack.Screen name={'MaterialsScreen'} component={MaterialsScreen} />
       {/* <MainStack.Screen name={'CalcualtionsScreen'} component={CalcualtionsScreen} /> */}
+    </MainStack.Group>
+    <MainStack.Group screenOptions={{ headerShown: false }}>
+      <MainStack.Screen name={'EmployeeDetailsScreen'} component={EmployeeDetailsScreen} />
     </MainStack.Group>
 
     {/* <MainStack.Group screenOptions={{ headerShown: false }}>

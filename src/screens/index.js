@@ -10,3 +10,5 @@ export * from './Profile';
 export * from './EditTask';
 export * from './Materials';
 // export * from './Calculations';
+// export * from './Attendence';
+export * from './EmployeeDetailsScreen';
