@@ -8,13 +8,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { navigationRef } from './RootNavigation';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ErrorScreen } from '../screens/ErrorScreen';
+import { ErrorScreen, NoInternetScreen } from '../screens';
 // Navigators
 import { AuthStackScreens, MainStackScreens } from './Navigators';
 import FlashMessage from 'react-native-flash-message';
 import { showMessage } from '../tools';
 import { clearErrors } from '../redux/reducers/Global/global-actions';
 import { t } from '../i18n';
+import NetInfo from "@react-native-community/netinfo";
 
 export default function MainNavigator() {
     return (
@@ -33,9 +34,16 @@ const ScreensNavigator = () => {
 
     const [initialRouteName, setInitialRouteName] = useState('');
     const [hasError, setHasError] = useState(false);
+    const [isConnected, setIsConnected] = useState(false);
 
     const user = useSelector((state) => state?.authReducer?.user);
     const errors = useSelector((state) => state?.globalReducer?.errors)
+
+    useEffect(() => {
+        NetInfo.addEventListener(state => {
+            setIsConnected(state.isConnected);
+        });
+    }, [isConnected])
 
     useEffect(() => {
         if (errors && errors?.general) {
@@ -68,7 +76,9 @@ const ScreensNavigator = () => {
         getToken();
     }, [initialRouteName])
 
-    if (!initialRouteName) {
+    if (!isConnected) {
+        return <NoInternetScreen />
+    } else if (!initialRouteName) {
         setTimeout(() => setHasError(true), 10000) // After 10 seconds if the initialRouteName not modified it will show error screen
         if (hasError) {
             return <ErrorScreen />

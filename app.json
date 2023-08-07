@@ -19,7 +19,7 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "buildNumber": "4",
+      "buildNumber": "5",
       "bundleIdentifier": "com.ahmad.tasky",
       "config": {
         "googleMapsApiKey": "AIzaSyBGr_V2xg0TADPttbNepGOt__CAPaCuq0k"
@@ -28,7 +28,7 @@
     "android": {
       "jsEngine": "hermes",
       "permissions": [],
-      "versionCode": 5,
+      "versionCode": 6,
       "package": "com.ahmad.tasky",
       "config": {
         "googleMaps": {

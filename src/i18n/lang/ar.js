@@ -152,6 +152,7 @@ export default {
         passportImage: "صورة الجواز",
         passportExpiryDate: "تاريخ إنتهاء الجواز",
         clearance: "المخالصة",
-        clearanceDate: "تاريخ المخالصة"
+        clearanceDate: "تاريخ المخالصة",
+        noInternet: "لا يوجد إتصال بالإنترنت"
     }
 }

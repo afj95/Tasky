@@ -151,6 +151,7 @@ export default {
         passportImage: "Passport Image",
         passportExpiryDate: "Passport Expiry Date",
         clearance: "Clearance",
-        clearanceDate: "Clearance Date"
+        clearanceDate: "Clearance Date",
+        noInternet: "No internet connection"
     }
 }
