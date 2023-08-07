@@ -1,6 +1,8 @@
 import Colors from "../utils/Colors";
 
-export const API_URL = !__DEV__ ? 'https://aa63-2001-16a2-c5f7-7700-c47b-1124-6196-980e.ngrok.io/api/' : 'http://tasky-erp.com/api/';
+export const API_URL = __DEV__ ? 'https://853b-188-48-119-89.ngrok-free.app/api/' : 'http://tasky-erp.com/api/';
+
+export const googleMapKey = 'AIzaSyBy9xokt7ciS8rwVPfJ58PwTCcCv9eRqso';
 
 export const mainStyles = {
     viewShadow: {

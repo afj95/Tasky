@@ -9,13 +9,13 @@ import {
     ActivityIndicator
 } from 'react-native';
 import TouchableOpacity from '../../components/UI/TouchableOpacity';
-import { AntDesign, Feather } from '@expo/vector-icons';
+import { AntDesign, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { showMessage } from 'react-native-flash-message';
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../components/UI/MyText';
 import { fetchOneProject, resetProject } from '../../redux/reducers/Projects/projects-actions';
 import Colors from '../../utils/Colors';
-import { TaskComponent, Header, MaterialComponent } from './components';
+import { TaskComponent, Header, MaterialComponent, MapComponent } from './components';
 import ErrorHappened from '../../components/UI/ErrorHappened';
 import { clearErrors } from '../../redux/reducers/Global/global-actions';
 import { restProjectTasks } from '../../redux/reducers/Tasks/tasks-actions';
@@ -23,15 +23,21 @@ import { navigate } from '../../navigation/RootNavigation';
 import { t } from '../../i18n';
 import LoadMore from '../../components/UI/LoadMore';
 import moment from 'moment';
+import { MainHeader } from '../../components/UI/MainHeader';
 
 export const ProjectDetails = (props) => {
     const dispatch = useDispatch();
 
-    const { id, status, deleted, inProgress } = props?.route?.params
+    const { id,
+        // status,
+        // deleted,
+        // inProgress
+    } = props?.route?.params
 
     // const [optionsModal, setOptionsModal] = useState(false);
     const [uncheckedHeight, setUncheckedHeight] = useState(false);
     const [checkedHeight, setCheckedHeight] = useState(false);
+    const [mapModalVisible, setMapModalVisible] = useState(false);
 
     const errors = useSelector((state) => state?.globalReducer?.errors)
     const loadings = useSelector((state) => state?.globalReducer?.loadings)
@@ -81,19 +87,22 @@ export const ProjectDetails = (props) => {
     //     setOptionsModal(!optionsModal);
     // }
 
-    const onPhoneNumberPressed = () => Linking.openURL(`tel:${project?.user?.phone_number}`)
+    const onPhoneNumberPressed = phone_number => Linking.openURL(`tel:${phone_number}`)
 
     const loadMore = () => navigate('MaterialsScreen', { materials: projectMaterials, screen: 'project' })
+
+    const openMapModal = () => setMapModalVisible(true)
+
+    const closeMapModal = () => setMapModalVisible(false)
 
     // const goToCalculatingScreen = () => navigate('CalcualtionsScreen')
 
     return (
         <View style={styles.container}>
-            <Header
-                // user={user}
-                // showModal={openOptionsModal}
-                showGoBackButton
-                text={!project?.name ? '' : project?.name}
+            <MainHeader
+                title={!project?.name ? '' : __DEV__ ? project?.name + ' ' + project?.id : project?.name}
+                showGoBack
+                translate={false}
             />
             {errors?.project || errors?.project_tasks ? <ErrorHappened /> :
                 <>
@@ -116,20 +125,51 @@ export const ProjectDetails = (props) => {
                                         colors={[Colors.primary, Colors.secondary, Colors.appWhite]}
                                     />
                                 }>
-                                {project?.name ? <View style={styles.nameContainer}>
-                                    <MyText text={project?.name} />
-                                    <MyText style={styles.projectStartDate} text={moment(project?.start_date).fromNow()} />
-                                </View> : null}
+                                {project?.name ?
+                                    <View style={styles.nameContainer}>
+                                        <View>
+                                            <MyText text={project?.name} />
+                                            <MyText text={project?.work_type || ''} />
+                                            {/* {!project?.latitude && project?.longitude ?
+                                                 : null} */}
+                                            <MyText
+                                                style={styles.projectStartDate}
+                                                text={moment(project?.start_date).fromNow()}
+                                            />
+                                        </View>
+                                        {(project?.latitude && project?.longitude) ?
+                                            <MaterialCommunityIcons
+                                                name={'directions'}
+                                                size={20}
+                                                color={Colors.primary}
+                                                onPress={openMapModal}
+                                                style={{ padding: 5 }}
+                                            />
+                                            : null}
+                                    </View> : null}
                                 {project?.user ?
                                     <View style={styles.supervisorContainer}>
                                         <MyText style={styles.label}>projectSupervisors</MyText>
                                         <MyText style={styles.supervisor} text={`${project?.user?.name}`} />
+                                        {/* supervisor phone_number */}
                                         <TouchableOpacity
                                             disabled={user?.phoneNumber === project?.user?.phone_number}
-                                            onPress={user?.phone_number !== project?.user?.phone_number ? onPhoneNumberPressed : null}
+                                            onPress={() => onPhoneNumberPressed(project?.user?.phone_number)}
                                             style={styles.phoneNumberContainer}>
-                                            <MyText style={styles.phoneNumber} text={`${project?.user?.phone_number}`} />
+                                            <MyText style={styles.phoneNumber} text={` ${project?.user?.phone_number} `} />
                                             {user?.phone_number !== project?.user?.phone_number ? <Feather name={'external-link'} size={15} color={Colors.primary} /> : null}
+                                        </TouchableOpacity>
+                                    </View> : null}
+                                {project?.client ?
+                                    <View style={styles.supervisorContainer}>
+                                        <MyText style={styles.label}>projectClient</MyText>
+                                        <MyText style={styles.supervisor} text={`${project?.client?.name}`} />
+                                        {/* Client phone_number */}
+                                        <TouchableOpacity
+                                            onPress={() => onPhoneNumberPressed(project?.client?.phone_number)}
+                                            style={styles.phoneNumberContainer}>
+                                            <MyText style={styles.phoneNumber} text={` ${project?.client?.phone_number} `} />
+                                            {<Feather name={'external-link'} size={15} color={Colors.primary} />}
                                         </TouchableOpacity>
                                     </View> : null}
                                 {!project?.description ? null :
@@ -161,7 +201,7 @@ export const ProjectDetails = (props) => {
                                     : null
                                 }
 
-                                {loadings?.project_tasks ? <ActivityIndicator animating={loadings?.project_tasks} /> :
+                                {loadings?.project_tasks ? <ActivityIndicator animating={loadings?.project_tasks} color={Colors.primary} /> :
                                     <>
                                         {projectTasks?.length ?
                                             <View style={styles.tasksContainer}>
@@ -172,9 +212,9 @@ export const ProjectDetails = (props) => {
                                                         <MyText style={styles.label}>unChecked</MyText>
                                                         <MyText style={styles.tasksLength} text={projectTasks?.length} />
                                                     </View>
-                                                    <AntDesign name={uncheckedHeight ? 'down' : 'up'} color={Colors.primary} />
+                                                    <AntDesign name={uncheckedHeight ? 'up' : 'down'} color={Colors.primary} />
                                                 </TouchableOpacity>
-                                                {uncheckedHeight && projectTasks?.map((task, index) =>
+                                                {!uncheckedHeight && projectTasks?.map((task, index) =>
                                                     <TaskComponent
                                                         task={task}
                                                         project_id={id}
@@ -218,7 +258,20 @@ export const ProjectDetails = (props) => {
                         : null} */}
                 </>
             }
-            {/* <ProjectActionsModal visible={optionsModal} closeModal={closeOptionsModal} project={project} /> */}
+            {/* <ProjectActionsModal
+                visible={optionsModal}
+                closeModal={closeOptionsModal}
+                project={project}
+            /> */}
+
+
+            <MapComponent
+                visible={mapModalVisible}
+                closeModal={closeMapModal}
+                latitude={project?.latitude}
+                longitude={project?.longitude}
+                location={project?.location}
+            />
         </View>
     )
 }

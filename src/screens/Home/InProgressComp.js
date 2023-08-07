@@ -17,8 +17,9 @@ import { showMessage } from '../../tools';
 import { clearErrors } from '../../redux/reducers/Global/global-actions';
 import { ActivityIndicator } from 'react-native-paper';
 import moment from 'moment';
+import { _listEmptyComponent } from '../../components/UI/_listEmptyComponent';
 
-export const InProgressComp = ({ _onRefresh, ...props }) => {
+export const InProgressComp = ({ _onRefresh, page, setPage, ...props }) => {
      const dispatch = useDispatch()
 
      // active - finished
@@ -27,7 +28,6 @@ export const InProgressComp = ({ _onRefresh, ...props }) => {
      const [deleted, setDeleted] = useState(false);
      const [filterVisible, setVisible] = useState(false);
      const [loadMoreLoading, setLoadMore] = useState(false);
-     const [page, setPage] = useState(1);
 
      const errors = useSelector((state) => state?.globalReducer?.errors)
      const loadings = useSelector((state) => state?.globalReducer?.loadings)
@@ -66,7 +66,8 @@ export const InProgressComp = ({ _onRefresh, ...props }) => {
                          <MyText style={styles.projectName} text={item?.name} />
                          <MyText style={styles.projectDescription} ellipsizeMode={'tail'} numberOfLines={3} text={item?.description} />
                          <View style={styles.seperator} />
-                         <MyText style={styles.projectStartDate} text={moment(item?.start_date).fromNow()} />
+                         <MyText style={styles.projectStartDate} text={moment(item?.start_date).calendar('nextWeek')} />
+                         {/* <MyText style={styles.projectStartDate} text={moment(item?.start_date).fromNow()} /> */}
                     </View>
                     {/* {item?.deleted_at ? <View style={styles.deletedIcon} /> : null}
          {item?.status === 'finished' ? <View style={styles.finishedIcon} /> : null} */}
@@ -84,15 +85,6 @@ export const InProgressComp = ({ _onRefresh, ...props }) => {
                          onPress={() => setVisible(true)}
                     />
                     {loadings?.projects ? <ActivityIndicator size={15} color={Colors.primary} /> : null}
-               </View>
-          )
-     }
-
-     const _listEmptyComponent = () => {
-          return (
-               <View style={styles.emptyContainer}>
-                    <Image source={require('../../../assets/images/no_data.gif')} style={styles.emptyImage} />
-                    <MyText style={styles.emptyText}>noData</MyText>
                </View>
           )
      }
@@ -146,7 +138,7 @@ export const InProgressComp = ({ _onRefresh, ...props }) => {
                               style={{ flex: 1 }}
                               keyExtractor={(item, index) => '#' + index.toString()}
                               data={projects}
-                              ListHeaderComponent={user?.role === 'admin' ? _listHeaderComponent : null}
+                              // ListHeaderComponent={user?.role === 'admin' ? _listHeaderComponent : null}
                               ListEmptyComponent={_listEmptyComponent}
                               ListFooterComponent={projects?.length ? _listFooterComponent : null}
                               showsVerticalScrollIndicator={false}
@@ -236,18 +228,6 @@ const styles = StyleSheet.create({
      emptyImage: {
           width: '90%',
           height: '50%',
-     },
-     emptyContainer: {
-          flex: 1,
-          height: '100%',
-          width: '100%',
-          justifyContent: 'center',
-          alignItems: 'center'
-     },
-     emptyText: {
-          fontFamily: 'bold',
-          color: Colors.primary,
-          fontSize: 18
      },
      deletedIcon: {
           height: '50%',

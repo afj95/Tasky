@@ -61,8 +61,6 @@ export const request = async ({ url, method, headers, params }: RequestProps) =>
                     resolve(res)
                 })
                 .catch(async (error) => {
-                    // console.log('error', Object.keys(error.response.data));
-                    // console.log('error', error.response.data);
                     if (error && error?.response) {
                         if (!__DEV__) {
                             console.log('request error', {
@@ -89,7 +87,7 @@ export const request = async ({ url, method, headers, params }: RequestProps) =>
                              * returning the message came from the API.
                              * { success: true/false, message: '...' }
                             */
-                            reject({ message: error?.response?.data?.message })
+                            reject({ message: error?.response?.data?.message ? error?.response?.data?.message : t('app.serverError') })
                         }
                     } else {
                         reject({ message: error })
