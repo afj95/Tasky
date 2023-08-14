@@ -41,7 +41,7 @@ export const ProfileScreen = ({ navigation }) => {
           Alert.alert(t('app.changeLangAlertTitle'), t('app.changeLangMessage'), [
                {
                     style: 'cancel',
-                    text: t('app.cancel')
+                    text: t('app.changeLangCancel')
                },
                {
                     text: t('app.changeLangConfirm'),
@@ -82,7 +82,7 @@ export const ProfileScreen = ({ navigation }) => {
                          text: t('app.cancel')
                     },
                     {
-                         text: t('app.changeLangConfirm'),
+                         text: t('app.logoutConfirm'),
                          onPress: () => {
                               dispatch(logoutAction(() =>
                                    navigation.dispatch(

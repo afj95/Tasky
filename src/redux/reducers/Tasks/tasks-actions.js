@@ -1,4 +1,4 @@
-import { showMessage } from 'react-native-flash-message';
+import { showMessage } from '../../../tools/showMessage';
 import { request } from '../../../tools';
 import { setLoading, stopLoading } from '../Global/global-actions';
 import {
@@ -13,6 +13,7 @@ import {
     // ADD_TASK_SUCCESS,
     // DELETE_TASK_SUCCESS,
 } from './tasks-reducer'
+import { t } from '../../../i18n';
 
 export const restProjectTasks = () => ({
     type: RESET_PROJECT_TASKS,
@@ -108,6 +109,10 @@ export const editTask = (task, params) => {
             })
             dispatch(fetchTask(task.id))
         } catch (error) {
+            showMessage({
+                message: t('app.serverError'),
+                type: 'danger'
+            })
             dispatch(stopLoading({ failed: true, error: { 'edit_task': error.message ? error.message : error } }))
         }
     }

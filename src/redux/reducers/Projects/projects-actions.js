@@ -74,7 +74,7 @@ export const fetchUpcomingProjects = ({
             if (refresh) {
                 dispatch(setLoading({ 'projects_refresh': true }))
             } else {
-                dispatch(setLoading({ 'projects': true }))
+                dispatch(setLoading({ 'projects_upcoming': true }))
             }
 
             const fetchingProjectsRes = await request({

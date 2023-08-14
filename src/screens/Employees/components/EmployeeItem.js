@@ -8,6 +8,8 @@ import { Entypo, Ionicons } from '@expo/vector-icons';
 import Colors from '../../../utils/Colors';
 import { EmpOptionsModal } from './EmpOptionsModal';
 import { useSelector } from 'react-redux';
+import TouchableOpacity from '../../../components/UI/TouchableOpacity';
+import { navigate } from '../../../navigation/RootNavigation';
 
 export const EmployeeItem = ({ employee, onRefresh, undeletedSupervisor }) => {
 
@@ -30,65 +32,31 @@ export const EmployeeItem = ({ employee, onRefresh, undeletedSupervisor }) => {
         return null;
     }
 
+    const openEmployeeDetailsScreen = () => {
+        navigate('EmployeeDetailsScreen', { employee });
+    }
+
     return (
-        <>
-            <View style={[styles.container, { backgroundColor: employee._id === user._id ? Colors.lightBlue : Colors.white }]}>
-                <View style={styles.employeeDetailsContainer}>
-                    <View style={[styles.imageContainer, { borderColor: employee.deleted ? Colors.red : Colors.primary }]}>
-                        <Ionicons name={'person'} size={20} color={employee.deleted ? Colors.red : Colors.primary} />
-                    </View>
-                    <View>
-                        <MyText style={styles.text} text={employee.name} />
-                        <MyText style={styles.text} text={employee.role} />
-                    </View>
-                </View>
-                <Entypo
-                    name={'dots-three-vertical'}
-                    size={20}
-                    color={Colors.primary}
-                    onPress={openEmployeeModal}
-                />
+        <TouchableOpacity onPress={openEmployeeDetailsScreen}>
+            <View style={styles.container}>
+                <MyText text={employee.name} />
             </View>
-            <EmpOptionsModal
+            {/* <EmpOptionsModal
                 employee={employee}
                 visible={empModalVisible}
                 closeModal={closeEmpOptionsModal}
                 isAnyChange={isAnyChange}
-            />
-        </>
+            /> */}
+        </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
+        height: 50,
+        borderBottomColor: '#bcbcbc',
         backgroundColor: Colors.white,
-        marginBottom: 8,
         paddingHorizontal: 10,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
+        justifyContent: 'center'
     },
-    employeeDetailsContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    imageContainer: {
-        borderWidth: 1,
-        borderColor: Colors.primary,
-        width: 30, height: 30,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 15,
-        marginHorizontal: 5,
-    },
-    deletedText: {
-        color: 'red',
-        fontSize: 12,
-        fontWeight: 'bold'
-    },
-    text: {
-        color: Colors.black,
-        fontFamily: 'light'
-    }
 })

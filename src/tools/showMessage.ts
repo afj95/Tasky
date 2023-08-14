@@ -13,7 +13,7 @@ export const showMessage = (props: {
      style?: StyleProp<ViewStyle>;
 } | MessageOptions) => {
      const titleMainStyle: StyleProp<TextStyle> = { fontFamily: 'bold', fontSize: 15, textAlign: 'auto', marginStart: 10 };
-     const mainStyle: StyleProp<ViewStyle> = { paddingTop: statusBarHeight, borderBottomStartRadius: 8, borderBottomEndRadius: 8 };
+     const mainStyle: StyleProp<ViewStyle> = { paddingTop: 40, borderBottomStartRadius: 8, borderBottomEndRadius: 8 };
      flashShowMessage({
           message: props.message,
           type: props.type,

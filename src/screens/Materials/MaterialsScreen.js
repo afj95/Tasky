@@ -15,6 +15,7 @@ import { Header } from './components'
 import { TextInput } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons'
 import { addMaterials, fetchTaskMaterials } from '../../redux/reducers/Tasks/tasks-actions'
+import { MainHeader } from '../../components/UI/MainHeader'
 
 /**
  * @param {materials} param0 The materials to show.
@@ -79,7 +80,7 @@ export const MaterialsScreen = ({ route: { params: { materials, screen, task } }
                behavior={Platform.OS === "ios" ? "padding" : null}
                style={{ flex: 1 }}>
                <View style={styles.container}>
-                    <Header showGoBackButton text={'materials'} />
+                    <MainHeader showGoBack title={'materials'} />
                     <View style={styles.subContainer}>
                          <FlatList
                               keyExtractor={(item, index) => '#' + index}

@@ -35,24 +35,32 @@ export const LoginScreen = ({ navigation }) => {
 
     useEffect(() => {
         if (Object.keys(user || {}).length) {
-            if (user?.role === 'admin') {
-                showMessage({
-                    message: 'You are an admin!',
-                    description: 'Admin screens not ready yet!',
-                    type: 'info',
-                    duration: 5000,
-                    autoHide: false
-                })
-            } else {
-                AsyncStorage.setItem('token', user?.token).then(() => {
-                    navigation.dispatch(
-                        CommonActions.reset({
-                            index: 1,
-                            routes: [{ name: 'Home' }]
-                        })
-                    )
-                }).catch(e => { })
-            }
+            // if (user?.role === 'admin') {
+            //     showMessage({
+            //         message: 'You are an admin!',
+            //         description: 'Admin screens not ready yet!',
+            //         type: 'info',
+            //         duration: 5000,
+            //         autoHide: false
+            //     })
+            // } else {
+            //     AsyncStorage.setItem('token', user?.token).then(() => {
+            //         navigation.dispatch(
+            //             CommonActions.reset({
+            //                 index: 1,
+            //                 routes: [{ name: 'Home' }]
+            //             })
+            //         )
+            //     }).catch(e => { })
+            // }
+            AsyncStorage.setItem('token', user?.token).then(() => {
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 1,
+                        routes: [{ name: 'Home' }]
+                    })
+                )
+            }).catch(e => { })
         }
 
         if (errors?.login) {

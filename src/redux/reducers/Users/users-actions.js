@@ -14,7 +14,7 @@
 import { request } from "../../../tools";
 import { fetchProfile } from "../Auth/auth-actions";
 import { setLoading, stopLoading } from "../Global/global-actions"
-import { EDIT_PROFILE_SUCCESS, RESET } from "./users-reducer";
+import { EDIT_PROFILE_SUCCESS, FETCHING_EMPLOYEES_SUCCESS, RESET } from "./users-reducer";
 
 //     FETCHING_ALL_EMP,
 //     FETCHING_ALL_EMP_SUCCESS,
@@ -42,25 +42,38 @@ import { EDIT_PROFILE_SUCCESS, RESET } from "./users-reducer";
 // }
 
 // // ADMIN
-// export const fetchAllEmployees = () => {
-//     return async (dispatch) => {
-//         try {
-//             dispatch({ type: FETCHING_ALL_EMP })
+export const fetchAllEmployees = ({
+    loadMore = false,
+    page = 1,
+    perPage = 5,
+    refresh = false,
+}) => {
+    return async (dispatch) => {
+        try {
+            if (refresh) {
+                dispatch(setLoading({ 'employees_refresh': true }))
+            } else {
+                dispatch(setLoading({ 'employees': true }))
+            }
 
-//             const fetchAllEmployeesRes = await fetchAllEmployeesReq();
+            const fetchAllEmployeesRes = await request({
+                url: `employees?page=${page}&perPage=${perPage}`,
+                method: 'GET'
+            })
 
-//             dispatch({
-//                 type: FETCHING_ALL_EMP_SUCCESS,
-//                 all_employees: fetchAllEmployeesRes?.data?.data?.users
-//             })
-//         } catch (error) {
-//             dispatch({
-//                 type: FETCHING_ALL_EMP_FAILED,
-//                 fetchAllEmployeesError: error
-//             })
-//         }
-//     }
-// }
+            dispatch(stopLoading())
+            dispatch({
+                type: FETCHING_EMPLOYEES_SUCCESS,
+                payload: {
+                    all_employees: fetchAllEmployeesRes?.data,
+                    loadMore,
+                },
+            })
+        } catch (error) {
+            dispatch(stopLoading({ failed: true, error: { 'employees': error } }))
+        }
+    }
+}
 
 // export const fetchSuperVisors = () => {
 //     return async (dispatch) => {

@@ -183,6 +183,11 @@ export const styles = StyleSheet.create({
           color: Colors.appWhite,
           fontSize: 15
      },
+     addNewMaterialContainer: {
+          paddingVertical: 10,
+          justifyContent: 'center',
+          alignItems: 'center',
+     },
      inputContainer: {
           marginTop: 5,
           backgroundColor: Colors.white,

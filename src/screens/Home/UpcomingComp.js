@@ -17,8 +17,9 @@ import { showMessage } from '../../tools';
 import { clearErrors } from '../../redux/reducers/Global/global-actions';
 import { ActivityIndicator } from 'react-native-paper';
 import moment from 'moment';
+import { _listEmptyComponent } from '../../components/UI/_listEmptyComponent';
 
-export const UpcomingComp = ({ _onRefresh, ...props }) => {
+export const UpcomingComp = ({ _onRefresh, page, setPage, ...props }) => {
      const dispatch = useDispatch()
 
      // active - finished
@@ -27,7 +28,6 @@ export const UpcomingComp = ({ _onRefresh, ...props }) => {
      const [deleted, setDeleted] = useState(false);
      const [filterVisible, setVisible] = useState(false);
      const [loadMoreLoading, setLoadMore] = useState(false);
-     const [page, setPage] = useState(1);
 
      const errors = useSelector((state) => state?.globalReducer?.errors)
      const loadings = useSelector((state) => state?.globalReducer?.loadings)
@@ -84,16 +84,7 @@ export const UpcomingComp = ({ _onRefresh, ...props }) => {
                          color={Colors.primary}
                          onPress={() => setVisible(true)}
                     />
-                    {loadings?.projects ? <ActivityIndicator size={15} color={Colors.primary} /> : null}
-               </View>
-          )
-     }
-
-     const _listEmptyComponent = () => {
-          return (
-               <View style={styles.emptyContainer}>
-                    <Image source={require('../../../assets/images/no_data.gif')} style={styles.emptyImage} />
-                    <MyText style={styles.emptyText}>noData</MyText>
+                    {loadings?.projects_upcoming ? <ActivityIndicator size={15} color={Colors.primary} /> : null}
                </View>
           )
      }
@@ -140,13 +131,13 @@ export const UpcomingComp = ({ _onRefresh, ...props }) => {
      return (
           <View style={styles.container}>
                <View style={styles.projectsContainer}>
-                    {loadings?.projects ? null :
+                    {loadings?.projects_upcoming ? null :
                          <FlatList
                               contentContainerStyle={{ paddingBottom: projects?.length ? 30 : 0, flex: projects?.length ? 0 : 1 }}
                               style={{ flex: 1 }}
                               keyExtractor={(item, index) => '#' + index.toString()}
                               data={projects}
-                              ListHeaderComponent={user?.role === 'admin' ? _listHeaderComponent : null}
+                              // ListHeaderComponent={user?.role === 'admin' ? _listHeaderComponent : null}
                               ListEmptyComponent={_listEmptyComponent}
                               ListFooterComponent={projects?.length ? _listFooterComponent : null}
                               showsVerticalScrollIndicator={false}
@@ -154,7 +145,7 @@ export const UpcomingComp = ({ _onRefresh, ...props }) => {
                               refreshing={false}
                               renderItem={_renderItem}
                          />}
-                    {loadings?.projects ?
+                    {loadings?.projects_upcoming ?
                          <View style={styles.loadingContainer}>
                               <ActivityIndicator color={Colors.primary} size={'small'} animating={loadings?.project} style={{ flex: 1 }} />
                          </View> : null
@@ -236,18 +227,6 @@ const styles = StyleSheet.create({
      emptyImage: {
           width: '90%',
           height: '50%',
-     },
-     emptyContainer: {
-          flex: 1,
-          height: '100%',
-          width: '100%',
-          justifyContent: 'center',
-          alignItems: 'center'
-     },
-     emptyText: {
-          fontFamily: 'bold',
-          color: Colors.primary,
-          fontSize: 18
      },
      deletedIcon: {
           height: '50%',

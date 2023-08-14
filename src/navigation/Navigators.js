@@ -10,6 +10,7 @@ import {
   ProjectDetails,
   EditTaskScreen,
   MaterialsScreen,
+  EmployeeDetailsScreen,
   // CalcualtionsScreen
 } from '../screens';
 import { useSelector } from 'react-redux';
@@ -67,7 +68,8 @@ const MyTabs = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName={user?.role === 'admin' ? 'DashboardScreen' : 'HomeScreen'}
+      // initialRouteName={user?.role === 'admin' ? 'DashboardScreen' : 'HomeScreen'}
+      initialRouteName={'HomeScreen'}
       screenOptions={{ headerShown: false, }}>
       {user?.role === 'admin' ?
         adminScreens.map((screen, index) => {
@@ -113,6 +115,9 @@ export const MainStackScreens = () => (
       <MainStack.Screen name={'EditTaskScreen'} component={EditTaskScreen} />
       <MainStack.Screen name={'MaterialsScreen'} component={MaterialsScreen} />
       {/* <MainStack.Screen name={'CalcualtionsScreen'} component={CalcualtionsScreen} /> */}
+    </MainStack.Group>
+    <MainStack.Group screenOptions={{ headerShown: false }}>
+      <MainStack.Screen name={'EmployeeDetailsScreen'} component={EmployeeDetailsScreen} />
     </MainStack.Group>
 
     {/* <MainStack.Group screenOptions={{ headerShown: false }}>

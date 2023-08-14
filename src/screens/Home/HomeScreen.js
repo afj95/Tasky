@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Header } from "./components";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchInprogressProjects, fetchUpcomingProjects } from '../../redux/reducers/Projects/projects-actions';
 import MyText from '../../components/UI/MyText';
 import Colors from '../../utils/Colors';
 import {
   View,
-  StyleSheet,
-  I18nManager
+  StyleSheet
 } from "react-native";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { InProgressComp } from './InProgressComp';
 import { UpcomingComp } from './UpcomingComp';
 import { t } from '../../i18n';
+import { MainHeader } from '../../components/UI/MainHeader';
 
 export const HomeScreen = () => {
   const dispatch = useDispatch()
 
   // const [status, setStatus] = useState('active');
   // const [deleted, setDeleted] = useState(false);
-  const [page, setPage] = useState(1);
+  const [inProgressPage, setInProgressPage] = useState(1);
+  const [upcomingPage, setInUpcomingPage] = useState(1);
 
   const user = useSelector((state) => state?.authReducer?.user)
 
@@ -27,13 +27,13 @@ export const HomeScreen = () => {
     async function fetchAllProjects() {
       await dispatch(fetchInprogressProjects({
         loadMore: false,
-        page, perPage: 5,
+        inProgressPage, perPage: 5,
         refresh: false,
         in_progress: true
       }))
       await dispatch(fetchUpcomingProjects({
         loadMore: false,
-        page, perPage: 5,
+        upcomingPage, perPage: 5,
         refresh: false,
         in_progress: false
       }))
@@ -42,19 +42,19 @@ export const HomeScreen = () => {
   }, [])
 
   const _onRefreshInProgress = () => {
-    setPage(1)
+    setInProgressPage(1)
     dispatch(fetchInprogressProjects({
       loadMore: false,
-      page, perPage: 5,
+      inProgressPage, perPage: 5,
       refresh: true,
       in_progress: true
     }))
   }
   const _onRefreshUpcoming = () => {
-    setPage(1)
+    setInUpcomingPage(1)
     dispatch(fetchUpcomingProjects({
       loadMore: false,
-      page, perPage: 5,
+      upcomingPage, perPage: 5,
       refresh: true,
       in_progress: false
     }))
@@ -84,7 +84,7 @@ export const HomeScreen = () => {
   const inProgressTabPressed = () => {
     dispatch(fetchInprogressProjects({
       loadMore: false,
-      page, perPage: 5,
+      inProgressPage, perPage: 5,
       refresh: false,
       in_progress: true
     }))
@@ -93,7 +93,7 @@ export const HomeScreen = () => {
   const upComingTabPressed = () => {
     dispatch(fetchUpcomingProjects({
       loadMore: false,
-      page, perPage: 5,
+      upcomingPage, perPage: 5,
       refresh: false,
       in_progress: false
     }))
@@ -102,11 +102,10 @@ export const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Header user={user} text={'projects'} />
+        <MainHeader title={'projects'} />
       </View>
       {/* <Tab.Navigator layoutDirection={I18nManager.isRTL ? 'lrt' : 'ltr'}> */}
       <Tab.Navigator layoutDirection={'rtl'}>
-        {/* <Tab.Navigator layoutDirection={'ltr'}> */}
         <Tab.Screen
           listeners={{ tabPress: inProgressTabPressed, }}
           options={{ ...options, tabBarLabel: ({ focused }) => <MyText style={styles.tabBarLabelText(focused)}>inProgressProjects</MyText> }}
@@ -114,6 +113,8 @@ export const HomeScreen = () => {
           {(props) => (
             <InProgressComp
               {...props}
+              page={inProgressPage}
+              setPage={setInProgressPage}
               _onRefresh={_onRefreshInProgress}
             />
           )}
@@ -125,6 +126,8 @@ export const HomeScreen = () => {
           {(props) => (
             <UpcomingComp
               {...props}
+              page={upcomingPage}
+              setPage={setInUpcomingPage}
               _onRefresh={_onRefreshUpcoming}
             />
           )}
