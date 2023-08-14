@@ -24,3 +24,4 @@ src/screens/Calculations/response.json
 src/screens/Calculations
 src/utils/ImagePicker.ts
 src/components/UI/withLoading.jsx
+dist/
