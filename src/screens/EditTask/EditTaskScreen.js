@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { KeyboardAvoidingView, Platform, View, ActivityIndicator, ScrollView } from 'react-native';
 import MyText from '../../components/UI/MyText';
 import Colors from '../../utils/Colors';
 import { TextInput } from 'react-native-paper';
 import { styles } from '../ProjectDetails/components/TaskDetailsModalStyles';
-import { Header } from './components';
 import moment from 'moment';
 import { MaterialComponent } from '../ProjectDetails/components/MaterialComponent';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +12,6 @@ import TouchableOpacity from '../../components/UI/TouchableOpacity';
 import { editTask } from '../../redux/reducers/Tasks/tasks-actions';
 import { navigate } from '../../navigation/RootNavigation';
 import LoadMore from '../../components/UI/LoadMore';
-import { showMessage } from 'react-native-flash-message';
 import { AntDesign } from '@expo/vector-icons';
 import { MainHeader } from '../../components/UI/MainHeader';
 
@@ -35,16 +33,6 @@ export const EditTaskScreen = () => {
           },
           roundness: 8
      }
-
-     // useEffect(() => {
-     //      if (errors?.edit_task) {
-     //           showMessage({
-     //                message: errors?.edit_task,
-     //                type: 'danger'
-     //           })
-     //      }
-     //      // TODO: reset errors
-     // }, [errors?.edit_task])
 
      const editTaskButton = () => {
           if (employeesQuantity !== '0' || workProgress !== '0') {

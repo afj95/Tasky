@@ -50,6 +50,15 @@ export const adminScreens = [
      //      }
      // },
      {
+          name: 'HomeScreen',
+          component: HomeScreen,
+          label: 'projects',
+          options: {
+               tabBarLabel: ({ focused }) => <MyText style={{ ...styles.title, color: focused ? Colors.primary : 'rgba(0, 0, 0, 0.5)' }}>projects</MyText>,
+               tabBarIcon: ({ focused }) => <Entypo name='list' size={25} color={focused ? Colors.primary : 'rgba(0, 0, 0, 0.5)'} />,
+          }
+     },
+     {
           name: 'EmployeesScreen',
           component: EmployeesScreen,
           label: 'employees',
@@ -58,7 +67,15 @@ export const adminScreens = [
                tabBarIcon: ({ focused }) => <FontAwesome5 name='users' size={25} color={focused ? Colors.primary : 'rgba(0, 0, 0, 0.5)'} />,
           }
      },
-     ...supervisorScreens
+     {
+          name: 'ProfileScreen',
+          component: ProfileScreen,
+          label: 'profile',
+          options: {
+               tabBarLabel: ({ focused }) => <MyText style={{ ...styles.title, color: focused ? Colors.primary : 'rgba(0, 0, 0, 0.5)' }}>profile</MyText>,
+               tabBarIcon: ({ focused }) => <Entypo name='user' size={25} color={focused ? Colors.primary : 'rgba(0, 0, 0, 0.5)'} />,
+          }
+     },
 ];
 
 const styles = StyleSheet.create({
