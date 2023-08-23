@@ -2,6 +2,7 @@ import { showMessage } from '../../../tools/showMessage';
 import { request } from '../../../tools';
 import { setLoading, stopLoading } from '../Global/global-actions';
 import {
+    ADD_TASK_SUCCESS,
     CLEAR_TASK,
     EDIT_TASK_SUCCESS,
     FETCH_TASK,
@@ -182,27 +183,34 @@ export const addMaterials = (materials, task_id) => {
 // ============================================================================================================
 
 // ADMIN
-// const addNewTask = (project_id, task) => {
-//     return async dispatch => {
-//         try {
-//             dispatch({ type: ADD_TASK })
+export const addNewTask = (project_id, task) => {
+    return async dispatch => {
+        try {
+            dispatch(setLoading({ 'add_task': true }))
 
-//             const addTaskRes = await request({
-//                 url: 'tasks',
-//                 method: 'POST',
-//                 params: {
-//                     task,
-//                     project_id
-//                 }
-//             })
+            const addTaskRes = await request({
+                url: `projects/${project_id}/tasks`,
+                method: 'POST',
+                params: task
+            })
 
-//             dispatch(fetchingOneProject(project_id))
-//             dispatch({ type: ADD_TASK_SUCCESS, task: addTaskRes })
-//         } catch (error) {
-//             dispatch({ type: ADD_TASK_FAILED, addTaskError: error })
-//         }
-//     }
-// }
+            await dispatch(stopLoading());
+
+            showMessage({
+                message: addTaskRes?.data?.message,
+                type: 'success',
+                duration: 1000
+            })
+
+            dispatch({
+                type: ADD_TASK_SUCCESS,
+                payload: addTaskRes?.data
+            })
+        } catch (error) {
+            dispatch(stopLoading({ failed: true, error: { 'add_task': error.message ? error.message : error } }))
+        }
+    }
+}
 
 // const deleteTask = (taskId, project_id) => {
 //     return async dispatch => {

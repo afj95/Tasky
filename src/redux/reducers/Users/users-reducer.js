@@ -1,11 +1,13 @@
 export const EDIT_PROFILE_SUCCESS = 'EDIT_PROFILE_SUCCESS';
 export const FETCHING_EMPLOYEES_SUCCESS = 'FETCHING_EMPLOYEES_SUCCESS';
-export const FETCHING_EMPLOYEES_FAILED = 'FETCHING_EMPLOYEES_FAILED';
+export const FETCHING_USERS_SUCCESS = 'FETCHING_USERS_SUCCESS'
 export const RESET = 'RESET';
 
 const usersState = {
     profile_updated: false,
-    all_employees: []
+    all_employees: [],
+    all_users: [],
+    foremen: []
 }
 
 const usersReducer = (state = usersState, action) => {
@@ -21,6 +23,14 @@ const usersReducer = (state = usersState, action) => {
             return {
                 ...state,
                 all_employees: action?.payload?.all_employees?.data?.data
+            }
+        }
+
+        case FETCHING_USERS_SUCCESS: {
+            return {
+                ...state,
+                all_users: action?.payload?.all_users?.data?.data,
+                foremen: action?.payload?.all_users?.data?.data.filter(user => user?.role === 'foreman'),
             }
         }
 

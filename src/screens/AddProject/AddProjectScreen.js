@@ -1,74 +1,90 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Formik } from 'formik';
-import { AddProjectForm, Header } from './components';
-import { addNewProject } from '../../redux/reducers/Projects/projects-actions';
+import { AddProjectForm } from './components';
+import { resetProject, addNewProject } from '../../redux/reducers/Projects/projects-actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { showMessage } from 'react-native-flash-message';
-import { t } from '../../i18n';
 import { View } from 'react-native';
-import Colors from '../../utils/Colors';
+import { MainHeader } from '../../components/UI/MainHeader';
+import { showMessage } from '../../tools';
 
 export const AddProjectScreen = () => {
+    const _form = useRef(null);
+
     const dispatch = useDispatch();
 
-    const addProjectResponse = useSelector(state => state.projectsReducer.addProjectResponse)
-    const fetchingProjectsLoading = useSelector(state => state?.projectsReducer?.fetchingProjectsLoading)
+    const loadings = useSelector((state) => state?.globalReducer?.loadings)
+    const errors = useSelector((state) => state?.globalReducer?.errors)
+
+    useEffect(() => {
+        dispatch(resetProject())
+    }, [])
+
+    useEffect(() => {
+        if (errors?.add_project) {
+            showMessage({
+                message: errors?.add_project,
+                type: 'danger'
+            })
+        }
+    }, [loadings?.add_project])
 
     const validate = (values) => {
         const errors = {};
-        if (!values?.projectName1) {
-            errors.projectName1 = 'fieldRequired'
-        }
-        if (!values?.projectName2) {
-            errors.projectName2 = 'fieldRequired'
+        if (!values?.projectName) {
+            errors.projectName = 'fieldRequired'
         }
         if (!values?.projectSupervisors) {
             errors.projectSupervisors = 'fieldRequired'
         }
-        if (!values?.projectDescription) {
-            errors.projectDescription = 'fieldRequired'
+        if (!values?.projectStatus) {
+            errors.projectStatus = 'fieldRequired'
         }
         return errors;
     };
 
-    useEffect(() => {
-        if (addProjectResponse === true) {
-            showMessage({
-                message: t('app.projectAddedSuccess'),
-                type: 'success',
-                duration: 1500,
-                style: { paddingTop: 40 }
-            })
-        } else if (addProjectResponse === false) {
-            showMessage({
-                message: t('app.projectNotAdded'),
-                type: 'danger',
-                duration: 1500,
-                style: { paddingTop: 40, textAlign: 'left', alignItems: 'center' }
-            })
-        }
-    }, [addProjectResponse])
-
     const onSubmit = (values) => {
-        dispatch(addNewProject(values))
+        const {
+            projectName,
+            projectSupervisors,
+            projectDescription,
+            showed,
+            projectStatus,
+            startDate
+        } = values;
+
+        dispatch(addNewProject({
+            name: projectName,
+            user_id: projectSupervisors,
+            description: projectDescription,
+            showed,
+            status: projectStatus,
+            start_date: startDate
+        }))
+
     }
 
     const initialValues = {
-        projectName1: '',
-        projectName2: '',
+        projectName: '',
         projectSupervisors: '',
-        projectDescription: ''
+        projectDescription: '',
+        showed: false,
+        projectStatus: '',
+        startDate: new Date(),
     }
+
+    const resetForm = () => _form?.current?.resetForm();
 
     return (
         <Formik
+            innerRef={_form}
             validate={validate}
             onSubmit={onSubmit}
             initialValues={initialValues}>
             {props =>
                 <View style={{ flex: 1 }}>
-                    <Header title={'addProject'} onPress={props?.handleSubmit} isLoading={fetchingProjectsLoading} />
-                    <AddProjectForm addProjectProps={props} />
+                    {/* <Header title={'addProject'} onPress={props?.handleSubmit} isLoading={fetchingProjectsLoading} /> */}
+                    <MainHeader title={'addProject'} translate showGoBack />
+                    <AddProjectForm loadings={loadings} resetForm={resetForm} addProjectProps={props} />
                 </View>
             }
         </Formik>

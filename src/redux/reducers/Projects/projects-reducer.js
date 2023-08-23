@@ -1,30 +1,17 @@
-import {
-    FETCHING_PROJECTS_SUCCESS,
+export const FETCHING_PROJECTS_SUCCESS = "FETCHING_PROJECTS_SUCCESS";
 
-    FETCHING_PROJECT_SUCCESS,
-    RESET_PROJECT,
-
-    // ADMIN
-    // ADD_PROJECT_SUCCESS,
-    // FINISH_PROJECT_SUCCESS,
-    // DELETE_PROJECT_SUCCESS,
-
-    // Dashboard
-    // DASHBOARD_PROJECTS_SUCCESS,
-    // DASHBOARD_LATESTS_SUCCESS,
-    // DASHBOARD_EMPLOYEES_SUCCESS,
-    // DASHBOARD_CHARTS_SUCCESS
-} from "./projects-types";
+export const FETCHING_PROJECT_SUCCESS = "FETCHING_PROJECT_SUCCESS";
+export const RESET_PROJECT = "RESET_PROJECT";
+export const ADD_PROJECT_SUCCESS = 'ADD_PROJECT_SUCCESS'
 
 const projectsState = {
-    projects: [],
     inProgressProjects: [],
     upcomingProjects: [],
     totalProjects: 0,
     project: {},
 
     // ADMIN
-    // addProjectResponse: '',
+    addProjectResponse: false,
     // finishProjectSuccess: '',
     // deleteProjectSuccess: '',
 
@@ -41,7 +28,8 @@ const projectsReducer = (state = projectsState, action) => {
         case RESET_PROJECT: {
             return {
                 ...state,
-                project: {}
+                project: {},
+                addProjectResponse: false
             }
         }
 
@@ -51,7 +39,7 @@ const projectsReducer = (state = projectsState, action) => {
                     ...state,
                     totalProjects: payload?.projects?.data?.total,
                     inProgressProjects: payload?.loadMore ? [
-                        ...state.projects,
+                        ...state.inProgressProjects,
                         ...payload?.projects?.data?.data,
                     ] : payload?.projects?.data?.data
                 }
@@ -60,7 +48,7 @@ const projectsReducer = (state = projectsState, action) => {
                     ...state,
                     totalProjects: payload?.projects?.data?.total,
                     upcomingProjects: payload?.loadMore ? [
-                        ...state.projects,
+                        ...state.upcomingProjects,
                         ...payload?.projects?.data?.data,
                     ] : payload?.projects?.data?.data
                 }
@@ -75,13 +63,12 @@ const projectsReducer = (state = projectsState, action) => {
         }
 
         // ADMIN
-        // case ADD_PROJECT_SUCCESS: {
-        //     return {
-        //         ...state,
-        //         addProjectResponse: action?.addProjectResponse,
-        //         fetchingProjectsLoading: false,
-        //     }
-        // }
+        case ADD_PROJECT_SUCCESS: {
+            return {
+                ...state,
+                addProjectResponse: true,
+            }
+        }
         // case FINISH_PROJECT_SUCCESS: {
         //     return {
         //         ...state,

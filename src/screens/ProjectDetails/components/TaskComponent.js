@@ -12,8 +12,10 @@ import { clearErrors } from '../../../redux/reducers/Global/global-actions';
 import TouchableOpacity from '../../../components/UI/TouchableOpacity';
 import { TaskDetailsModal } from './TaskDetailsModal';
 import { fetchOneProject } from '../../../redux/reducers/Projects/projects-actions';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View, Animated } from 'react-native';
 import Indicator from '../../../components/UI/Indicator';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { RectButton } from 'react-native-gesture-handler';
 
 export const TaskComponent = ({ task, project_id, onPress }) => {
     const dispatch = useDispatch();
@@ -56,6 +58,37 @@ export const TaskComponent = ({ task, project_id, onPress }) => {
 
     const openTaskDetailsModal = () => setDetailsModal(true);
     const closeDetailsModal = () => setDetailsModal(false);
+
+    const renderLeftActions = (progress, dragX) => {
+        const trans = dragX.interpolate({
+            inputRange: [0, 50, 100, 101],
+            outputRange: [-20, 0, 0, 1],
+        });
+        return (
+            <View style={{
+                borderWidth: 1,
+            }}>
+                <RectButton onPress={() => {
+                    alert('sdsds')
+                }}>
+                    <Animated.Text
+                        style={[
+                            {
+                                transform: [{ translateX: trans }],
+                            },
+                        ]}>
+                        Archive
+                    </Animated.Text>
+                </RectButton>
+            </View>
+        );
+    };
+
+    // return (
+    //     <Swipeable renderLeftActions={renderLeftActions}>
+    //         <Text>"hello"</Text>
+    //     </Swipeable>
+    // )
 
     return (
         <TouchableOpacity

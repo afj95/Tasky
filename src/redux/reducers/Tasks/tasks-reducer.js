@@ -6,7 +6,7 @@ export const RESET_PROJECT_TASKS = 'RESET_PROJECT_TASKS';
 export const CLEAR_TASK = 'CLEAR_TASK';
 export const FETCH_TASK_MATERIALS_SUCCESS = 'FETCH_TASK_MATERIALS_SUCCESS';
 // ADMIN
-// export const ADD_TASK_SUCCESS = "add task - success";
+export const ADD_TASK_SUCCESS = 'ADD_TASK_SUCCESS'
 // export const DELETE_TASK_SUCCESS = "delete task - success";
 
 const tasksState = {
@@ -14,7 +14,8 @@ const tasksState = {
     projectCheckedTasks: [],
     task: {},
     currentTask: {},
-    taskMaterials: []
+    taskMaterials: [],
+    taskAdded: false
 }
 
 const tasksReducer = (state = tasksState, action) => {
@@ -30,7 +31,8 @@ const tasksReducer = (state = tasksState, action) => {
         case CLEAR_TASK: {
             return {
                 ...state,
-                currentTask: {}
+                currentTask: {},
+                taskAdded: false,
             }
         }
 
@@ -64,13 +66,12 @@ const tasksReducer = (state = tasksState, action) => {
         }
 
         // ADMIN
-        // case ADD_TASK_SUCCESS: {
-        //     return {
-        //         ...state,
-        //         addTaskLoading: false,
-        //         task: action.data?.data?.task
-        //     }
-        // }
+        case ADD_TASK_SUCCESS: {
+            return {
+                ...state,
+                taskAdded: true
+            }
+        }
         // case DELETE_TASK_SUCCESS: {
         //     return {
         //         ...state,

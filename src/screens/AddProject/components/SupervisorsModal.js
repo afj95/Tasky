@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import {
     View,
     StyleSheet,
@@ -6,12 +6,11 @@ import {
     FlatList,
     ActivityIndicator,
 } from 'react-native';
-import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
-import * as Animatable from 'react-native-animatable';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import MyText from '../../../components/UI/MyText';
 import _ from 'underscore';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchSuperVisors, resetUsersErrors } from '../../../redux/reducers/Users/users-actions';
+import { fetchAllUsers } from '../../../redux/reducers/Users/users-actions';
 import Colors from '../../../utils/Colors';
 import FlashMessage from 'react-native-flash-message';
 import { t } from '../../../i18n';
@@ -24,30 +23,25 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
 
     const _flashRef = useRef()
 
-    const [reload, showReload] = useState(false)
+    const loadings = useSelector((state) => state?.globalReducer?.loadings)
+    const errors = useSelector((state) => state?.globalReducer?.errors)
 
-    const fetchSupervisorsLoading = useSelector(state => state.usersReducer.fetchSupervisorsLoading);
-    const supervisors = useSelector(state => state.usersReducer.supervisors);
-    const fetchSupervisorsError = useSelector(state => state.usersReducer.fetchSupervisorsError);
+    const foremen = useSelector(state => state?.usersReducer?.foremen);
 
     useEffect(() => {
-        dispatch(fetchSuperVisors());
+        dispatch(fetchAllUsers());
     }, [])
 
     useEffect(() => {
-        if (fetchSupervisorsError) {
+        if (errors?.employees) {
             _flashRef?.current?.showMessage({
                 message: t('app.errorHappened'),
                 type: 'danger',
                 duration: 2000,
                 autoHide: false
             })
-            showReload(true)
-        } else {
-            showReload(false)
         }
-        dispatch(resetUsersErrors());
-    }, [fetchSupervisorsLoading])
+    }, [loadings?.employees])
 
     const onItemPressed = async (item) => {
         await onSelect(item);
@@ -73,9 +67,7 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
         )
     }
 
-    const refresh = () => {
-        dispatch(fetchSuperVisors())
-    }
+    const refresh = () => dispatch(fetchAllUsers());
 
     const addSupervisor = () => {
         closeModal();
@@ -97,35 +89,30 @@ export const SupervisorsModal = ({ modalVisible, onSelect, closeModal }) => {
             useNativeDriver>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-                        <TouchableOpacity activeOpacity={0.7} style={styles.closeButton} onPress={closeModal}>
-                            <AntDesign name={'closecircle'} size={20} color={Colors.primary} />
-                            <MyText style={styles.closeText}>close</MyText>
-                        </TouchableOpacity>
-                        {reload ?
-                            <TouchableOpacity activeOpacity={0.7} style={styles.closeButton} onPress={refresh}>
-                                <Ionicons name={'refresh-circle'} size={30} color={Colors.primary} />
-                                <MyText style={styles.reload}>refresh</MyText>
-                            </TouchableOpacity>
+                    <View style={styles.header}>
+                        <AntDesign
+                            name={'close'}
+                            size={20}
+                            color={Colors.primary}
+                            style={styles.closeButton}
+                            onPress={closeModal}
+                        />
+                        {loadings?.users ?
+                            <View style={styles.closeButton}>
+                                <ActivityIndicator size={20} color={Colors.primary} />
+                            </View>
                             :
-                            <TouchableOpacity activeOpacity={0.7} style={styles.addSupervisor} onPress={addSupervisor}>
-                                <Entypo name={'add-user'} size={20} color={Colors.primary} />
-                                <MyText style={styles.addSupervisorText}>addSupervisor</MyText>
+                            <TouchableOpacity disabled={loadings?.users} activeOpacity={0.7} style={styles.closeButton} onPress={refresh}>
+                                <AntDesign name={'reload1'} size={20} color={Colors.primary} />
                             </TouchableOpacity>
                         }
                     </View>
-                    {fetchSupervisorsLoading ?
-                        <View style={styles.loader}>
-                            <ActivityIndicator size={'small'} color={Colors.black} />
-                        </View>
-                        :
-                        <FlatList
-                            data={supervisors || []}
-                            keyExtractor={(item, index) => '#' + index.toString()}
-                            renderItem={renderItem}
-                            showsVerticalScrollIndicator={false}
-                        />
-                    }
+                    <FlatList
+                        data={loadings?.users ? [] : foremen}
+                        keyExtractor={(item, index) => '#' + index.toString()}
+                        renderItem={renderItem}
+                        showsVerticalScrollIndicator={false}
+                    />
                 </View>
                 <FlashMessage ref={_flashRef} position={'bottom'} />
             </View>
@@ -150,61 +137,27 @@ const styles = StyleSheet.create({
         borderTopStartRadius: 20,
         padding: 10,
     },
+    header: {
+        flexDirection: 'row-reverse',
+        width: '100%',
+        justifyContent: 'space-between'
+    },
     closeButton: {
-        width: 50,
-        height: 50,
+        padding: 10,
         alignSelf: 'flex-end',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    closeText: {
-        fontFamily: 'bold',
-        color: Colors.primary
-    },
-    reload: {
-        fontFamily: 'bold'
-    },
-    addSupervisor: {
-        width: 50,
-        height: 50,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    addSupervisorText: {
-        textAlign: 'center',
-        color: Colors.primary,
-        fontFamily: 'bold'
     },
     loader: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
     },
-    searchbar: {
-        height: 50,
-        alignSelf: 'center',
-        elevation: 1,
-        backgroundColor: 'white',
-        borderRadius: 8,
-        borderWidth: 0.5,
-        borderColor: '#999'
-    },
-    item: {
-        backgroundColor: Colors.white,
-        borderRadius: 8,
-        padding: 5,
-        width: '100%',
-        marginVertical: 5,
-        alignSelf: 'center'
-    },
-
     container: {
-        backgroundColor: Colors.white,
-        marginBottom: 8,
-        paddingHorizontal: 10,
+        padding: 10,
+        borderRadius: 4,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        borderBottomWidth: 1,
+        borderBottomColor: '#dcdcdc',
     },
     employeeDetailsContainer: {
         flexDirection: 'row',
@@ -219,11 +172,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 15,
         marginHorizontal: 5,
-    },
-    deletedText: {
-        color: 'red',
-        fontSize: 12,
-        fontWeight: 'bold'
     },
     text: {
         color: Colors.black,
