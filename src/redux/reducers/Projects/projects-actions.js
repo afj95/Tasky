@@ -1,23 +1,7 @@
-import { request } from "../../../tools";
+import { request, showMessage } from "../../../tools";
 import { setLoading, stopLoading } from "../Global/global-actions";
 import { fetchProjectTasks } from "../Tasks/tasks-actions";
-import {
-    FETCHING_PROJECTS_SUCCESS,
-
-    FETCHING_PROJECT_SUCCESS,
-    RESET_PROJECT
-
-    // ADMIN
-    // ADD_PROJECT_SUCCESS,
-    // FINISH_PROJECT_SUCCESS,
-    // DELETE_PROJECT_SUCCESS,
-
-    // Dashboard
-    // DASHBOARD_PROJECTS_SUCCESS,
-    // DASHBOARD_LATESTS_SUCCESS,
-    // DASHBOARD_EMPLOYEES_SUCCESS,
-    // DASHBOARD_CHARTS_SUCCESS
-} from "./projects-types"
+import { ADD_PROJECT_SUCCESS, FETCHING_PROJECTS_SUCCESS, FETCHING_PROJECT_SUCCESS, RESET_PROJECT } from "./projects-reducer";
 
 export const resetProject = () => ({
     type: RESET_PROJECT
@@ -130,26 +114,33 @@ export const fetchOneProject = (project_id, refresh = false) => {
 
 // ADMIN routes
 
-// export const addNewProject = (project) => {
-//     return async (dispatch) => {
-//         try {
-//             dispatch({ type: FETCHING_PROJECTS });
+export const addNewProject = (project) => {
+    return async (dispatch) => {
+        try {
+            dispatch(setLoading({ 'add_project': true }))
 
-//             const addProjectResponse = await request({
-//                 url: 'projects',
-//                 method: 'POST',
-//                 params: project
-//             })
+            const addProjectRes = await request({
+                url: 'projects',
+                method: 'POST',
+                params: project
+            })
 
-//             dispatch({
-//                 type: ADD_PROJECT_SUCCESS,
-//                 addProjectResponse: addProjectResponse?.status === 201 || addProjectResponse?.status === 200
-//             })
-//         } catch (error) {
-//             dispatch({ type: ADD_PROJECT_FAILED, addProjectResponse: false });
-//         }
-//     }
-// }
+            await dispatch(stopLoading())
+
+            showMessage({
+                message: addProjectRes.data?.message,
+                type: 'success'
+            })
+
+            await dispatch({
+                type: ADD_PROJECT_SUCCESS,
+                payload: addProjectRes?.data
+            })
+        } catch (error) {
+            dispatch(stopLoading({ failed: true, error: { 'add_project': error } }))
+        }
+    }
+}
 
 // export const editProject = (projectId) => {
 //     return async (dispatch) => {

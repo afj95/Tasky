@@ -9,13 +9,13 @@ import {
     ActivityIndicator
 } from 'react-native';
 import TouchableOpacity from '../../components/UI/TouchableOpacity';
-import { AntDesign, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { showMessage } from 'react-native-flash-message';
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../components/UI/MyText';
 import { fetchOneProject, resetProject } from '../../redux/reducers/Projects/projects-actions';
 import Colors from '../../utils/Colors';
-import { TaskComponent, Header, MaterialComponent, MapComponent } from './components';
+import { TaskComponent, Header, MaterialComponent, MapComponent, AddTaskModal } from './components';
 import ErrorHappened from '../../components/UI/ErrorHappened';
 import { clearErrors } from '../../redux/reducers/Global/global-actions';
 import { restProjectTasks } from '../../redux/reducers/Tasks/tasks-actions';
@@ -38,6 +38,7 @@ export const ProjectDetails = (props) => {
     const [uncheckedHeight, setUncheckedHeight] = useState(false);
     const [checkedHeight, setCheckedHeight] = useState(false);
     const [mapModalVisible, setMapModalVisible] = useState(false);
+    const [addTaskModalVisibility, setAddTaskModalVisibility] = useState(false);
 
     const errors = useSelector((state) => state?.globalReducer?.errors)
     const loadings = useSelector((state) => state?.globalReducer?.loadings)
@@ -95,7 +96,7 @@ export const ProjectDetails = (props) => {
 
     const closeMapModal = () => setMapModalVisible(false)
 
-    // const goToCalculatingScreen = () => navigate('CalcualtionsScreen')
+    const closeAddTaskModal = () => setAddTaskModalVisibility(false);
 
     return (
         <View style={styles.container}>
@@ -253,9 +254,16 @@ export const ProjectDetails = (props) => {
                         </View>
                     }
 
-                    {/* {user?.role === 'admin' && project?.status !== 'finished' && !project?.deleted ?
-                        <AddTask project={project} _scrollRef={_scroll} />
-                        : null} */}
+                    {user?.role === 'admin'
+                        && project?.status !== 'finished'
+                        && (
+                            !loadings?.project
+                            && !loadings?.project_refresh
+                            && !loadings?.project_tasks
+                        ) ?
+                        <View style={styles.addTaskButton}>
+                            <Ionicons name={'add'} size={30} color={Colors.appWhite} onPress={() => setAddTaskModalVisibility(true)} />
+                        </View> : null}
                 </>
             }
             {/* <ProjectActionsModal
@@ -264,7 +272,12 @@ export const ProjectDetails = (props) => {
                 project={project}
             /> */}
 
-
+            <AddTaskModal
+                visible={addTaskModalVisibility}
+                setVisible={setAddTaskModalVisibility}
+                closeModal={closeAddTaskModal}
+                project={project}
+            />
             <MapComponent
                 visible={mapModalVisible}
                 closeModal={closeMapModal}
@@ -408,6 +421,16 @@ const styles = StyleSheet.create({
         marginStart: 8,
         color: Colors.primary,
         opacity: 0.5
+    },
+    addTaskButton: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        start: 20,
+        bottom: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: Colors.primary,
     },
     label: {
         fontFamily: 'bold',

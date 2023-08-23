@@ -14,7 +14,7 @@
 import { request } from "../../../tools";
 import { fetchProfile } from "../Auth/auth-actions";
 import { setLoading, stopLoading } from "../Global/global-actions"
-import { EDIT_PROFILE_SUCCESS, FETCHING_EMPLOYEES_SUCCESS, RESET } from "./users-reducer";
+import { EDIT_PROFILE_SUCCESS, FETCHING_EMPLOYEES_SUCCESS, FETCHING_USERS_SUCCESS, RESET } from "./users-reducer";
 
 //     FETCHING_ALL_EMP,
 //     FETCHING_ALL_EMP_SUCCESS,
@@ -71,6 +71,29 @@ export const fetchAllEmployees = ({
             })
         } catch (error) {
             dispatch(stopLoading({ failed: true, error: { 'employees': error } }))
+        }
+    }
+}
+
+export const fetchAllUsers = () => {
+    return async (dispatch) => {
+        try {
+            dispatch(setLoading({ 'users': true }))
+
+            const fetchAllUsersRes = await request({
+                url: `users/`,
+                method: 'GET'
+            })
+
+            dispatch(stopLoading())
+            dispatch({
+                type: FETCHING_USERS_SUCCESS,
+                payload: {
+                    all_users: fetchAllUsersRes?.data,
+                },
+            })
+        } catch (error) {
+            dispatch(stopLoading({ failed: true, error: { 'users': error } }))
         }
     }
 }
