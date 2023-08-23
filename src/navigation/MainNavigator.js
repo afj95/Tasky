@@ -40,9 +40,11 @@ const ScreensNavigator = () => {
     const errors = useSelector((state) => state?.globalReducer?.errors)
 
     useEffect(() => {
-        NetInfo.addEventListener(state => {
+        const unsubscribe = NetInfo.addEventListener(state => {
             setIsConnected(state.isConnected);
         });
+
+        return () => unsubscribe();
     }, [isConnected])
 
     useEffect(() => {

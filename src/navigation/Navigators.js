@@ -107,7 +107,14 @@ export const MainStackScreens = () => (
     {/* ADMIN */}
     <MainStack.Group screenOptions={{ headerShown: false }}>
       <MainStack.Screen name="Tabs" component={MyTabs} />
-      <MainStack.Screen name="AddProject" component={AddProjectScreen} />
+      <MainStack.Screen
+        name="AddProject"
+        component={AddProjectScreen}
+        options={{
+          gestureEnabled: true,
+          gestureDirection: 'horizontal'
+        }}
+      />
     </MainStack.Group>
 
     <MainStack.Group screenOptions={{ headerShown: false }}>

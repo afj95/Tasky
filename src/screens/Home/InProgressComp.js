@@ -66,7 +66,7 @@ export const InProgressComp = ({ _onRefresh, page, setPage, ...props }) => {
                          <MyText style={styles.projectName} text={item?.name} />
                          <MyText style={styles.projectDescription} ellipsizeMode={'tail'} numberOfLines={3} text={item?.description} />
                          <View style={styles.seperator} />
-                         <MyText style={styles.projectStartDate} text={moment(item?.start_date).calendar('nextWeek')} />
+                         <MyText style={styles.projectStartDate} text={moment(item?.start_date).format('DD/MM/YYYY')} />
                          {/* <MyText style={styles.projectStartDate} text={moment(item?.start_date).fromNow()} /> */}
                     </View>
                     {/* {item?.deleted_at ? <View style={styles.deletedIcon} /> : null}

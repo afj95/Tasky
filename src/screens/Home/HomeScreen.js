@@ -12,6 +12,10 @@ import { InProgressComp } from './InProgressComp';
 import { UpcomingComp } from './UpcomingComp';
 import { t } from '../../i18n';
 import { MainHeader } from '../../components/UI/MainHeader';
+import * as updates from 'expo-updates';
+import { Ionicons } from '@expo/vector-icons';
+import { navigate } from '../../navigation/RootNavigation';
+import TouchableOpacity from '../../components/UI/TouchableOpacity';
 
 export const HomeScreen = () => {
   const dispatch = useDispatch()
@@ -99,12 +103,27 @@ export const HomeScreen = () => {
     }))
   }
 
+  const AddProjectButton = () => {
+    return (
+      <TouchableOpacity onPress={() => navigate('AddProject')} style={styles.addProjectButton}>
+        <Ionicons
+          name={'md-add-circle'}
+          size={20}
+          color={Colors.appWhite}
+          style={{ paddingHorizontal: 2 }}
+        />
+        {/* <MyText style={styles.addProjectText}>addNewProject</MyText> */}
+      </TouchableOpacity>
+    )
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <MainHeader title={'projects'} />
+        <MainHeader title={'projects'} RightComponent={user?.role === 'admin' ? AddProjectButton : null} />
       </View>
       {/* <Tab.Navigator layoutDirection={I18nManager.isRTL ? 'lrt' : 'ltr'}> */}
+      {__DEV__ ? <MyText style={{ alignSelf: 'center' }} text={updates.releaseChannel + ''} /> : null}
       <Tab.Navigator layoutDirection={'rtl'}>
         <Tab.Screen
           listeners={{ tabPress: inProgressTabPressed, }}
@@ -135,44 +154,6 @@ export const HomeScreen = () => {
       </Tab.Navigator>
     </View>
   );
-
-  // return (
-  //   <View style={styles.container}>
-  //     <View style={styles.header}>
-  //       <Header user={user} text={'projects'} />
-  //     </View>
-
-  //     <View style={styles.projectsContainer}>
-  //       {loadings?.projects ? null :
-  //         <FlatList
-  //           contentContainerStyle={{ paddingBottom: projects?.length ? 30 : 0, flex: projects?.length ? 0 : 1 }}
-  //           style={{ flex: 1 }}
-  //           keyExtractor={(item, index) => '#' + index.toString()}
-  //           data={projects}
-  //           ListHeaderComponent={user?.role === 'admin' ? _listHeaderComponent : null}
-  //           ListEmptyComponent={_listEmptyComponent}
-  //           ListFooterComponent={projects?.length ? _listFooterComponent : null}
-  //           showsVerticalScrollIndicator={false}
-  //           onRefresh={_onRefresh}
-  //           refreshing={false}
-  //           renderItem={_renderItem}
-  //         />}
-  //       {loadings?.projects ?
-  //         <View style={styles.loadingContainer}>
-  //           <ActivityIndicator color={Colors.primary} size={'small'} animating={loadings?.project} style={{ flex: 1 }} />
-  //         </View> : null
-  //       }
-  //     </View>
-  //     <FilterModal
-  //       visible={filterVisible}
-  //       close={closeModal}
-  //       status={status}
-  //       setStatus={setStatus}
-  //       deleted={deleted}
-  //       setDeleted={setDeleted}
-  //     />
-  //   </View>
-  // )
 };
 
 const styles = StyleSheet.create({
@@ -284,5 +265,13 @@ const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
 
-  })
+  }),
+  addProjectButton: {
+    alignItems: 'center',
+  },
+  addProjectText: {
+    fontSize: 10,
+    color: Colors.appWhite,
+    fontFamily: 'light'
+  }
 });
