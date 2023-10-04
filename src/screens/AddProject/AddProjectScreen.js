@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { Formik } from 'formik';
 import { AddProjectForm } from './components';
-import { resetProject, addNewProject } from '../../redux/reducers/Projects/projects-actions';
+import { resetProject, addNewProject, addNewType } from '../../redux/reducers/Projects/projects-actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { View } from 'react-native';
 import { MainHeader } from '../../components/UI/MainHeader';
@@ -15,6 +15,8 @@ export const AddProjectScreen = () => {
     const loadings = useSelector((state) => state?.globalReducer?.loadings)
     const errors = useSelector((state) => state?.globalReducer?.errors)
 
+    const types = useSelector((state) => state?.projectsReducer?.workTypes)
+
     useEffect(() => {
         dispatch(resetProject())
     }, [])
@@ -22,7 +24,7 @@ export const AddProjectScreen = () => {
     useEffect(() => {
         if (errors?.add_project) {
             showMessage({
-                message: errors?.add_project,
+                message: errors?.add_project.message,
                 type: 'danger'
             })
         }
@@ -39,6 +41,9 @@ export const AddProjectScreen = () => {
         if (!values?.projectStatus) {
             errors.projectStatus = 'fieldRequired'
         }
+        if (!values?.workType) {
+            errors.workType = 'fieldRequired'
+        }
         return errors;
     };
 
@@ -49,7 +54,8 @@ export const AddProjectScreen = () => {
             projectDescription,
             showed,
             projectStatus,
-            startDate
+            startDate,
+            workType
         } = values;
 
         dispatch(addNewProject({
@@ -57,10 +63,12 @@ export const AddProjectScreen = () => {
             user_id: projectSupervisors,
             description: projectDescription,
             showed,
+            // work_type: workType,
             status: projectStatus,
             start_date: startDate
         }))
 
+        dispatch(addNewType(workType));
     }
 
     const initialValues = {
@@ -84,7 +92,12 @@ export const AddProjectScreen = () => {
                 <View style={{ flex: 1 }}>
                     {/* <Header title={'addProject'} onPress={props?.handleSubmit} isLoading={fetchingProjectsLoading} /> */}
                     <MainHeader title={'addProject'} translate showGoBack />
-                    <AddProjectForm loadings={loadings} resetForm={resetForm} addProjectProps={props} />
+                    <AddProjectForm
+                        types={types}
+                        loadings={loadings}
+                        resetForm={resetForm}
+                        addProjectProps={props}
+                    />
                 </View>
             }
         </Formik>

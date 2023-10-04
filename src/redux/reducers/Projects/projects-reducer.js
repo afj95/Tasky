@@ -2,16 +2,20 @@ export const FETCHING_PROJECTS_SUCCESS = "FETCHING_PROJECTS_SUCCESS";
 
 export const FETCHING_PROJECT_SUCCESS = "FETCHING_PROJECT_SUCCESS";
 export const RESET_PROJECT = "RESET_PROJECT";
-export const ADD_PROJECT_SUCCESS = 'ADD_PROJECT_SUCCESS'
+export const ADD_PROJECT_SUCCESS = 'ADD_PROJECT_SUCCESS';
+export const ADD_NEW_WORK_TYPE = 'ADD_NEW_WORK_TYPE';
+export const DELETE_WORK_TYPE = 'DELETE_WORK_TYPE';
 
 const projectsState = {
     inProgressProjects: [],
     upcomingProjects: [],
-    totalProjects: 0,
+    totalInprogress: 0,
+    totalUpcoming: 0,
     project: {},
 
     // ADMIN
     addProjectResponse: false,
+    workTypes: []
     // finishProjectSuccess: '',
     // deleteProjectSuccess: '',
 
@@ -34,10 +38,11 @@ const projectsReducer = (state = projectsState, action) => {
         }
 
         case FETCHING_PROJECTS_SUCCESS: {
+            console.log('payload?.projects?.data?.total', payload?.projects?.data?.total);
             if (payload?.in_progress) {
                 return {
                     ...state,
-                    totalProjects: payload?.projects?.data?.total,
+                    totalInprogress: payload?.projects?.data?.total,
                     inProgressProjects: payload?.loadMore ? [
                         ...state.inProgressProjects,
                         ...payload?.projects?.data?.data,
@@ -46,7 +51,7 @@ const projectsReducer = (state = projectsState, action) => {
             } else {
                 return {
                     ...state,
-                    totalProjects: payload?.projects?.data?.total,
+                    totalUpcoming: payload?.projects?.data?.total,
                     upcomingProjects: payload?.loadMore ? [
                         ...state.upcomingProjects,
                         ...payload?.projects?.data?.data,
@@ -67,6 +72,24 @@ const projectsReducer = (state = projectsState, action) => {
             return {
                 ...state,
                 addProjectResponse: true,
+            }
+        }
+
+        case ADD_NEW_WORK_TYPE: {
+            return {
+                ...state,
+                workTypes: [
+                    ...state.workTypes,
+                    payload?.type
+                ]
+            }
+        }
+        case DELETE_WORK_TYPE: {
+            return {
+                ...state,
+                workTypes: [
+                    ...state.workTypes.filter((type, index) => index !== payload.index),
+                ]
             }
         }
         // case FINISH_PROJECT_SUCCESS: {

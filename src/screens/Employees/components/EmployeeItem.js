@@ -1,32 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     View,
-    StyleSheet
+    StyleSheet,
+    I18nManager
 } from 'react-native';
 import MyText from '../../../components/UI/MyText';
-import { Entypo, Ionicons } from '@expo/vector-icons';
 import Colors from '../../../utils/Colors';
-import { EmpOptionsModal } from './EmpOptionsModal';
-import { useSelector } from 'react-redux';
 import TouchableOpacity from '../../../components/UI/TouchableOpacity';
 import { navigate } from '../../../navigation/RootNavigation';
 
-export const EmployeeItem = ({ employee, onRefresh, undeletedSupervisor }) => {
+export const EmployeeItem = ({ id, employee, undeletedSupervisor }) => {
 
-    const [empModalVisible, setEmpModal] = useState(false)
-    const [anyChange, isAnyChange] = useState(false)
+    // const [empModalVisible, setEmpModal] = useState(false)
+    // const [anyChange, isAnyChange] = useState(false)
 
-    const user = useSelector((state) => state?.authReducer?.user)
+    // const user = useSelector((state) => state?.authReducer?.user)
 
-    const closeEmpOptionsModal = () => {
-        setEmpModal(false);
-        if (anyChange) {
-            onRefresh();
-            isAnyChange(false)
-        }
-    }
+    // const closeEmpOptionsModal = () => {
+    //     setEmpModal(false);
+    //     if (anyChange) {
+    //         onRefresh();
+    //         isAnyChange(false)
+    //     }
+    // }
 
-    const openEmployeeModal = () => setEmpModal(true)
+    // const openEmployeeModal = () => setEmpModal(true)
 
     if (undeletedSupervisor && employee.deleted) {
         return null;
@@ -39,6 +37,7 @@ export const EmployeeItem = ({ employee, onRefresh, undeletedSupervisor }) => {
     return (
         <TouchableOpacity onPress={openEmployeeDetailsScreen}>
             <View style={styles.container}>
+                {I18nManager.isRTL ? <MyText text={' - ' + (id + 1)} /> : <MyText text={(id + 1) + ' - '} />}
                 <MyText text={employee.name} />
             </View>
             {/* <EmpOptionsModal
@@ -57,6 +56,6 @@ const styles = StyleSheet.create({
         borderBottomColor: '#bcbcbc',
         backgroundColor: Colors.white,
         paddingHorizontal: 10,
-        justifyContent: 'center'
+        flexDirection: 'row'
     },
 })

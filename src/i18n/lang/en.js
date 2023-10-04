@@ -41,6 +41,7 @@ export default {
         changeLangAlertTitle: "تغيير لغة التطبيق",
         changeLangMessage: "سيتم إعادة تشغيل التطبيق لتغيير اللغة ؟",
         cancel: "Cancel",
+        ok: "Ok",
         changeLangCancel: "إلغاء",
         changeLangConfirm: "نعم",
         logoutConfirm: "Yes",
@@ -159,6 +160,13 @@ export default {
         dateTimeHelpText: "إذا كان تاريخ بداية المشروع في فترة أسبوع (3 أيام إلى الماضي و3 أيام إلى المستقبل) سيظهر في قسم المشاريع الجارية وإلا في المشاريع القادمة",
         taskTitle: "Task title",
         priority: "Priority",
-        pleaseFillAllRequired: "Please fill all required fields"
+        pleaseFillAllRequired: "Please fill all required fields",
+        active: 'Active',
+        finished: 'Finished',
+        preparing: 'Preparing',
+        ready: 'Ready',
+        workType: 'Work Type',
+        deleteType: 'Delete Type',
+        DeleteItem: 'Delete this item ?'
     }
 }

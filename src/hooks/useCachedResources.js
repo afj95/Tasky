@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default useCachedResources = () => {
     const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -12,6 +13,7 @@ export default useCachedResources = () => {
                 SplashScreen.preventAutoHideAsync();
 
                 await Font.loadAsync({
+                    ...FontAwesome.font,
                     light: require('../../assets/fonts/light.otf'),
                     bold: require('../../assets/fonts/bold.otf')
                 })

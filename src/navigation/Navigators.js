@@ -110,10 +110,6 @@ export const MainStackScreens = () => (
       <MainStack.Screen
         name="AddProject"
         component={AddProjectScreen}
-        options={{
-          gestureEnabled: true,
-          gestureDirection: 'horizontal'
-        }}
       />
     </MainStack.Group>
 

@@ -22,7 +22,7 @@ const usersReducer = (state = usersState, action) => {
         case FETCHING_EMPLOYEES_SUCCESS: {
             return {
                 ...state,
-                all_employees: action?.payload?.all_employees?.data?.data
+                all_employees: action?.payload?.all_employees?.data
             }
         }
 

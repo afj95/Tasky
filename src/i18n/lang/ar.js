@@ -41,13 +41,13 @@ export default {
         changeLangAlertTitle: "Changing language",
         changeLangMessage: "The application will be restarted to change the language",
         cancel: "إلغاء",
+        ok: "موافق",
         changeLangCancel: "No",
         changeLangConfirm: "Yes",
         logoutConfirm: "نعم",
         fieldRequired: "هذا الحقل اجباري",
-        active: "المشاريع الجارية",
+        activeProjects: "المشاريع الجارية",
         activeMessage: "سيتم إظهار المشاريع الجارية فقط",
-        finished: "المشاريع المنتهية",
         finishedMessage: "سيتم إظهار المشاريع المنتهية فقط",
         deleted: "المشاريع المحذوفة",
         deletedMessage: "سيتم إظهار المشاريع المحذوفة",
@@ -160,6 +160,13 @@ export default {
         dateTimeHelpText: "إذا كان تاريخ بداية المشروع في فترة أسبوع (3 أيام إلى الماضي و3 أيام إلى المستقبل) سيظهر في قسم المشاريع الجارية وإلا في المشاريع القادمة",
         taskTitle: "عنوان المهمة",
         priority: "الأهمية",
-        pleaseFillAllRequired: "يرجى تعبئة كل الحقول المطلوبة"
+        pleaseFillAllRequired: "يرجى تعبئة كل الحقول المطلوبة",
+        active: 'جاري',
+        finished: 'منتهي',
+        preparing: 'تحت التجهيز',
+        ready: 'جاهز للعمر',
+        workType: 'نوع العمل',
+        deleteType: 'حذف نوع عمل',
+        DeleteItem: 'حذف العنصر ؟'
     }
 }

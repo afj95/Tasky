@@ -18,6 +18,7 @@ import { clearErrors } from '../../redux/reducers/Global/global-actions';
 import { ActivityIndicator } from 'react-native-paper';
 import moment from 'moment';
 import { _listEmptyComponent } from '../../components/UI/_listEmptyComponent';
+import { t } from '../../i18n';
 
 export const InProgressComp = ({ _onRefresh, page, setPage, ...props }) => {
      const dispatch = useDispatch()
@@ -34,7 +35,7 @@ export const InProgressComp = ({ _onRefresh, page, setPage, ...props }) => {
 
      const user = useSelector((state) => state?.authReducer?.user)
      const projects = useSelector(state => state?.projectsReducer?.inProgressProjects)
-     const totalProjects = useSelector(state => state?.projectsReducer?.totalProjects)
+     const totalInprogress = useSelector(state => state?.projectsReducer?.totalInprogress)
 
      useEffect(() => {
           if (errors?.projects) {
@@ -61,10 +62,11 @@ export const InProgressComp = ({ _onRefresh, page, setPage, ...props }) => {
                     key={index}
                     onPress={() => onProjectPressed(item)}
                     activeOpacity={0.85}
-                    style={styles.projectItem}>
+                    style={styles.projectItem(item?.status)}>
                     <View style={{ alignItems: 'center' }}>
                          <MyText style={styles.projectName} text={item?.name} />
                          <MyText style={styles.projectDescription} ellipsizeMode={'tail'} numberOfLines={3} text={item?.description} />
+                         <MyText style={styles.projectStatus} text={t(`app.${item?.status}`)} />
                          <View style={styles.seperator} />
                          <MyText style={styles.projectStartDate} text={moment(item?.start_date).format('DD/MM/YYYY')} />
                          {/* <MyText style={styles.projectStartDate} text={moment(item?.start_date).fromNow()} /> */}
@@ -75,7 +77,7 @@ export const InProgressComp = ({ _onRefresh, page, setPage, ...props }) => {
           )
      }
 
-     const _listHeaderComponent = () => {
+     /*const _listHeaderComponent = () => {
           return (
                <View style={styles.filterContainer}>
                     <Ionicons
@@ -87,7 +89,7 @@ export const InProgressComp = ({ _onRefresh, page, setPage, ...props }) => {
                     {loadings?.projects ? <ActivityIndicator size={15} color={Colors.primary} /> : null}
                </View>
           )
-     }
+     }*/
 
      const loadMore = async () => {
           let nextPage = page + 1;
@@ -106,7 +108,7 @@ export const InProgressComp = ({ _onRefresh, page, setPage, ...props }) => {
      const _listFooterComponent = () => {
           return (
                <View style={styles.footerContainer}>
-                    {totalProjects <= projects?.length ?
+                    {totalInprogress <= projects?.length ?
                          <View />
                          : loadMoreLoading ?
                               <ActivityIndicator
@@ -196,16 +198,16 @@ const styles = StyleSheet.create({
           alignItems: 'center',
           marginTop: 10
      },
-     projectItem: {
+     projectItem: status => ({
           backgroundColor: Colors.white,
           width: '100%',
           marginVertical: 5,
           borderWidth: 1,
-          borderColor: Colors.secondary,
+          borderColor: status === 'finished' ? Colors.red : Colors.secondary,
           alignSelf: 'center',
           borderRadius: 8,
           padding: 5,
-     },
+     }),
      projectName: {
           fontFamily: 'bold',
           fontSize: 16
@@ -214,10 +216,15 @@ const styles = StyleSheet.create({
           fontFamily: 'light',
           fontSize: 15,
      },
+     projectStatus: {
+          fontFamily: 'light',
+          fontSize: 12,
+     },
      seperator: {
           height: StyleSheet.hairlineWidth,
           backgroundColor: 'rgba(0, 0, 0, 0.2)',
-          width: '100%'
+          width: '100%',
+          marginTop: 2,
      },
      projectStartDate: {
           fontFamily: 'light',

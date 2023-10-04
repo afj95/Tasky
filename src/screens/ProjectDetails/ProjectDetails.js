@@ -10,12 +10,12 @@ import {
 } from 'react-native';
 import TouchableOpacity from '../../components/UI/TouchableOpacity';
 import { AntDesign, Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { showMessage } from 'react-native-flash-message';
+import { showMessage } from '../../tools';
 import { useDispatch, useSelector } from 'react-redux';
 import MyText from '../../components/UI/MyText';
 import { fetchOneProject, resetProject } from '../../redux/reducers/Projects/projects-actions';
 import Colors from '../../utils/Colors';
-import { TaskComponent, Header, MaterialComponent, MapComponent, AddTaskModal } from './components';
+import { TaskComponent, MaterialComponent, MapComponent, AddTaskModal } from './components';
 import ErrorHappened from '../../components/UI/ErrorHappened';
 import { clearErrors } from '../../redux/reducers/Global/global-actions';
 import { restProjectTasks } from '../../redux/reducers/Tasks/tasks-actions';
@@ -24,6 +24,7 @@ import { t } from '../../i18n';
 import LoadMore from '../../components/UI/LoadMore';
 import moment from 'moment';
 import { MainHeader } from '../../components/UI/MainHeader';
+// import { Switch } from 'react-native-paper';
 
 export const ProjectDetails = (props) => {
     const dispatch = useDispatch();
@@ -39,6 +40,7 @@ export const ProjectDetails = (props) => {
     const [checkedHeight, setCheckedHeight] = useState(false);
     const [mapModalVisible, setMapModalVisible] = useState(false);
     const [addTaskModalVisibility, setAddTaskModalVisibility] = useState(false);
+    const [switchVal, setSwitchVal] = useState(false);
 
     const errors = useSelector((state) => state?.globalReducer?.errors)
     const loadings = useSelector((state) => state?.globalReducer?.loadings)
@@ -54,10 +56,6 @@ export const ProjectDetails = (props) => {
         dispatch(clearErrors());
         dispatch(fetchOneProject(id, false))
         return () => {
-            // dispatch(fetchInprogressProjects({
-            //     in_progress: inProgress,
-            //     refresh: true
-            // }))
             dispatch(resetProject())
             dispatch(restProjectTasks())
         }
@@ -97,6 +95,8 @@ export const ProjectDetails = (props) => {
     const closeMapModal = () => setMapModalVisible(false)
 
     const closeAddTaskModal = () => setAddTaskModalVisibility(false);
+
+    // const onToggleSwitch = () => setSwitchVal(!switchVal)
 
     return (
         <View style={styles.container}>
@@ -173,6 +173,21 @@ export const ProjectDetails = (props) => {
                                             {<Feather name={'external-link'} size={15} color={Colors.primary} />}
                                         </TouchableOpacity>
                                     </View> : null}
+                                {/* <Switch
+                                    value={switchVal}
+                                    onValueChange={onToggleSwitch}
+                                    color={Colors.primary}
+                                    style={{
+                                        borderWidth: 1,
+                                        backgroundColor: Colors.white,
+                                        marginTop: 5
+                                    }}
+                                />*/}
+
+                                <View style={styles.statusContainer}>
+                                    <MyText style={styles.label}>projectStatus</MyText>
+                                    <MyText style={styles.description}>{project?.status}</MyText>
+                                </View>
                                 {!project?.description ? null :
                                     <View style={styles.descriptionContainer}>
                                         <MyText style={styles.label}>projectDescription</MyText>
@@ -255,15 +270,14 @@ export const ProjectDetails = (props) => {
                     }
 
                     {user?.role === 'admin'
-                        && project?.status !== 'finished'
                         && (
                             !loadings?.project
                             && !loadings?.project_refresh
                             && !loadings?.project_tasks
                         ) ?
-                        <View style={styles.addTaskButton}>
-                            <Ionicons name={'add'} size={30} color={Colors.appWhite} onPress={() => setAddTaskModalVisibility(true)} />
-                        </View> : null}
+                        <TouchableOpacity onPress={() => setAddTaskModalVisibility(true)} style={styles.addTaskButton}>
+                            <Ionicons name={'add'} size={30} color={Colors.appWhite} />
+                        </TouchableOpacity> : null}
                 </>
             }
             {/* <ProjectActionsModal
@@ -299,17 +313,7 @@ const styles = StyleSheet.create({
         paddingTop: 2,
         paddingHorizontal: 10,
     },
-    scrollContainer: { paddingBottom: 50 },
-    status: {
-        width: '100%',
-        height: 20,
-        backgroundColor: '#FA8072'
-    },
-    deleted: {
-        width: '100%',
-        height: 20,
-        backgroundColor: 'green',
-    },
+    scrollContainer: { paddingBottom: 150 },
     nameContainer: {
         backgroundColor: Colors.white,
         marginTop: 5,
@@ -350,6 +354,12 @@ const styles = StyleSheet.create({
         color: Colors.secondary,
         textDecorationLine: 'underline',
         fontFamily: 'bold'
+    },
+    statusContainer: {
+        marginTop: 5,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        backgroundColor: Colors.white,
     },
     descriptionContainer: {
         marginTop: 5,

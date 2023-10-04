@@ -1,4 +1,4 @@
-import { showMessage } from '../../../tools/showMessage';
+import { showMessage } from '../../../tools';
 import { request } from '../../../tools';
 import { setLoading, stopLoading } from '../Global/global-actions';
 import {
