@@ -7,7 +7,8 @@ import {
     ScrollView,
     Pressable,
     TextInput,
-    I18nManager
+    I18nManager,
+    Alert
 } from 'react-native';
 import MyText from '../../../components/UI/MyText';
 import { t } from '../../../i18n';
@@ -21,16 +22,22 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import { ActivityIndicator } from 'react-native-paper';
 import ErrorText from '../../../components/UI/ErrorText';
+// import { MapComponent } from '../../ProjectDetails/components';
+// import { AddLocationModal } from './AddLocationModal';
+// import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { deleteWorkType } from '../../../redux/reducers/Projects/projects-actions';
+import { useDispatch } from 'react-redux';
 
-export const AddProjectForm = ({ loadings, addProjectProps: { handleChange, values, errors, handleBlur, setFieldValue, handleSubmit } }) => {
-
+export const AddProjectForm = ({ types, loadings, addProjectProps: { handleChange, values, errors, handleBlur, setFieldValue, handleSubmit } }) => {
     const _scroll = useRef(null);
-    // TODO: Add loading in redux.
-    const [isLoading, setIsLoading] = useState(false);
+
+    const dispatch = useDispatch();
+
     const [supervisorsModalVisible, setSupervisorsModalVisible] = useState(false);
     const [statusesModal, setStatusesModal] = useState(false);
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
+    // const [locationModalVisible, setLocationModalVisible] = useState(false);
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
@@ -45,11 +52,13 @@ export const AddProjectForm = ({ loadings, addProjectProps: { handleChange, valu
 
     const showPicker = type => showMode(type);
 
+    // const closeLocationModal = () => setLocationModalVisible(false);
+
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.mainContainer}>
             <ScrollView showsVerticalScrollIndicator={false} ref={_scroll} contentContainerStyle={{ paddingBottom: 120 }}>
                 <View style={styles.textContainer}>
-                    <MyText style={styles.label}>projectName</MyText>
+                    <MyText style={styles.label}>projectName</MyText><MyText style={{ color: '#B22323' }} text={' * '} />
                 </View>
                 <TextInput
                     mode={'flat'}
@@ -63,7 +72,7 @@ export const AddProjectForm = ({ loadings, addProjectProps: { handleChange, valu
                 {errors?.projectName ? <ErrorText error={errors?.projectName} /> : null}
 
                 <View style={styles.textContainer}>
-                    <MyText style={styles.label}>projectSupervisors</MyText>
+                    <MyText style={styles.label}>projectSupervisors</MyText><MyText style={{ color: '#B22323' }} text={' * '} />
                 </View>
                 <Pressable onPress={() => setSupervisorsModalVisible(!supervisorsModalVisible)} >
                     <TextInput
@@ -104,7 +113,7 @@ export const AddProjectForm = ({ loadings, addProjectProps: { handleChange, valu
                 />
 
                 <View style={styles.textContainer}>
-                    <MyText style={styles.label}>projectStatus</MyText>
+                    <MyText style={styles.label}>projectStatus</MyText><MyText style={{ color: '#B22323' }} text={' * '} />
                 </View>
                 <Pressable onPress={() => setStatusesModal(!statusesModal)} >
                     <TextInput
@@ -121,6 +130,50 @@ export const AddProjectForm = ({ loadings, addProjectProps: { handleChange, valu
                 </Pressable>
                 {errors?.projectStatus ? <ErrorText error={errors?.projectStatus} /> : null}
 
+
+                <View style={styles.textContainer}>
+                    <MyText style={styles.label}>workType</MyText><MyText style={{ color: '#B22323' }} text={' * '} />
+                </View>
+                <TextInput
+                    style={styles.input}
+                    mode={'flat'}
+                    pointerEvents={'none'}
+                    onChangeText={handleChange('workType')}
+                    value={values?.workType}
+                    error={errors?.workType}
+                    onBlur={handleBlur('workType')}
+                    theme={{ colors: { text: Colors.text, error: '#B22323', primary: '#595959' }, roundness: 12 }}
+                />
+                {errors?.workType ? <ErrorText error={errors?.workType} /> : null}
+                <ScrollView
+                    horizontal
+                    style={{ marginVertical: 5, marginStart: 5 }}
+                    showsHorizontalScrollIndicator={false}>
+                    {types && types?.length > 0 ?
+                        types.map((type, index) => (
+                            <TouchableOpacity
+                                onLongPress={() => {
+                                    Alert.alert(t('app.deleteType'), t('app.DeleteItem'), [
+                                        {
+                                            style: 'cancel',
+                                            text: t('app.cancel')
+                                        },
+                                        {
+                                            style: 'default',
+                                            text: t('app.ok'),
+                                            onPress: () => dispatch(deleteWorkType(index))
+                                        }
+                                    ])
+                                }}
+                                onPress={() => {
+                                    setFieldValue('workType', type)
+                                }}
+                                activeOpacity={0.4}>
+                                <MyText text={type + ','} style={{ marginStart: 5 }} />
+                            </TouchableOpacity>
+                        ))
+                        : null}
+                </ScrollView>
                 <View style={styles.showedTextContainer}>
                     <MyText style={styles.label}>showed</MyText>
                     <MyText style={styles.showedHelpLabel}>showedHelpText</MyText>
@@ -147,14 +200,12 @@ export const AddProjectForm = ({ loadings, addProjectProps: { handleChange, valu
                 </View>
                 <View style={styles.dateTimeContainer}>
                     <Pressable onPress={() => showPicker('time')}>
-                        {/* <Pressable onPress={showTimepicker} > */}
                         <MyText
                             style={styles.dateTimeText}
                             text={moment(values?.startDate).format('h:mm a')}
                         />
                     </Pressable>
                     <Pressable onPress={() => showPicker('date')}>
-                        {/* <Pressable onPress={showDatepicker}> */}
                         <MyText
                             style={styles.dateTimeText}
                             text={values?.startDate.toLocaleDateString()}
@@ -162,6 +213,38 @@ export const AddProjectForm = ({ loadings, addProjectProps: { handleChange, valu
                     </Pressable>
                 </View>
                 <MyText style={styles.showedHelpLabel}>dateTimeHelpText</MyText>
+
+                {/* <TouchableOpacity
+                    onPress={() => setLocationModalVisible(true)}
+                    activeOpacity={1}
+                    style={{
+                        // borderWidth: 1,
+
+                        height: 100,
+                        marginTop: 20,
+                        borderRadius: 8
+                    }}>
+                    <MapView
+                        provider={PROVIDER_GOOGLE}
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                        }}
+                        initialRegion={{
+                            latitude: 24.715462882305346,
+                            longitude: 46.676643547097186,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421,
+                        }}
+                        pitchEnabled={false}
+                        scrollEnabled={false}
+                    />
+                </TouchableOpacity>
+
+                <AddLocationModal
+                    visible={locationModalVisible}
+                    closeModal={closeLocationModal}
+                /> */}
 
                 {show && (
                     <DateTimePicker

@@ -34,7 +34,7 @@ export const UpcomingComp = ({ _onRefresh, page, setPage, ...props }) => {
 
      const user = useSelector((state) => state?.authReducer?.user)
      const projects = useSelector(state => state?.projectsReducer?.upcomingProjects)
-     const totalProjects = useSelector(state => state?.projectsReducer?.totalProjects)
+     const totalUpcoming = useSelector(state => state?.projectsReducer?.totalUpcoming)
 
      useEffect(() => {
           if (errors?.projects) {
@@ -105,7 +105,7 @@ export const UpcomingComp = ({ _onRefresh, page, setPage, ...props }) => {
      const _listFooterComponent = () => {
           return (
                <View style={styles.footerContainer}>
-                    {totalProjects <= projects?.length ?
+                    {totalUpcoming <= projects?.length ?
                          <View />
                          : loadMoreLoading ?
                               <ActivityIndicator

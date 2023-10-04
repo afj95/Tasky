@@ -48,60 +48,57 @@ export const request = async ({ url, method, headers, params }: RequestProps) =>
                 console.log("========================================\n");
             }
 
-            await axios({
+            const res = await axios({
                 method: method,
                 url: fullURL,
                 headers: modfiedHeaders,
                 data: params,
-            })
-                .then((res) => {
-                    if (timeout) {
-                        reject(new Error(t('app.serverError')))
-                    }
-                    resolve(res)
-                })
-                .catch(async (error) => {
-                    if (error && error?.response) {
-                        if (!__DEV__) {
-                            console.log('request error', {
-                                'url': url,
-                                'error': error,
-                                'error?.response?.data ': error?.response?.data
-                            });
-                        }
+            });
 
-                        if (error?.response?.data?.message === 'Unauthenticated.') {
-                            // Logout the user if Unauthenticated.
-                            await AsyncStorage.removeItem('token')
-                                .then(() => store.dispatch({ type: LOGOUT }))
-                                .then(() => {
-                                    navigationRef.current.dispatch(
-                                        CommonActions.reset({
-                                            index: 1,
-                                            routes: [{ name: 'Auth' }]
-                                        })
-                                    )
-                                })
-                        } else {
-                            /*
-                             * returning the message came from the API.
-                             * { success: true/false, message: '...' }
-                            */
-                            reject({ message: error?.response?.data?.message ? error?.response?.data?.message : t('app.serverError') })
-                        }
-                    } else {
-                        reject({ message: error })
-                    }
-                });
+            if (timeout) {
+                reject(new Error(t('app.serverError')))
+            }
+            // No errors
+            resolve(res)
+
         } catch (error) {
             if (__DEV__) {
-                console.log('request try/catch error', {
+                console.log('request/try/catch error:', {
                     'url': url,
                     'error ': error
                 });
             }
-            store.dispatch(stopLoading({ 'general': t('app.serverError') }))
-            reject({ message: t('app.serverError') })
+
+            if (error && error?.response) {
+                if (__DEV__) {
+                    console.log('error?.response', {
+                        'url': url,
+                        'error': error,
+                        'error?.response?.data ': error?.response?.data
+                    });
+                }
+
+                if (error?.response?.data?.message === 'Unauthenticated.') {
+                    // Logout the user if Unauthenticated.
+                    store.dispatch({ type: LOGOUT });
+                    await AsyncStorage.removeItem('token');
+                    await navigationRef.current.dispatch(
+                        CommonActions.reset({
+                            index: 1,
+                            routes: [{ name: 'Auth' }]
+                        })
+                    )
+                } else {
+                    // returning the message came from the API.
+                    reject({ message: error?.response?.data?.message ? error?.response?.data?.message : t('app.serverError') })
+                }
+            } else {
+                if (__DEV__) {
+                    console.log('\nWithout (error && error?.response)');
+                }
+
+                reject({ message: error })
+            }
         }
     })
 };

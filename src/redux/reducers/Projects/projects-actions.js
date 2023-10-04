@@ -1,7 +1,14 @@
 import { request, showMessage } from "../../../tools";
 import { setLoading, stopLoading } from "../Global/global-actions";
 import { fetchProjectTasks } from "../Tasks/tasks-actions";
-import { ADD_PROJECT_SUCCESS, FETCHING_PROJECTS_SUCCESS, FETCHING_PROJECT_SUCCESS, RESET_PROJECT } from "./projects-reducer";
+import {
+    ADD_NEW_WORK_TYPE,
+    ADD_PROJECT_SUCCESS,
+    DELETE_WORK_TYPE,
+    FETCHING_PROJECTS_SUCCESS,
+    FETCHING_PROJECT_SUCCESS,
+    RESET_PROJECT
+} from "./projects-reducer";
 
 export const resetProject = () => ({
     type: RESET_PROJECT
@@ -39,7 +46,6 @@ export const fetchInprogressProjects = ({
                     projects: fetchingProjectsRes?.data
                 }
             })
-
         } catch (error) {
             dispatch(stopLoading({ failed: true, error: { 'projects': error } }))
         }
@@ -76,7 +82,6 @@ export const fetchUpcomingProjects = ({
                     projects: fetchingProjectsRes?.data
                 }
             })
-
         } catch (error) {
             dispatch(stopLoading({ failed: true, error: { 'projects': error } }))
         }
@@ -141,6 +146,20 @@ export const addNewProject = (project) => {
         }
     }
 }
+
+export const addNewType = type => {
+    return async dispatch => {
+        try {
+            dispatch({ type: ADD_NEW_WORK_TYPE, payload: { type } })
+        } catch (error) {
+            if (__DEV__) console.log('error adding new workType', error);
+        }
+    }
+}
+export const deleteWorkType = (index) => ({
+    type: DELETE_WORK_TYPE,
+    payload: { index }
+})
 
 // export const editProject = (projectId) => {
 //     return async (dispatch) => {

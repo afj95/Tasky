@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {
     View,
     StyleSheet,
@@ -8,7 +8,6 @@ import {
 import { EmployeeItem as EI } from './components';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllEmployees } from '../../redux/reducers/Users/users-actions';
-import MyText from '../../components/UI/MyText';
 import Colors from '../../utils/Colors';
 import { MainHeader } from '../../components/UI/MainHeader';
 import { showMessage } from '../../tools';
@@ -51,11 +50,11 @@ export const EmployeesScreen = () => {
                     <FlatList
                         keyExtractor={(item, index) => '#' + index.toString()}
                         data={all_employees || []}
-                        ItemSeparatorComponent={<View style={{ height: 0.6, backgroundColor: '#bcbcbc', width: '100%' }} />}
+                        ItemSeparatorComponent={<View style={{ height: StyleSheet.hairlineWidth, backgroundColor: '#bcbcbc', width: '100%' }} />}
                         onRefresh={onRefresh}
                         refreshing={false}
                         ListEmptyComponent={_listEmptyComponent}
-                        renderItem={({ item, index }) => <EI employee={item} key={index} onRefresh={onRefresh} />}
+                        renderItem={({ item, index }) => <EI id={index} employee={item} key={index} onRefresh={onRefresh} />}
                     />
                 </View>
             }
@@ -79,5 +78,6 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         flex: 1,
+        height: '100%'
     },
 })
