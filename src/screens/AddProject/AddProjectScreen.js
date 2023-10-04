@@ -63,7 +63,7 @@ export const AddProjectScreen = () => {
             user_id: projectSupervisors,
             description: projectDescription,
             showed,
-            // work_type: workType,
+            work_type: workType,
             status: projectStatus,
             start_date: startDate
         }))
