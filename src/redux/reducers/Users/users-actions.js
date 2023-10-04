@@ -42,12 +42,7 @@ import { EDIT_PROFILE_SUCCESS, FETCHING_EMPLOYEES_SUCCESS, FETCHING_USERS_SUCCES
 // }
 
 // // ADMIN
-export const fetchAllEmployees = ({
-    loadMore = false,
-    page = 1,
-    perPage = 5,
-    refresh = false,
-}) => {
+export const fetchAllEmployees = ({ refresh = false }) => {
     return async (dispatch) => {
         try {
             if (refresh) {
@@ -57,17 +52,14 @@ export const fetchAllEmployees = ({
             }
 
             const fetchAllEmployeesRes = await request({
-                url: `employees?page=${page}&perPage=${perPage}`,
+                url: `employees`,
                 method: 'GET'
             })
 
             dispatch(stopLoading())
             dispatch({
                 type: FETCHING_EMPLOYEES_SUCCESS,
-                payload: {
-                    all_employees: fetchAllEmployeesRes?.data,
-                    loadMore,
-                },
+                payload: { all_employees: fetchAllEmployeesRes?.data },
             })
         } catch (error) {
             dispatch(stopLoading({ failed: true, error: { 'employees': error } }))
