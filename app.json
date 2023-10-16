@@ -19,7 +19,7 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "buildNumber": "5",
+      "buildNumber": "7",
       "bundleIdentifier": "com.ahmad.tasky",
       "config": {
         "googleMapsApiKey": "AIzaSyBGr_V2xg0TADPttbNepGOt__CAPaCuq0k"
@@ -28,7 +28,7 @@
     "android": {
       "jsEngine": "hermes",
       "permissions": [],
-      "versionCode": 6,
+      "versionCode": 8,
       "package": "com.ahmad.tasky",
       "config": {
         "googleMaps": {
@@ -48,7 +48,8 @@
     "extra": {
       "eas": {
         "projectId": "03487d23-8ffc-440b-995c-ee2cb7944a79"
-      }
+      },
+      "supportsRTL": true
     },
     "plugins": [
       [
@@ -56,6 +57,9 @@
         {
           "motionPermission": "Allow $(Tasky App) to access your device motion."
         }
+      ],
+      [
+        "expo-localization"
       ]
     ]
   }

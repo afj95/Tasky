@@ -123,7 +123,7 @@ export const HomeScreen = () => {
         <MainHeader title={'projects'} RightComponent={user?.role === 'admin' ? AddProjectButton : null} />
       </View>
       {/* <Tab.Navigator layoutDirection={I18nManager.isRTL ? 'lrt' : 'ltr'}> */}
-      {__DEV__ ? <MyText style={{ alignSelf: 'center' }} text={updates.releaseChannel + ''} /> : null}
+      {__DEV__ || updates.channel[0].startsWith('t') ? <MyText style={{ alignSelf: 'center', width: '100%' }} text={updates.channel || '   null   '} /> : null}
       <Tab.Navigator layoutDirection={'rtl'}>
         <Tab.Screen
           listeners={{ tabPress: inProgressTabPressed, }}

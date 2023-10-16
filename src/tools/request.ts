@@ -2,7 +2,6 @@ import axios, { Method, AxiosRequestConfig, AxiosRequestHeaders } from "axios";
 import { I18nManager } from "react-native";
 import { API_URL } from "../constants";
 import { store } from "../redux";
-import { stopLoading } from "../redux/reducers/Global/global-actions";
 import { navigationRef } from '../navigation/RootNavigation';
 import { CommonActions } from "@react-navigation/native";
 import { t } from "../i18n";
@@ -90,14 +89,23 @@ export const request = async ({ url, method, headers, params }: RequestProps) =>
                     )
                 } else {
                     // returning the message came from the API.
-                    reject({ message: error?.response?.data?.message ? error?.response?.data?.message : t('app.serverError') })
+                    reject({
+                        message: error?.response?.data?.message ?
+                            error?.response?.data?.message
+                            :
+                            t('app.serverError'),
+                        response: true
+                    })
                 }
             } else {
+                // In case no "error?.response"
+                // if(error && error?.response) == false
+
                 if (__DEV__) {
                     console.log('\nWithout (error && error?.response)');
                 }
 
-                reject({ message: error })
+                reject({ message: error, response: false })
             }
         }
     })
