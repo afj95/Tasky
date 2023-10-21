@@ -103,7 +103,7 @@ export const TaskDetailsModal = ({ task, visible, closeModal, checkLoading, chec
                                         <View style={styles.priorityCircle(currentTask)} />
                                         <MyText style={styles.priorityText}>{currentTask?.priority}</MyText>
                                     </View>
-                                    <MyText style={styles.dateText} text={moment(currentTask?.date).fromNow()} />
+                                    {currentTask?.date && <MyText style={styles.dateText} text={moment(currentTask?.date).fromNow()} />}
                                 </View>
                                 <View style={styles.titleContainer}>
                                     <MyText style={styles.taskText(currentTask?.checked)} numberOfLines={3} text={`${currentTask?.title}`} />

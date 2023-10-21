@@ -17,6 +17,7 @@ import TouchableOpacity from '../../../components/UI/TouchableOpacity';
 import { addNewTask } from '../../../redux/reducers/Tasks/tasks-actions';
 import ErrorText from '../../../components/UI/ErrorText';
 import { fetchOneProject } from '../../../redux/reducers/Projects/projects-actions';
+import { DismissKeyboardView } from '../../../components/UI/DismissKeyboardHOC';
 
 const alphaColors = {
      high: 'rgba(255, 0, 0, 0.5)',
@@ -43,7 +44,7 @@ export const AddTaskModal = ({ visible, closeModal, project }) => {
 
      useEffect(() => {
           if (errors?.add_task) {
-               setErrorText('serverError');
+               setErrorText('addTaskError');
           } else if (taskAdded) {
                setTask('');
                setNumberOfEmployees('0');
@@ -73,6 +74,7 @@ export const AddTaskModal = ({ visible, closeModal, project }) => {
      }
 
      const closeThisModal = () => {
+          setErrorText('');
           closeModal();
           dispatch(fetchOneProject(project.id, true));
      }
@@ -86,7 +88,7 @@ export const AddTaskModal = ({ visible, closeModal, project }) => {
                animationIn={'slideInDown'}
                animationInTiming={500}
                useNativeDriver>
-               <View style={styles.centeredView}>
+               <DismissKeyboardView style={styles.centeredView}>
                     <View style={styles.modalView}>
                          <AntDesign
                               name={'close'}
@@ -133,6 +135,7 @@ export const AddTaskModal = ({ visible, closeModal, project }) => {
                                                   blurOnSubmit={false}
                                                   keyboardType={'decimal-pad'}
                                                   editable={false}
+                                                  onPressOut={() => setShowPriorities(prevState => !prevState)}
                                              />
                                         </TouchableOpacity>
                                         {showPriorities &&
@@ -163,7 +166,7 @@ export const AddTaskModal = ({ visible, closeModal, project }) => {
                               </View>
                          </KeyboardAvoidingView>
                     </View>
-               </View>
+               </DismissKeyboardView>
           </Modal>
      )
 }

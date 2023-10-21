@@ -19,16 +19,20 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "buildNumber": "7",
+      "buildNumber": "9",
       "bundleIdentifier": "com.ahmad.tasky",
       "config": {
         "googleMapsApiKey": "AIzaSyBGr_V2xg0TADPttbNepGOt__CAPaCuq0k"
+      },
+      "infoPlist": {
+        "NSMotionUsageDescription": "Allow $(Tasky App) to access your device motion.",
+        "ExpoLocalization_supportsRTL": true
       }
     },
     "android": {
       "jsEngine": "hermes",
       "permissions": [],
-      "versionCode": 8,
+      "versionCode": 9,
       "package": "com.ahmad.tasky",
       "config": {
         "googleMaps": {

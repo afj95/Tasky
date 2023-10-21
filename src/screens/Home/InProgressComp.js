@@ -5,13 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchInprogressProjects } from '../../redux/reducers/Projects/projects-actions';
 import MyText from '../../components/UI/MyText';
 import { navigate } from '../../navigation/RootNavigation';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import {
      View,
      StyleSheet,
      FlatList,
      TouchableOpacity,
-     Image
 } from "react-native";
 import { showMessage } from '../../tools';
 import { clearErrors } from '../../redux/reducers/Global/global-actions';

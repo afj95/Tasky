@@ -102,7 +102,7 @@ export const TaskComponent = ({ task, project_id, onPress }) => {
                     ellipsizeMode={'tail'}
                     text={`${task?.title}`}
                 />
-                <MyText style={styles.taskDate} text={moment(task?.date).fromNow()} />
+                {task?.date && <MyText style={styles.taskDate} text={moment(task?.date).fromNow()} />}
             </View>
             <View style={styles.checkContainer}>
                 {/* NOTE: delete task - only if admin */}
