@@ -5,8 +5,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject",
-    "postinstall": "patch-package"
+    "eject": "expo eject"
   },
   "dependencies": {
     "@expo/vector-icons": "^13.0.0",
@@ -29,7 +28,7 @@
     "expo-sensors": "~12.3.0",
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
-    "expo-updates": "~0.18.16",
+    "expo-updates": "~0.18.17",
     "formik": "^2.2.9",
     "i18n-js": "4.2.0",
     "moment": "^2.29.1",
