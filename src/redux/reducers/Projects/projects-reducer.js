@@ -38,7 +38,6 @@ const projectsReducer = (state = projectsState, action) => {
         }
 
         case FETCHING_PROJECTS_SUCCESS: {
-            console.log('payload?.projects?.data?.total', payload?.projects?.data?.total);
             if (payload?.in_progress) {
                 return {
                     ...state,

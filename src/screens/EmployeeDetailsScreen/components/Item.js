@@ -33,10 +33,14 @@ const styles = StyleSheet.create({
           borderBottomWidth: 0.7,
           borderBottomColor: '#bcbcbc',
      },
-     label: { fontFamily: 'bold' },
+     label: {
+          fontFamily: 'bold',
+          paddingVertical: 8
+     },
      data: {
           marginStart: 10,
           fontFamily: 'light',
+          paddingVertical: 2
      },
      image: {
           width: 50,

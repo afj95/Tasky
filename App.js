@@ -13,15 +13,14 @@ export default function App() {
   const { isLoadingComplete, hasError: hasFontsError } = useCachedResources();
   const { isLangLoaded, hasError: hasLangError } = useLang();
 
-  if (isLoadingComplete && isLangLoaded) {
+  if (hasFontsError || hasLangError) {
+    return <ErrorScreen />
+  } else if (isLoadingComplete && isLangLoaded) {
     return (
       <SafeAreaProvider>
         <MainNavigator />
         <StatusBar style={'light'} backgroundColor={Colors.primary} />
       </SafeAreaProvider>
     )
-  } else if (hasFontsError || hasLangError) {
-    return <ErrorScreen />
   } else return null;
-
 }

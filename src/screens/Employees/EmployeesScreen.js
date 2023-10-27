@@ -22,7 +22,7 @@ export const EmployeesScreen = () => {
     const all_employees = useSelector(state => state?.usersReducer?.all_employees);
 
     useEffect(() => {
-        dispatch(fetchAllEmployees({}));
+        dispatch(fetchAllEmployees({ refresh: false }));
     }, [])
 
     useEffect(() => {
@@ -35,7 +35,7 @@ export const EmployeesScreen = () => {
     }, [errors?.employees])
 
     const onRefresh = () => {
-        dispatch(fetchAllEmployees({}));
+        dispatch(fetchAllEmployees({ refresh: true }));
     }
 
     return (

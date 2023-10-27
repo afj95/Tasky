@@ -41,7 +41,7 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
                 onChangeText={handleChange('phone_number')}
                 value={values?.phone_number}
                 error={errors?.phone_number}
-                autoCapitalize={false}
+                autoCapitalize={'none'}
                 onBlur={handleBlur('phone_number')}
                 keyboardType={"number-pad"}
                 theme={inputTheme}
@@ -63,6 +63,7 @@ export const LoginForm = ({ loginProps: { handleChange, values, errors, handleBl
                 secureTextEntry={showPass ? false : true}
                 onBlur={handleBlur('password')}
                 theme={inputTheme}
+                autoCapitalize={'none'}
                 right={
                     <TextInput.Icon
                         name={showPass ? 'eye' : 'eye-off'}

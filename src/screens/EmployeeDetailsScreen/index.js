@@ -1,1 +1,1 @@
-export * from './EmployeeDetailsScreenScreen'
+export * from './EmployeeDetailsScreen'

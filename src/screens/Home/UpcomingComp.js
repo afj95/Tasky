@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Colors from '../../utils/Colors'
-import { FilterModal } from "./components";
+import { FilterModal, ProjectComponent } from "./components";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUpcomingProjects } from '../../redux/reducers/Projects/projects-actions';
 import MyText from '../../components/UI/MyText';
-import { navigate } from '../../navigation/RootNavigation';
-import { AntDesign, Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import {
      View,
      StyleSheet,
      FlatList,
-     TouchableOpacity,
-     Image
 } from "react-native";
 import { showMessage } from '../../tools';
 import { clearErrors } from '../../redux/reducers/Global/global-actions';
 import { ActivityIndicator } from 'react-native-paper';
-import moment from 'moment';
 import { _listEmptyComponent } from '../../components/UI/_listEmptyComponent';
 
 export const UpcomingComp = ({ _onRefresh, page, setPage, ...props }) => {
@@ -46,48 +42,19 @@ export const UpcomingComp = ({ _onRefresh, page, setPage, ...props }) => {
           dispatch(clearErrors())
      }, [errors?.projects])
 
-     const onProjectPressed = (item) => {
-          navigate('ProjectDetailsScreen', {
-               id: item.id,
-               status,
-               deleted,
-               inProgress: false
-          })
-     }
-
-     const _renderItem = ({ item, index }) => {
-          return (
-               <TouchableOpacity
-                    key={index}
-                    onPress={() => onProjectPressed(item)}
-                    activeOpacity={0.85}
-                    style={styles.projectItem}>
-                    <View style={{ alignItems: 'center' }}>
-                         <MyText style={styles.projectName} text={item?.name} />
-                         <MyText style={styles.projectDescription} ellipsizeMode={'tail'} numberOfLines={3} text={item?.description} />
-                         <View style={styles.seperator} />
-                         <MyText style={styles.projectStartDate} text={moment(item?.start_date).fromNow()} />
-                    </View>
-                    {/* {item?.deleted_at ? <View style={styles.deletedIcon} /> : null}
-         {item?.status === 'finished' ? <View style={styles.finishedIcon} /> : null} */}
-               </TouchableOpacity>
-          )
-     }
-
-
-     const _listHeaderComponent = () => {
-          return (
-               <View style={styles.filterContainer}>
-                    <Ionicons
-                         name={'md-filter'}
-                         size={30}
-                         color={Colors.primary}
-                         onPress={() => setVisible(true)}
-                    />
-                    {loadings?.projects_upcoming ? <ActivityIndicator size={15} color={Colors.primary} /> : null}
-               </View>
-          )
-     }
+     // const _listHeaderComponent = () => {
+     //      return (
+     //           <View style={styles.filterContainer}>
+     //                <Ionicons
+     //                     name={'md-filter'}
+     //                     size={30}
+     //                     color={Colors.primary}
+     //                     onPress={() => setVisible(true)}
+     //                />
+     //                {loadings?.projects_upcoming ? <ActivityIndicator size={15} color={Colors.primary} /> : null}
+     //           </View>
+     //      )
+     // }
 
      const loadMore = async () => {
           let nextPage = page + 1;
@@ -143,7 +110,7 @@ export const UpcomingComp = ({ _onRefresh, page, setPage, ...props }) => {
                               showsVerticalScrollIndicator={false}
                               onRefresh={_onRefresh}
                               refreshing={false}
-                              renderItem={_renderItem}
+                              renderItem={ProjectComponent}
                          />}
                     {loadings?.projects_upcoming ?
                          <View style={styles.loadingContainer}>

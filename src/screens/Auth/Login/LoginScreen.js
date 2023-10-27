@@ -80,7 +80,7 @@ export const LoginScreen = ({ navigation }) => {
     }
     const devInitialValues = {
         phone_number: '0531119339',
-        password: '12341234',
+        password: '1234',
     }
 
     const onSubmit = (values) => {
@@ -113,7 +113,7 @@ export const LoginScreen = ({ navigation }) => {
         Alert.alert(t('app.changeLangAlertTitle'), t('app.changeLangMessage'), [
             {
                 style: 'cancel',
-                text: t('app.cancel')
+                text: t('app.changeLangCancel')
             },
             {
                 text: t('app.changeLangConfirm'),

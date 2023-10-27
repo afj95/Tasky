@@ -14,7 +14,7 @@ export const EmployeeDetailsScreen = ({ route: { params: { employee } } }) => {
           <View style={styles.container}>
                <MainHeader showGoBack title={'employeeDetails'} translate />
                <View style={{ flex: 1, paddingHorizontal: 10 }}>
-                    <ScrollView>
+                    <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
                          <Item
                               label={'nameAr'}
                               text={employee?.name}

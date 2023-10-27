@@ -1,8 +1,5 @@
 import { showMessage as flashShowMessage, Icon, MessageType, MessageOptions } from "react-native-flash-message";
 import { StyleProp, TextStyle, ViewStyle } from "react-native";
-import Constants from 'expo-constants';
-
-const statusBarHeight = Constants.statusBarHeight;
 
 export const showMessage = (props: {
      message: string;
