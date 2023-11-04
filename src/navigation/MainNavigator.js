@@ -78,15 +78,15 @@ const ScreensNavigator = () => {
         getToken();
     }, [initialRouteName])
 
-    if (!isConnected) {
-        return <NoInternetScreen />
-    } else if (!initialRouteName) {
+    if (!initialRouteName) {
         setTimeout(() => setHasError(true), 10000) // After 10 seconds if the initialRouteName not modified it will show error screen
         if (hasError) {
             return <ErrorScreen />
         } else {
             return <Loader />
         }
+    } else if (!isConnected) {
+        return <NoInternetScreen />
     } else {
         return (
             <>

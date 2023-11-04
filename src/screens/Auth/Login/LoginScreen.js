@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { t } from '../../../i18n';
 import { FontAwesome } from '@expo/vector-icons';
 import { i18n } from '../../../i18n';
-import { reloadAsync } from 'expo-updates';
+import { channel, reloadAsync } from 'expo-updates';
 import Colors from '../../../utils/Colors';
 import { mainStyles } from '../../../constants';
 import { clearErrors } from '../../../redux/reducers/Global/global-actions';
@@ -34,44 +34,39 @@ export const LoginScreen = ({ navigation }) => {
     const user = useSelector((state) => state?.authReducer?.user)
 
     useEffect(() => {
-        if (Object.keys(user || {}).length) {
-            // if (user?.role === 'admin') {
-            //     showMessage({
-            //         message: 'You are an admin!',
-            //         description: 'Admin screens not ready yet!',
-            //         type: 'info',
-            //         duration: 5000,
-            //         autoHide: false
-            //     })
-            // } else {
-            //     AsyncStorage.setItem('token', user?.token).then(() => {
-            //         navigation.dispatch(
-            //             CommonActions.reset({
-            //                 index: 1,
-            //                 routes: [{ name: 'Home' }]
-            //             })
-            //         )
-            //     }).catch(e => { })
-            // }
-            AsyncStorage.setItem('token', user?.token).then(() => {
-                navigation.dispatch(
-                    CommonActions.reset({
-                        index: 1,
-                        routes: [{ name: 'Home' }]
+        const login = async () => {
+            try {
+                if (Object.keys(user || {}).length) {
+                    await AsyncStorage.setItem('token', user?.token)
+                        .then(() => {
+                            navigation.dispatch(
+                                CommonActions.reset({
+                                    index: 1,
+                                    routes: [{ name: 'Home' }]
+                                })
+                            )
+                        })
+                }
+            } catch (error) {
+                if (channel[0]?.startsWith('t')) alert('Error asyncStorage ' + JSON.stringify(e));
+                else {
+                    showMessage({
+                        message: t('app.serverError') + '001',
+                        type: 'danger'
                     })
-                )
-            }).catch(e => { })
+                }
+            }
+
+            if (errors?.login) {
+                showMessage({
+                    message: errors?.login?.message ? t('app.serverError') : errors?.login + '',
+                    type: 'danger'
+                })
+                dispatch(clearErrors());
+            }
         }
 
-        if (errors?.login) {
-            showMessage({
-                message: errors?.login?.message ? errors?.login?.message : errors?.login + '',
-                type: 'danger',
-                style: { paddingTop: StatusBar.currentHeight + 10 },
-                duration: 5000
-            })
-            dispatch(clearErrors());
-        }
+        login();
     }, [errors, user])
 
     const initialValues = {
@@ -172,7 +167,7 @@ export const LoginScreen = ({ navigation }) => {
                         */
                         validate={validate}
                         onSubmit={onSubmit}
-                        initialValues={__DEV__ ? devInitialValues : initialValues}>
+                        initialValues={__DEV__ || channel[0]?.startsWith('t') ? devInitialValues : initialValues}>
                         {(props) => <LoginForm loginProps={props} />}
                     </Formik>
                 </View>
