@@ -55,7 +55,9 @@ export const AddProjectScreen = () => {
             showed,
             projectStatus,
             startDate,
-            workType
+            workType,
+            latitude,
+            longitude
         } = values;
 
         dispatch(addNewProject({
@@ -65,7 +67,9 @@ export const AddProjectScreen = () => {
             showed,
             work_type: workType,
             status: projectStatus,
-            start_date: startDate
+            start_date: startDate,
+            latitude: latitude.toString(),
+            longitude: longitude.toString()
         }))
 
         dispatch(addNewType(workType));

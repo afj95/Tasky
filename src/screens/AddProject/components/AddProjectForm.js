@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import {
     View,
     StyleSheet,
@@ -16,17 +16,15 @@ import { SupervisorsModal } from './SupervisorsModal';
 import Colors from '../../../utils/Colors';
 import { mainStyles } from '../../../constants';
 import TouchableOpacity from '../../../components/UI/TouchableOpacity';
-import { Fontisto } from '@expo/vector-icons';
+import { Fontisto, Ionicons } from '@expo/vector-icons';
 import { StatusesModal } from './StatusesModal';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import { ActivityIndicator } from 'react-native-paper';
 import ErrorText from '../../../components/UI/ErrorText';
-// import { MapComponent } from '../../ProjectDetails/components';
-// import { AddLocationModal } from './AddLocationModal';
-// import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { deleteWorkType } from '../../../redux/reducers/Projects/projects-actions';
 import { useDispatch } from 'react-redux';
+import { navigate } from '../../../navigation/RootNavigation';
 
 export const AddProjectForm = ({ types, loadings, addProjectProps: { handleChange, values, errors, handleBlur, setFieldValue, handleSubmit } }) => {
     const _scroll = useRef(null);
@@ -35,24 +33,39 @@ export const AddProjectForm = ({ types, loadings, addProjectProps: { handleChang
 
     const [supervisorsModalVisible, setSupervisorsModalVisible] = useState(false);
     const [statusesModal, setStatusesModal] = useState(false);
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
-    // const [locationModalVisible, setLocationModalVisible] = useState(false);
+    const [dateTimeMode, setDateTimeMode] = useState('date');
+    const [showDateTimePicker, setShowDateTimePicker] = useState(false);
+    const [projectAddress, setProjectAddress] = useState('');
+    const [mainRegion, setMainRegion] = useState({
+        // Riyadh region
+        latitude: 24.715462882305346,
+        longitude: 46.676643547097186,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+    })
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
-        setShow(false);
+        setShowDateTimePicker(false);
         setFieldValue('startDate', currentDate)
     };
 
     const showMode = (currentMode) => {
-        setShow(true);
-        setMode(currentMode);
+        setShowDateTimePicker(true);
+        setDateTimeMode(currentMode);
     };
 
     const showPicker = type => showMode(type);
 
-    // const closeLocationModal = () => setLocationModalVisible(false);
+    const goToAddLocationScreen = () => {
+        navigate('AddLocationScreen', {
+            setFieldValue,
+            projectAddress,
+            setProjectAddress,
+            mainRegion,
+            setMainRegion
+        })
+    }
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.mainContainer}>
@@ -152,6 +165,8 @@ export const AddProjectForm = ({ types, loadings, addProjectProps: { handleChang
                     {types && types?.length > 0 ?
                         types.map((type, index) => (
                             <TouchableOpacity
+                                key={index}
+                                style={styles.type}
                                 onLongPress={() => {
                                     Alert.alert(t('app.deleteType'), t('app.DeleteItem'), [
                                         {
@@ -169,7 +184,7 @@ export const AddProjectForm = ({ types, loadings, addProjectProps: { handleChang
                                     setFieldValue('workType', type)
                                 }}
                                 activeOpacity={0.4}>
-                                <MyText text={type + ','} style={{ marginStart: 5 }} />
+                                <MyText text={type} style={{ marginStart: 5 }} />
                             </TouchableOpacity>
                         ))
                         : null}
@@ -214,43 +229,24 @@ export const AddProjectForm = ({ types, loadings, addProjectProps: { handleChang
                 </View>
                 <MyText style={styles.showedHelpLabel}>dateTimeHelpText</MyText>
 
-                {/* <TouchableOpacity
-                    onPress={() => setLocationModalVisible(true)}
-                    activeOpacity={1}
-                    style={{
-                        // borderWidth: 1,
-
-                        height: 100,
-                        marginTop: 20,
-                        borderRadius: 8
-                    }}>
-                    <MapView
-                        provider={PROVIDER_GOOGLE}
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                        }}
-                        initialRegion={{
-                            latitude: 24.715462882305346,
-                            longitude: 46.676643547097186,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421,
-                        }}
-                        pitchEnabled={false}
-                        scrollEnabled={false}
+                {/* Google Map */}
+                <Pressable
+                    onPress={goToAddLocationScreen}
+                    activeOpacity={0.925}
+                    style={styles.goToAddProjectContainer}>
+                    <Ionicons
+                        name='location'
+                        color={Colors.primary}
                     />
-                </TouchableOpacity>
+                    <MyText style={styles.goToAddProjectText}>addNewProjectAddress</MyText>
+                </Pressable>
+                <MyText text={projectAddress} />
 
-                <AddLocationModal
-                    visible={locationModalVisible}
-                    closeModal={closeLocationModal}
-                /> */}
-
-                {show && (
+                {showDateTimePicker && (
                     <DateTimePicker
                         testID="dateTimePicker"
                         value={values.startDate}
-                        mode={mode}
+                        mode={dateTimeMode}
                         is24Hour={false}
                         onChange={onChange}
                     />
@@ -263,26 +259,28 @@ export const AddProjectForm = ({ types, loadings, addProjectProps: { handleChang
                     <MyText style={styles.addProjectText}>addNewProject</MyText>
                 </TouchableOpacity>
             </ScrollView>
-            {!loadings?.add_project ? null :
-                <ActivityIndicator
-                    size={40}
-                    color={Colors.primary}
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                    }} />
+            {
+                !loadings?.add_project ? null :
+                    <ActivityIndicator
+                        size={40}
+                        color={Colors.primary}
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                        }} />
             }
-        </KeyboardAvoidingView>
+        </KeyboardAvoidingView >
     )
 }
 
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        backgroundColor: Colors.appWhite
     },
     textContainer: {
         flexDirection: 'row',
@@ -308,6 +306,12 @@ const styles = StyleSheet.create({
         color: Colors.primary,
         textAlign: I18nManager.isRTL ? 'right' : 'left',
         ...mainStyles.viewShadow
+    },
+    type: {
+        padding: 10,
+        borderRadius: 8,
+        margin: 5,
+        backgroundColor: Colors.white,
     },
     dateTimeContainer: {
         fontFamily: 'bold',
@@ -361,5 +365,20 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
         marginTop: 10,
         marginStart: 10
+    },
+    goToAddProjectContainer: {
+        borderWidth: 0.8,
+        borderColor: Colors.secondary,
+        height: 50,
+        marginTop: 20,
+        borderRadius: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row'
+    },
+    goToAddProjectText: {
+        color: Colors.primary,
+        fontFamily: 'bold',
+        marginHorizontal: 5
     }
 })

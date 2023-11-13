@@ -11,6 +11,9 @@ import {
   EditTaskScreen,
   MaterialsScreen,
   EmployeeDetailsScreen,
+  SearchProjects,
+  AddLocationScreen,
+  SearchLocationScreen
   // CalcualtionsScreen
 } from '../screens';
 import { useSelector } from 'react-redux';
@@ -107,16 +110,16 @@ export const MainStackScreens = () => (
     {/* ADMIN */}
     <MainStack.Group screenOptions={{ headerShown: false }}>
       <MainStack.Screen name="Tabs" component={MyTabs} />
-      <MainStack.Screen
-        name="AddProject"
-        component={AddProjectScreen}
-      />
+      <MainStack.Screen name="AddProject" component={AddProjectScreen} />
     </MainStack.Group>
 
     <MainStack.Group screenOptions={{ headerShown: false }}>
       <MainStack.Screen name={'ProjectDetailsScreen'} component={ProjectDetails} />
       <MainStack.Screen name={'EditTaskScreen'} component={EditTaskScreen} />
       <MainStack.Screen name={'MaterialsScreen'} component={MaterialsScreen} />
+      <MainStack.Screen name={'AddLocationScreen'} component={AddLocationScreen} />
+      <MainStack.Screen name={'SearchLocationScreen'} component={SearchLocationScreen} options={{}} />
+      <MainStack.Screen name={'SearchProjects'} component={SearchProjects} />
       {/* <MainStack.Screen name={'CalcualtionsScreen'} component={CalcualtionsScreen} /> */}
     </MainStack.Group>
     <MainStack.Group screenOptions={{ headerShown: false }}>

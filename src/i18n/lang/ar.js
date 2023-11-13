@@ -75,14 +75,12 @@ export default {
         addEmployeeInstractions: "قم بتعبة بيانات الموظف الجديد أدناه",
         addEmployeeNote: "ملاحظة: كلمة المرور ستكون مطابقة لرقم الهاتف للموظف لتسجيل الدخول",
         editEmployeeInstractions: "قم بتعديل بيانات الموظف أدناه",
-        deleted: "محذوف",
         restoreEmployee: "استعادة الموظف",
         deletedUsers: "الموظفين المحذوفين",
         role: "الرتبة",
         noDeleted: "الموظفين غير المحذوفين",
         notDeletedSupervisors: "بدون المحذوف",
         allProjects: "جميع المشاريع",
-        activeProjects: "المشاريع الجارية",
         finishedProjects: "المشاريع المنتهية",
         dashboardScreen: "لوحة التحكم",
         noRecentProjects: "لا يوجد مشاريع",
@@ -167,6 +165,16 @@ export default {
         ready: 'جاهز للعمر',
         workType: 'نوع العمل',
         deleteType: 'حذف نوع عمل',
-        DeleteItem: 'حذف العنصر ؟'
+        DeleteItem: 'حذف العنصر ؟',
+        searchProjectText: 'أدخل أي نص للبحث في المشاريع',
+        addTaskError: 'يرجى التأكد من المدخلات أو المحاولة لاحقًا',
+        mapPermissionDenied: 'تم رفض إذن الوصول إلى الموقع',
+        warning: 'تنبيه!',
+        noMapResultsMessage: 'لا يوجد نتائج',
+        cantGetUserLocation: 'حدث خطأ أثناء محاولة جلب بيانات الموقع الخاص بك',
+        addLocationTitle: 'تحديد موقع المشروع',
+        searchLocation: 'البحث عن موقع',
+        addNewProjectAddress: 'إضافة موقع للمشروع',
+        loading: 'يرجى الإنتظار...'
     }
 }

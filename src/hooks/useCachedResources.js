@@ -13,8 +13,8 @@ export const useCachedResources = () => {
 
     useEffect(() => {
         (async () => {
-            SplashScreen.preventAutoHideAsync();
             try {
+                await SplashScreen.preventAutoHideAsync();
                 // Loading fonts
                 await loadAsync({
                     light: require('../../assets/fonts/light.otf'),
@@ -39,15 +39,13 @@ export const useCachedResources = () => {
                 setLoadingCompleted(true);
             } catch (error) {
                 setHasError(true);
-                console.log('Error', error);
                 i18n.locale = 'en';
                 await AsyncStorage.setItem('lang', 'en');
                 moment.locale('en');
             } finally {
-                SplashScreen.hideAsync();
+                await SplashScreen.hideAsync();
             }
         })()
-
     }, [])
 
     return [loadingCompleted, hasError];
