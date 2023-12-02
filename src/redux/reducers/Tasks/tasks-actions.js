@@ -15,6 +15,7 @@ import {
     // DELETE_TASK_SUCCESS,
 } from './tasks-reducer'
 import { t } from '../../../i18n';
+import Errors_codes from '../../../../Errors_codes';
 
 export const restProjectTasks = () => ({
     type: RESET_PROJECT_TASKS,
@@ -111,7 +112,7 @@ export const editTask = (task, params) => {
             dispatch(fetchTask(task.id))
         } catch (error) {
             showMessage({
-                message: t('app.serverError'),
+                message: t('app.serverError') + ' ' + Errors_codes.tasks_actions,
                 type: 'danger'
             })
             dispatch(stopLoading({ failed: true, error: { 'edit_task': error.message ? error.message : error } }))

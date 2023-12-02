@@ -16,6 +16,7 @@ import MyText from '../../components/UI/MyText';
 import { MainHeader } from '../../components/UI/MainHeader'
 import TouchableOpacity from '../../components/UI/TouchableOpacity';
 import { navigate } from '../../navigation/RootNavigation';
+import Errors_codes from '../../../Errors_codes';
 
 export const AddLocationScreen = (props) => {
      const {
@@ -148,7 +149,7 @@ export const AddLocationScreen = (props) => {
                if (__DEV__) {
                     console.log('error', error);
                }
-               Alert.alert(t('app.warsning'), t('app.serverError'), [
+               Alert.alert(t('app.warsning'), t('app.serverError') + ' ' + Errors_codes.fetch_location_details, [
                     {
                          text: t('app.ok'),
                          style: 'cancel'
@@ -165,7 +166,7 @@ export const AddLocationScreen = (props) => {
           if (coordinate) {
                fetchLocationDetails({ coordinate });
           } else {
-               Alert.alert(t('app.warning'), t('app.serverError'), [
+               Alert.alert(t('app.warning'), t('app.serverError') + ' ' + Errors_codes.get_marker_clicked_data, [
                     {
                          text: t('app.ok'),
                          style: 'cancel'

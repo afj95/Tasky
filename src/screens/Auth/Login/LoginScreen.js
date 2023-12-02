@@ -26,6 +26,7 @@ import {
     I18nManager,
     StatusBar
 } from 'react-native';
+import Errors_codes from '../../../../Errors_codes';
 
 export const LoginScreen = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -51,7 +52,7 @@ export const LoginScreen = ({ navigation }) => {
                 if (channel[0]?.startsWith('t')) alert('Error asyncStorage ' + JSON.stringify(e));
                 else {
                     showMessage({
-                        message: t('app.serverError') + '001',
+                        message: t('app.serverError') + ' ' + Errors_codes.login_async_storage,
                         type: 'danger'
                     })
                 }
@@ -59,7 +60,7 @@ export const LoginScreen = ({ navigation }) => {
 
             if (errors?.login) {
                 showMessage({
-                    message: errors?.login?.message ? t('app.serverError') : errors?.login + '',
+                    message: errors?.login?.message ? t('app.serverError') + ' ' + Errors_codes.login_server_error : errors?.login + '',
                     type: 'danger'
                 })
                 dispatch(clearErrors());

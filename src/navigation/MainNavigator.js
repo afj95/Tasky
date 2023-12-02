@@ -48,16 +48,6 @@ const ScreensNavigator = () => {
     }, [isConnected])
 
     useEffect(() => {
-        if (errors && errors?.general) {
-            showMessage({
-                message: t('app.serverError') + '',
-                type: 'danger'
-            })
-        }
-        dispatch(clearErrors());
-    }, [errors])
-
-    useEffect(() => {
         const getToken = async () => {
             try {
                 const token = await AsyncStorage.getItem('token');
