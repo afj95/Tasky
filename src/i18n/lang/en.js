@@ -76,7 +76,6 @@ export default {
         addEmployeeInstractions: "Fill the employee data below",
         addEmployeeNote: "Note: The password will be the same as the phone number for login",
         editEmployeeInstractions: "Edit the employee data below",
-        deleted: "Deleted",
         restoreEmployee: "Restore employee",
         deletedUsers: "Deleted users",
         role: "Role",
@@ -167,6 +166,16 @@ export default {
         ready: 'Ready',
         workType: 'Work Type',
         deleteType: 'Delete Type',
-        DeleteItem: 'Delete this item ?'
+        DeleteItem: 'Delete this item ?',
+        searchProjectText: 'Enter any text to search in projects',
+        addTaskError: 'Please re-check inputs or try again later.',
+        mapPermissionDenied: 'Permission to access location was denied',
+        warning: 'Warning!',
+        noMapResultsMessage: 'No results',
+        cantGetUserLocation: "Couldn't get your location for some reason!",
+        addLocationTitle: 'Add Location',
+        searchLocation: 'Search location',
+        addNewProjectAddress: 'Add new project Address',
+        loading: 'Loading...'
     }
 }

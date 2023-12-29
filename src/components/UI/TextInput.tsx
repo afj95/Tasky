@@ -18,6 +18,8 @@ const TextInput = (props: TextInputProps) => {
                style={styles.input}
                mode={'flat'}
                theme={inputTheme}
+               underlineColorAndroid='rgba(255, 255, 255, 255)'
+               selectionColor={Colors.secondary}
                {...props}
           />
      )

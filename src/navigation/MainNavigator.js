@@ -16,6 +16,7 @@ import { showMessage } from '../tools';
 import { clearErrors } from '../redux/reducers/Global/global-actions';
 import { t } from '../i18n';
 import NetInfo from "@react-native-community/netinfo";
+import { useNotification } from '../hooks/useNotification';
 
 export default function MainNavigator() {
     return (
@@ -31,6 +32,7 @@ export default function MainNavigator() {
 const MainStack = createStackNavigator();
 const ScreensNavigator = () => {
     const dispatch = useDispatch();
+    const notificationToken = useNotification();
 
     const [initialRouteName, setInitialRouteName] = useState('');
     const [hasError, setHasError] = useState(false);
@@ -46,16 +48,6 @@ const ScreensNavigator = () => {
 
         return () => unsubscribe();
     }, [isConnected])
-
-    useEffect(() => {
-        if (errors && errors?.general) {
-            showMessage({
-                message: t('app.serverError') + '',
-                type: 'danger'
-            })
-        }
-        dispatch(clearErrors());
-    }, [errors])
 
     useEffect(() => {
         const getToken = async () => {
@@ -78,15 +70,15 @@ const ScreensNavigator = () => {
         getToken();
     }, [initialRouteName])
 
-    if (!isConnected) {
-        return <NoInternetScreen />
-    } else if (!initialRouteName) {
+    if (!initialRouteName) {
         setTimeout(() => setHasError(true), 10000) // After 10 seconds if the initialRouteName not modified it will show error screen
         if (hasError) {
             return <ErrorScreen />
         } else {
             return <Loader />
         }
+    } else if (!isConnected) {
+        return <NoInternetScreen />
     } else {
         return (
             <>

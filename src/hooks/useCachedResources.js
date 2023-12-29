@@ -1,34 +1,52 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
-import * as Font from 'expo-font';
+import { loadAsync } from 'expo-font';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { I18nManager } from 'react-native';
+import moment from 'moment';
+import { i18n } from '../i18n';
 
-export default useCachedResources = () => {
-    const [isLoadingComplete, setLoadingComplete] = React.useState(false);
+export const useCachedResources = () => {
+    const [loadingCompleted, setLoadingCompleted] = React.useState(false);
     const [hasError, setHasError] = React.useState(false);
 
-    React.useEffect(() => {
-        async function loadResourcesAndDataAsync() {
+    useEffect(() => {
+        (async () => {
             try {
-                SplashScreen.preventAutoHideAsync();
-
-                await Font.loadAsync({
-                    ...FontAwesome.font,
+                await SplashScreen.preventAutoHideAsync();
+                // Loading fonts
+                await loadAsync({
                     light: require('../../assets/fonts/light.otf'),
-                    bold: require('../../assets/fonts/bold.otf')
+                    bold: require('../../assets/fonts/bold.otf'),
+                    ...FontAwesome.font,
                 })
 
-                setHasError(false)
+                // Loading lang
+                const lang = await AsyncStorage.getItem('lang');
+                if (lang !== null) {
+                    i18n.locale = lang;
+                    I18nManager.forceRTL(lang === 'ar');
+                    I18nManager.allowRTL(lang === 'ar');
+                    moment.locale(lang === 'ar' ? 'ar-sa' : 'en');
+                } else {
+                    i18n.locale = 'en';
+                    I18nManager.forceRTL(false);
+                    I18nManager.allowRTL(false);
+                    await AsyncStorage.setItem('lang', 'en');
+                    moment.locale('en');
+                }
+                setLoadingCompleted(true);
             } catch (error) {
-                setHasError(true)
-                console.warn(error);
+                setHasError(true);
+                i18n.locale = 'en';
+                await AsyncStorage.setItem('lang', 'en');
+                moment.locale('en');
             } finally {
-                setLoadingComplete(true)
+                await SplashScreen.hideAsync();
             }
-        }
-
-        loadResourcesAndDataAsync();
+        })()
     }, [])
 
-    return { isLoadingComplete, hasError };
+    return [loadingCompleted, hasError];
 }

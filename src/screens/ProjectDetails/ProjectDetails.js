@@ -24,6 +24,7 @@ import { t } from '../../i18n';
 import LoadMore from '../../components/UI/LoadMore';
 import moment from 'moment';
 import { MainHeader } from '../../components/UI/MainHeader';
+import Errors_codes from '../../../Errors_codes';
 // import { Switch } from 'react-native-paper';
 
 export const ProjectDetails = (props) => {
@@ -64,7 +65,7 @@ export const ProjectDetails = (props) => {
     useEffect(() => {
         if (errors?.project) {
             showMessage({
-                message: t('app.serverError'),
+                message: t('app.serverError') + ' ' + Errors_codes.project_details_server_error,
                 type: 'danger',
             })
         }

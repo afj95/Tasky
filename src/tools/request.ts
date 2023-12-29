@@ -7,6 +7,7 @@ import { CommonActions } from "@react-navigation/native";
 import { t } from "../i18n";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LOGOUT } from "../redux/reducers";
+import Errors_codes from "../../Errors_codes";
 
 type RequestProps = {
     url: string;
@@ -54,9 +55,6 @@ export const request = async ({ url, method, headers, params }: RequestProps) =>
                 data: params,
             });
 
-            if (timeout) {
-                reject(new Error(t('app.serverError')))
-            }
             // No errors
             resolve(res)
 
@@ -102,10 +100,10 @@ export const request = async ({ url, method, headers, params }: RequestProps) =>
                 // if(error && error?.response) == false
 
                 if (__DEV__) {
-                    console.log('\nWithout (error && error?.response)');
+                    console.log('\nWithout (error && error?.response)', error);
                 }
 
-                reject({ message: error, response: false })
+                reject({ message: 'Error ' + Errors_codes.request_axios_error, response: false })
             }
         }
     })
