@@ -14,7 +14,7 @@
 import { request } from "../../../tools";
 import { fetchProfile } from "../Auth/auth-actions";
 import { setLoading, stopLoading } from "../Global/global-actions"
-import { EDIT_PROFILE_SUCCESS, FETCHING_EMPLOYEES_SUCCESS, FETCHING_USERS_SUCCESS, RESET } from "./users-reducer";
+import { EDIT_PROFILE_SUCCESS, FETCHING_EMPLOYEES_SUCCESS, FETCHING_USERS_SUCCESS, RESET, SEND_EXPO_TOKEN } from "./users-reducer";
 
 //     FETCHING_ALL_EMP,
 //     FETCHING_ALL_EMP_SUCCESS,
@@ -248,5 +248,23 @@ export const editProfile = (user_id, params) => {
         } catch (error) {
             dispatch(stopLoading({ failed: true, error: { 'edit_profile': error.message } }))
         }
+    }
+}
+
+export const sendExpoToken = (payload) => {
+    try {
+        return async dispatch => {
+            const res = await request({
+                url: 'users/token',
+                method: 'POST',
+                params: {
+                    token: payload // token
+                }
+            })
+
+            dispatch({ type: SEND_EXPO_TOKEN })
+        }
+    } catch (error) {
+
     }
 }

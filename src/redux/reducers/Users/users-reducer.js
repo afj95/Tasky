@@ -1,6 +1,7 @@
 export const EDIT_PROFILE_SUCCESS = 'EDIT_PROFILE_SUCCESS';
 export const FETCHING_EMPLOYEES_SUCCESS = 'FETCHING_EMPLOYEES_SUCCESS';
 export const FETCHING_USERS_SUCCESS = 'FETCHING_USERS_SUCCESS'
+export const SEND_EXPO_TOKEN = 'SEND_EXPO_TOKEN';
 export const RESET = 'RESET';
 
 const usersState = {
@@ -39,6 +40,12 @@ const usersReducer = (state = usersState, action) => {
                 ...state,
                 user: action?.payload,
                 profile_updated: true
+            }
+        }
+
+        case SEND_EXPO_TOKEN: {
+            return {
+                ...state,
             }
         }
 

@@ -74,7 +74,7 @@ const MyTabs = () => {
       // initialRouteName={user?.role === 'admin' ? 'DashboardScreen' : 'HomeScreen'}
       initialRouteName={'HomeScreen'}
       screenOptions={{ headerShown: false, }}>
-      {user?.role === 'admin' ?
+      {user?.role.toLowerCase() === 'admin' ?
         adminScreens.map((screen, index) => {
           const { name, component, options } = screen;
           return (
