@@ -16,7 +16,6 @@ import { showMessage } from '../tools';
 import { clearErrors } from '../redux/reducers/Global/global-actions';
 import { t } from '../i18n';
 import NetInfo from "@react-native-community/netinfo";
-import { useNotification } from '../hooks/useNotification';
 
 export default function MainNavigator() {
     return (
@@ -32,7 +31,6 @@ export default function MainNavigator() {
 const MainStack = createStackNavigator();
 const ScreensNavigator = () => {
     const dispatch = useDispatch();
-    const notificationToken = useNotification();
 
     const [initialRouteName, setInitialRouteName] = useState('');
     const [hasError, setHasError] = useState(false);

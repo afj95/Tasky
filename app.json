@@ -34,6 +34,7 @@
       "permissions": [],
       "versionCode": 11,
       "package": "com.ahmad.tasky",
+      "googleServicesFile": "./google-services.json",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBy9xokt7ciS8rwVPfJ58PwTCcCv9eRqso"

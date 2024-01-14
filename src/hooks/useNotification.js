@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { Platform } from 'react-native';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
-import * as updates from 'expo-updates';
 import Constants from 'expo-constants';
 import Colors from '../utils/Colors';
 import { useDispatch } from 'react-redux';
@@ -52,12 +51,12 @@ async function registerForPushNotificationsAsync(dispatch) {
      let token;
      try {
           if (Platform.OS === 'android') {
-               await Notifications.setNotificationChannelAsync(updates?.channel || 'teste', {
-                    name: updates?.channel || 'teste',
+               await Notifications.setNotificationChannelAsync('Employees IDs', {
+                    name: 'Employees IDs',
                     importance: Notifications.AndroidImportance.MAX,
                     vibrationPattern: [0, 250, 250, 250],
                     lightColor: Colors.secondary,
-                    sound: false,
+                    sound: true,
                });
           }
 
