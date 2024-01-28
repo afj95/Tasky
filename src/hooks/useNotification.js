@@ -58,6 +58,20 @@ async function registerForPushNotificationsAsync(dispatch) {
                     lightColor: Colors.secondary,
                     sound: true,
                });
+               await Notifications.setNotificationChannelAsync('Cars Licenses', {
+                    name: 'Cars Licenses',
+                    importance: Notifications.AndroidImportance.MAX,
+                    vibrationPattern: [0, 250, 250, 250],
+                    lightColor: Colors.secondary,
+                    sound: true,
+               });
+               await Notifications.setNotificationChannelAsync('Cars Insurancess', {
+                    name: 'Cars Licenses',
+                    importance: Notifications.AndroidImportance.MAX,
+                    vibrationPattern: [0, 250, 250, 250],
+                    lightColor: Colors.secondary,
+                    sound: true,
+               });
           }
 
           if (Device.isDevice) {

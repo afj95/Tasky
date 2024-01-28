@@ -270,7 +270,7 @@ export const ProjectDetails = (props) => {
                         </View>
                     }
 
-                    {user?.role === 'admin'
+                    {user?.role?.toLowerCase() === 'admin'
                         && (
                             !loadings?.project
                             && !loadings?.project_refresh
