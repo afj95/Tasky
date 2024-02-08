@@ -1,6 +1,6 @@
 import Colors from "../utils/Colors";
 
-export const API_URL = __DEV__ ? 'https://aaea-2001-16a2-38e8-9c00-c0af-6ddd-82ce-f454.ngrok-free.app/api/' : 'https://tasky-erp.com/api/';
+export const API_URL = __DEV__ ? 'https://6e3d-2001-16a2-396f-a800-c426-a5b8-6e47-97f9.ngrok-free.app/api/' : 'https://tasky-erp.com/api/';
 
 export const googleMapKey = 'AIzaSyBy9xokt7ciS8rwVPfJ58PwTCcCv9eRqso';
 
