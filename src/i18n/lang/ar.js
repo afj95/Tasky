@@ -121,6 +121,7 @@ export default {
         attendence: "الحضور والإنصراف",
         employeeDetails: "تفاصيل موظف",
 
+        employeeNameSearch: "البحث عن موظف",
         nameAr: "الإسم عربي",
         nameEn: "الإسم انجليزي",
         nationalId: "رقم الهوية / الإقامة",
@@ -175,6 +176,7 @@ export default {
         addLocationTitle: 'تحديد موقع المشروع',
         searchLocation: 'البحث عن موقع',
         addNewProjectAddress: 'إضافة موقع للمشروع',
-        loading: 'يرجى الإنتظار...'
+        loading: 'يرجى الإنتظار...',
+        editProject: 'تعديل مشروع'
     }
 }

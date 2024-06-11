@@ -10,14 +10,14 @@ import { LOGOUT } from "../redux/reducers";
 import Errors_codes from "../../Errors_codes";
 import moment from "moment";
 
-type RequestProps = {
+interface RequestProps {
     url: string;
     method: Method;
     headers?: AxiosRequestHeaders;
     params?: any;
-} | AxiosRequestConfig;
+};
 
-export const request = async ({ url, method, headers, params }: RequestProps) => {
+export const request = async ({ url, method, headers, params }: RequestProps | AxiosRequestConfig) => {
     if (__DEV__) {
         console.log("\n\n" + `Starting Time - url: ${url} ==> `, moment().locale('en').format('DD-MM-Y - hh:mm:ss:SS A'));
         console.log("========================================");
@@ -59,7 +59,8 @@ export const request = async ({ url, method, headers, params }: RequestProps) =>
                 method: method,
                 url: fullURL,
                 headers: modfiedHeaders,
-                data: params,
+                data: method === 'GET' ? {} : params,
+                params: method === 'GET' ? params : {},
             });
 
             // No errors
