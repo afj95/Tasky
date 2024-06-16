@@ -50,8 +50,6 @@ export const ProjectDetails = (props) => {
     const project = useSelector((state) => state?.projectsReducer?.project);
     const projectTasks = useSelector((state) => state?.tasksReducer?.projectTasks);
     const projectCheckedTasks = useSelector((state) => state?.tasksReducer?.projectCheckedTasks);
-    let projectMaterials = [];
-    projectMaterials = project ? project?.materials : [];
 
     useEffect(() => {
         dispatch(clearErrors());
@@ -131,9 +129,7 @@ export const ProjectDetails = (props) => {
                                     <View style={styles.nameContainer}>
                                         <View>
                                             <MyText text={project?.name} />
-                                            <MyText text={project?.work_type || ''} />
-                                            {/* {!project?.latitude && project?.longitude ?
-                                                 : null} */}
+                                            <MyText style={{ maxWidth: '98%' }} text={project?.work_type || ''} />
                                             <MyText
                                                 style={styles.projectStartDate}
                                                 text={moment(project?.start_date).fromNow()}
@@ -195,28 +191,14 @@ export const ProjectDetails = (props) => {
                                         <MyText style={styles.description} text={`${project?.description}`} />
                                     </View>
                                 }
-                                {/* {!project || !project?.description ? null :
+                                {!project || !project?.description ? null :
                                     <TouchableOpacity style={styles.calculationsContainer}
                                         onPress={goToCalculatingScreen}>
                                         <MyText>calculations</MyText>
                                         <MaterialIcons name={'arrow-forward-ios'} size={20} color={Colors.primary} style={styles.arrow} />
                                     </TouchableOpacity>
-                                } */}
-                                {projectMaterials?.length ?
-                                    <View style={styles.materialsContainer}>
-                                        <View style={styles.materialsLabelContainer}>
-                                            <MyText style={styles.label}>materials</MyText>
-                                            <MyText style={styles.label}>quantity</MyText>
-                                        </View>
-                                        {projectMaterials?.length > 5 ?
-                                            projectMaterials?.slice(0, 5).map((item, index) => <MaterialComponent material={item} key={index} />)
-                                            :
-                                            projectMaterials?.map((item, index) => <MaterialComponent material={item} key={index} />)
-                                        }
-                                        {projectMaterials?.length ? <LoadMore loadMore={loadMore} /> : null}
-                                    </View>
-                                    : null
                                 }
+                                {/* List all project materials here */}
 
                                 {loadings?.project_tasks ? <ActivityIndicator animating={loadings?.project_tasks} color={Colors.primary} /> :
                                     <>
@@ -270,7 +252,7 @@ export const ProjectDetails = (props) => {
                         </View>
                     }
 
-                    {user?.role === 'admin'
+                    {user?.role?.toLowerCase() === 'admin'
                         && (
                             !loadings?.project
                             && !loadings?.project_refresh

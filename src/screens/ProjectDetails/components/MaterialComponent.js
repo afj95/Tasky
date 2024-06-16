@@ -14,7 +14,7 @@ export const MaterialComponent = ({ material }) => {
                     <MyText style={styles.materialDate} text={moment(material?.date).fromNow()} />
                </View>
                <View style={styles.quantityContainer}>
-                    <MyText text={material?.quantity} />
+                    <MyText text={material?.pivot?.quantity} />
                </View>
           </View>
      )

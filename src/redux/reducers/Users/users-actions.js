@@ -42,7 +42,7 @@ import { EDIT_PROFILE_SUCCESS, FETCHING_EMPLOYEES_SUCCESS, FETCHING_USERS_SUCCES
 // }
 
 // // ADMIN
-export const fetchAllEmployees = ({ refresh = false }) => {
+export const fetchAllEmployees = ({ refresh = false, search }) => {
     return async (dispatch) => {
         try {
             if (refresh) {
@@ -53,7 +53,8 @@ export const fetchAllEmployees = ({ refresh = false }) => {
 
             const fetchAllEmployeesRes = await request({
                 url: `employees`,
-                method: 'GET'
+                method: 'GET',
+                params: { search },
             })
 
             dispatch(stopLoading())

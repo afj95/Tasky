@@ -1,20 +1,23 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     View,
     StyleSheet,
     FlatList,
     ActivityIndicator
 } from 'react-native';
-import { EmployeeItem as EI } from './components';
+import { EmployeeItem as EI, SearchEmployeeComponent } from './components';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllEmployees } from '../../redux/reducers/Users/users-actions';
 import Colors from '../../utils/Colors';
 import { MainHeader } from '../../components/UI/MainHeader';
 import { showMessage } from '../../tools';
 import { _listEmptyComponent } from '../../components/UI/_listEmptyComponent';
+import { DismissKeyboardView } from '../../components/UI/DismissKeyboardHOC';
 
 export const EmployeesScreen = () => {
     const dispatch = useDispatch();
+
+    const [employeeName, setEmployeeName] = useState('');
 
     const loadings = useSelector((state) => state?.globalReducer?.loadings)
     const errors = useSelector((state) => state?.globalReducer?.errors)
@@ -38,25 +41,41 @@ export const EmployeesScreen = () => {
         dispatch(fetchAllEmployees({ refresh: true }));
     }
 
+    const searchEmployee = () => {
+        if (employeeName) {
+            // search
+            dispatch(fetchAllEmployees({ refresh: true, search: employeeName }));
+        }
+    }
+
     return (
         <View style={styles.container}>
             <MainHeader
                 title={'employees'}
                 translate
             />
-            {loadings?.employees ? <ActivityIndicator size={'small'} color={Colors.primary} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />
+            {loadings?.employees ? <ActivityIndicator size={'small'} color={Colors.primary} style={styles.loading} />
                 :
-                <View style={styles.listContainer}>
-                    <FlatList
-                        keyExtractor={(item, index) => '#' + index.toString()}
-                        data={all_employees || []}
-                        ItemSeparatorComponent={<View style={{ height: StyleSheet.hairlineWidth, backgroundColor: '#bcbcbc', width: '100%' }} />}
-                        onRefresh={onRefresh}
-                        refreshing={false}
-                        ListEmptyComponent={_listEmptyComponent}
-                        renderItem={({ item, index }) => <EI id={index} employee={item} key={index} onRefresh={onRefresh} />}
-                    />
-                </View>
+                <DismissKeyboardView style={styles.listContainer}>
+                    <View>
+                        <SearchEmployeeComponent
+                            employeeName={employeeName}
+                            setEmployeeName={setEmployeeName}
+                            searchEmployee={searchEmployee}
+                            loadings={loadings}
+                            refresh={onRefresh}
+                        />
+                        <FlatList
+                            keyExtractor={(item, index) => '#' + index.toString()}
+                            data={all_employees || []}
+                            ItemSeparatorComponent={<View style={{ height: StyleSheet.hairlineWidth, backgroundColor: '#bcbcbc', width: '100%' }} />}
+                            onRefresh={onRefresh}
+                            refreshing={false}
+                            ListEmptyComponent={_listEmptyComponent}
+                            renderItem={({ item, index }) => <EI id={index} employee={item} key={index} onRefresh={onRefresh} />}
+                        />
+                    </View>
+                </DismissKeyboardView>
             }
             {/* <FilterModal
                 visible={filterVisible}
@@ -76,6 +95,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors.appWhite
     },
+    loading: { flex: 1, justifyContent: 'center', alignItems: 'center' },
     listContainer: {
         flex: 1,
         height: '100%'

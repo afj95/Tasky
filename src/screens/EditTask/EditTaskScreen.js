@@ -102,7 +102,7 @@ export const EditTaskScreen = () => {
                                    keyboardType={"decimal-pad"}
                                    theme={inputTheme}
                                    defaultValue={employeesQuantity + ''}
-                                   value={employeesQuantity}
+                                   value={employeesQuantity + ''}
                                    onChangeText={text => setEmployeesQuantity(text)}
                                    disabled={currentTask?.checked}
                               />

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Tasky",
     "slug": "Tasky",
-    "version": "1.1.0",
+    "version": "1.2.1",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "splash": {
@@ -19,7 +19,7 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "buildNumber": "11",
+      "buildNumber": "13",
       "bundleIdentifier": "com.ahmad.tasky",
       "config": {
         "googleMapsApiKey": "AIzaSyBGr_V2xg0TADPttbNepGOt__CAPaCuq0k"
@@ -32,7 +32,7 @@
     "android": {
       "jsEngine": "hermes",
       "permissions": [],
-      "versionCode": 11,
+      "versionCode": 13,
       "package": "com.ahmad.tasky",
       "googleServicesFile": "./google-services.json",
       "config": {

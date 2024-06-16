@@ -122,6 +122,7 @@ export default {
         startNavigation: "Start Navigation",
         attendence: "Attendence",
         employeeDetails: "Employee Details",
+        employeeNameSearch: "Search Employee",
         nameAr: "Name Ar",
         nameEn: "Name En",
         nationalId: "National Id",
@@ -176,6 +177,7 @@ export default {
         addLocationTitle: 'Add Location',
         searchLocation: 'Search location',
         addNewProjectAddress: 'Add new project Address',
-        loading: 'Loading...'
+        loading: 'Loading...',
+        editProject: 'Edit Project'
     }
 }

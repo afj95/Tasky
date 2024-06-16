@@ -8,15 +8,20 @@ import { t } from "../i18n";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LOGOUT } from "../redux/reducers";
 import Errors_codes from "../../Errors_codes";
+import moment from "moment";
 
-type RequestProps = {
+interface RequestProps {
     url: string;
     method: Method;
     headers?: AxiosRequestHeaders;
     params?: any;
-} | AxiosRequestConfig;
+};
 
-export const request = async ({ url, method, headers, params }: RequestProps) => {
+export const request = async ({ url, method, headers, params }: RequestProps | AxiosRequestConfig) => {
+    if (__DEV__) {
+        console.log("\n\n" + `Starting Time - url: ${url} ==> `, moment().locale('en').format('DD-MM-Y - hh:mm:ss:SS A'));
+        console.log("========================================");
+    }
     const fullURL = `${API_URL}${url}`;
     // @ts-ignore
     const user = store.getState().authReducer.user;
@@ -38,13 +43,15 @@ export const request = async ({ url, method, headers, params }: RequestProps) =>
             };
 
             if (__DEV__) {
-                console.log("\n\n" + "URL ==> ", url);
+                console.log("URL ==> ", url);
                 console.log("========================================");
                 console.log("fullURL ==> ", fullURL);
                 console.log("========================================");
                 console.log("method  ==> ", method);
                 console.log("========================================");
                 console.log("params  ==> ", params ? params : "{}");
+                console.log("========================================");
+                console.log("time    ==> ", moment().locale('en').format('DD-MM-Y - hh:mm:ss:SS A'));
                 console.log("========================================\n");
             }
 
@@ -52,7 +59,8 @@ export const request = async ({ url, method, headers, params }: RequestProps) =>
                 method: method,
                 url: fullURL,
                 headers: modfiedHeaders,
-                data: params,
+                data: method === 'GET' ? {} : params,
+                params: method === 'GET' ? params : {},
             });
 
             // No errors
@@ -105,6 +113,9 @@ export const request = async ({ url, method, headers, params }: RequestProps) =>
 
                 reject({ message: 'Error ' + Errors_codes.request_axios_error, response: false })
             }
+        }
+        if (__DEV__) {
+            console.log(`Finishing Time - url:${url}   ==> `, moment().locale('en').format('DD-MM-Y - hh:mm:ss:SS A'));
         }
     })
 };

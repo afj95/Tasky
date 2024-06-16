@@ -59,8 +59,9 @@ export const LoginScreen = ({ navigation }) => {
             }
 
             if (errors?.login) {
+                let errorWithCode = t('app.serverError') + ' ' + Errors_codes.login_server_error;
                 showMessage({
-                    message: errors?.login?.message ? t('app.serverError') + ' ' + Errors_codes.login_server_error : errors?.login + '',
+                    message: !errors?.login?.message ? errorWithCode : errors?.login?.message + '',
                     type: 'danger'
                 })
                 dispatch(clearErrors());

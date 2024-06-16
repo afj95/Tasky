@@ -68,8 +68,8 @@ export const AddProjectScreen = () => {
             work_type: workType,
             status: projectStatus,
             start_date: startDate,
-            latitude: latitude.toString(),
-            longitude: longitude.toString()
+            latitude: latitude?.toString(),
+            longitude: longitude?.toString()
         }))
 
         dispatch(addNewType(workType));
