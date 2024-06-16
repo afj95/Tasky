@@ -119,7 +119,7 @@ export const MainStackScreens = () => (
       <MainStack.Screen name={'MaterialsScreen'} component={MaterialsScreen} />
       <MainStack.Screen name={'AddLocationScreen'} component={AddLocationScreen} />
       <MainStack.Screen name={'SearchLocationScreen'} component={SearchLocationScreen} options={{}} />
-      <MainStack.Screen name={'SearchProjects'} component={SearchProjects} />
+      {/* <MainStack.Screen name={'SearchProjects'} component={SearchProjects} /> */}
       {/* <MainStack.Screen name={'CalcualtionsScreen'} component={CalcualtionsScreen} /> */}
     </MainStack.Group>
     <MainStack.Group screenOptions={{ headerShown: false }}>
