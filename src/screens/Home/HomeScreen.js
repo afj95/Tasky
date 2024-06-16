@@ -16,6 +16,7 @@ import * as updates from 'expo-updates';
 import { Ionicons } from '@expo/vector-icons';
 import { navigate } from '../../navigation/RootNavigation';
 import TouchableOpacity from '../../components/UI/TouchableOpacity';
+import { useNotification } from '../../hooks/useNotification';
 
 export const HomeScreen = () => {
   const dispatch = useDispatch()
@@ -24,6 +25,8 @@ export const HomeScreen = () => {
   // const [deleted, setDeleted] = useState(false);
   const [inProgressPage, setInProgressPage] = useState(1);
   const [upcomingPage, setInUpcomingPage] = useState(1);
+
+  const notification = useNotification();
 
   const user = useSelector((state) => state?.authReducer?.user)
 
